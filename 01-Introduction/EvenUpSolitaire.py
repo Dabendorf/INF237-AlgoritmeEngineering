@@ -11,6 +11,28 @@ def main():
         # Reads one list of integers per line
 		case_str = line.strip().split(" ")
 		numbers = [int(i) for i in case_str]
+
+	bool_list = [True if x%2==0 else False for x in numbers]
+	#print(bool_list)
+
+	swapped = True
+	siz = len(bool_list)
+	while swapped:
+		swapped = False
+		new_list = list()
+		for i in range(siz-1):
+			if bool_list[i]!=bool_list[i+1]:
+				new_list.append(bool_list[i])
+				if i == siz-2:
+					new_list.append(bool_list[i+1])
+		bool_list = new_list
+		new_size = len(bool_list)
+		if new_size < siz:
+			siz = new_size
+			swapped = True
+		#print(bool_list)
+	#print(bool_list)
+	print(len(bool_list))
 	
 	"""curr_num = numbers.pop()
 	counter = 0
