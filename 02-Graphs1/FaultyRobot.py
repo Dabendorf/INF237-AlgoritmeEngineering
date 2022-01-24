@@ -1,3 +1,5 @@
+# https://uib.kattis.com/problems/faultyrobot
+
 from random import random
 import sys
 from typing import Tuple

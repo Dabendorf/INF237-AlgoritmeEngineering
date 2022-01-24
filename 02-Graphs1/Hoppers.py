@@ -1,3 +1,5 @@
+# https://uib.kattis.com/problems/hoppers
+
 import sys
 from typing import Tuple
 from collections import defaultdict
@@ -6,29 +8,67 @@ def main():
 	N, M = sys.stdin.readline().strip().split(" ")
 
 	adj_list_direct = defaultdict(lambda: set())
+	todo = set(range(1, int(N)+1))
 	for line in sys.stdin:
-        # Reads one list of integers per line
+		# Reads one list of integers per line
 		case_str = line.strip().split(" ")
 		case = [int(i) for i in case_str]
 		fra, til = case
 		adj_list_direct[fra].add(til)
 		adj_list_direct[til].add(fra)
+
+	components = list()
+	while todo:
+		res = BFS(todo.pop(), adj_list = adj_list_direct)
+		components.append(next(iter(res)))
+		for i in res:
+			if i in todo:
+				todo.remove(i)
+
+	is_bip = is_bipartite(adj_list=adj_list_direct, components=components)
 	
-	adj_list_level2 = defaultdict(lambda: set())
-	for key, value in adj_list_direct.items():
-		for node in value:
-			adj_list_level2[key].update(adj_list_direct[node])
+	if is_bip:
+		print(len(components))
+	else:
+		print(len(components)-1)
 
-	#print(adj_list_direct)
-	#print(adj_list_level2)
+def BFS(s, adj_list):
+	output_list = set()
+	visited = defaultdict(lambda: False)
 
-	overall_sets = set()
+	queue = [s]
+	visited[s] = True
 
-	for key, value in adj_list_level2.items():
-		overall_sets.add(frozenset(value))
+	while queue:
+		s = queue.pop()
 
-	print(overall_sets)
-	print(len(overall_sets)-1)
+		if s != None:
+			output_list.add(s)
+
+		for i in adj_list[s]:
+			if visited[i] == False:
+				queue.append(i)
+				visited[i] = True
+
+	return output_list
+
+def is_bipartite(adj_list, components):
+	colours = dict()
+
+	for c in components:
+		queue = [c]
+		colours[c] = True
+		while queue:
+			el = queue.pop()
+			for neighbour in adj_list[el]:
+				if neighbour in colours:
+					if colours[el] == colours[neighbour]:
+						return False
+				else:
+					queue.append(neighbour)
+					colours[neighbour] = not colours[el]
+	return True
+
 
 if __name__ == "__main__":
 	main()
