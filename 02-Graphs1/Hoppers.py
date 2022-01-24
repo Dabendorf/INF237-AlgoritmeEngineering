@@ -19,8 +19,16 @@ def main():
 		for node in value:
 			adj_list_level2[key].update(adj_list_direct[node])
 
-	print(adj_list_direct)
-	print(adj_list_level2)
+	#print(adj_list_direct)
+	#print(adj_list_level2)
+
+	overall_sets = set()
+
+	for key, value in adj_list_level2.items():
+		overall_sets.add(frozenset(value))
+
+	print(overall_sets)
+	print(len(overall_sets)-1)
 
 if __name__ == "__main__":
 	main()
