@@ -37,8 +37,18 @@ Read two numbers, add them together
 #### Greetings2
 Check the number of e with count, multiply quantity by two
 #### Tarifa
-
+X gigabytes to spent per months, N months
+The following months are quantity of data spent
+Solution: Multiply (N+1)*X and substract every monthly value 
 #### EarlyWinter
+n years historical weather data and information d_i for every year about number of days between summer and snow
+
+Find out number of consecutive years before this one with larger summer-snow gap
+	
+Solution: Enumerate through yearly data
+- If number of that year larger than this year, increase counter
+- If not, break up and return number of years
+- If counter is still zero, then it never snowed that early
 
 ### Graphs 1
 #### ThroughTheGrapevine

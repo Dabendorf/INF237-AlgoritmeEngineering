@@ -4,6 +4,9 @@ import sys
 from typing import Tuple
 from collections import defaultdict
 
+""" X gigabytes to spent per months, N months
+	the following months are quantity of data spent
+	Solution: Multiply (N+1)*X and substract every monthly value """
 def main():
 	X = int(sys.stdin.readline())
 	N = int(sys.stdin.readline())
