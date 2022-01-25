@@ -52,4 +52,30 @@ Solution: Enumerate through yearly data
 
 ### Graphs 1
 #### ThroughTheGrapevine
+Spread a rumor to as many people as possible.
+Every person has skepicism level.
+It's number of people from which they want to hear the rumor before spreading it themselves.
+
+One starting person spreads it to all people she knows (represented by graph)
+Every day the next people who did hear it the day before spread it
+Find out number of people who know the rumors
+
+Solution:
+- Generate adjacency list, skepticism dictionary and a dictionary about who told who'm already
+- Make list of next spreaders containing only the starter
+- Make a loop with amount of days.
+- In each iteration, loop through next spreaders and get their neighbours.
+- Add their spreader to the told_list and check skepticism level. If it is reached, mark them as a next_round_spreader
+	
 #### Hoppers
+A new virus is spreading only two the neighbours of the neighbours of a infected computer.
+Find out how many connections are missing such that one computer infects all
+	
+Solution:
+- Find number of connected components via usage of BFS/DFS
+- This needs n-1 links between them
+- If the graph contains odd-cycle, it possible to spread all of them
+- If there is no odd cycle, one more edge needs to be added to obtain that
+- Odd cycle detection via bipartite graph detection, looping through the graph given all nodes colours
+	
+- In the end, return n or n-1 depending on the odd-cycle thing

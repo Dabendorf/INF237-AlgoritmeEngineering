@@ -4,6 +4,23 @@ import sys
 from typing import Tuple
 from collections import defaultdict
 
+""" Spread a rumor to as many people as possible.
+	Every person has skepicism level.
+	It's number of people from which they want to hear the rumor
+	before spreading it themselves.
+
+	One starting person spreads it to all people she knows (represented by graph)
+	Every day the next people who did hear it the day before spread it
+	Find out number of people who know the rumors
+
+	Solution:
+	- Generate adjacency list, skepticism dictionary and a dictionary
+	  about who told who'm already
+	- Make list of next spreaders containing only the starter
+	- Make a loop with amount of days.
+	- In each iteration, loop through next spreaders and get their neighbours.
+	- Add their spreader to the told_list and check skepticism level. If it is reached, mark them as a next_round_spreader
+	"""
 def main():
 	n, m, d = sys.stdin.readline().strip().split(" ")
 
