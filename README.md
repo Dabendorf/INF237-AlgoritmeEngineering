@@ -16,3 +16,30 @@ Source code of my INF237 homework
 * 11 	Geometry 2
 * 12 	Strings
 * 13 	Mathematics
+
+## Introduction
+* [x] TwoSums
+* [x] Greetings2
+* [x] Tarifa
+* [x] EarlyWinter
+* [ ] EvenUpSolitaire
+
+## Graphs 1
+* [x] ThroughTheGrapevine
+* [ ] FaultyRobot
+* [x] Hoppers
+* [ ] OneWayRoads
+
+## Ideas
+### Introduction
+#### TwoSums
+Read two numbers, add them together
+#### Greetings2
+Check the number of e with count, multiply quantity by two
+#### Tarifa
+
+#### EarlyWinter
+
+### Graphs 1
+#### ThroughTheGrapevine
+#### Hoppers
