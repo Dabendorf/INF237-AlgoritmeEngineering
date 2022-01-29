@@ -3,9 +3,9 @@ Source code of my INF237 homework
 [Link to Kattis tasks](https://uib.kattis.com/courses/INF237/spring22)
 
 ## Temaer
-* 01 	Introduction
-* 02 	Graphs 1
-* 03 	Sliding, searching and sorting
+* 01 	[Introduction](#introduction)
+* 02 	[Graphs 1](#graphs-1)
+* 03 	[Sliding, searching and sorting](#sliding-searching-and-sorting)
 * 04 	Dynamic programming 1
 * 05 	Graphs 2
 * 06 	Segment trees
@@ -32,7 +32,7 @@ Source code of my INF237 homework
 
 ## Sliding, searching, and sorting 
 * [x] Tired Terry
-* [ ] Firefly
+* [x] Firefly
 * [ ] Kayaking Trip
 * [ ] Film Critics
 
@@ -97,3 +97,15 @@ Solution:
 
 - The pythonic way of fancy slicing does not get accepted due to horrible runtime
 - This solution counts number of Z in first window and then just removes the first and adds the next letter to the z-counter
+
+#### Firefly
+There is cave with alternating stalagtites and stalagmites all having a length
+There is a firefly flying horizontally at a chosen level, destroying all obsticles
+
+Find out what is the minimum number of obsticles to destroy and how many of these levels with that number exist
+
+Solution:
+- Initialise two lists upper and lower (stalagtites and stalagmites) counting their length appearences
+- Now add them together backwards (`[i-1] += [i]`) to make a cumulative list
+- Reverse one of the lists and add them together
+- Find the minimum value and how often it appears
