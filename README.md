@@ -30,6 +30,12 @@ Source code of my INF237 homework
 * [x] Hoppers
 * [ ] OneWayRoads
 
+## Sliding, searching, and sorting 
+* [x] Tired Terry
+* [ ] Firefly
+* [ ] Kayaking Trip
+* [ ] Film Critics
+
 ## Ideas
 ### Introduction
 #### TwoSums
@@ -79,3 +85,15 @@ Solution:
 - Odd cycle detection via bipartite graph detection, looping through the graph given all nodes colours
 	
 - In the end, return n or n-1 depending on the odd-cycle thing
+
+### Sliding, searching, and sorting 
+
+#### Tired Terry
+Terry has a sleep pattern of size n (repeating) consisting of seconds of sleep (Z) or awakeness (W). Given a period of seconds p, how many seconds i are there for which intervals [i-p+1, i] he was sleeping for less than d seconds?
+	
+Solution:
+- Append the list of letters by the length of p-1 and make a sliding window of size p over it
+- Then count the appearences, compare it to d and count how often its less than d
+
+- The pythonic way of fancy slicing does not get accepted due to horrible runtime
+- This solution counts number of Z in first window and then just removes the first and adds the next letter to the z-counter
