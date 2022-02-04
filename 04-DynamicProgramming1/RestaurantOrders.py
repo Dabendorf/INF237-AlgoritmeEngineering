@@ -10,9 +10,21 @@ def main():
 	num_of_orders = int(sys.stdin.readline())
 	order_costs = [int(i) for i in sys.stdin.readline().strip().split(" ")]
 
-	for i in order_costs:
-		print(knapsack(weight=i, item_costs=item_costs))
-		
+	max_weight = max(order_costs)
+	
+	ambiguities, paths, M = knapsack(weight=max_weight, item_costs=item_costs)
+	#print(ambiguities)
+
+	# Output
+	for weight in order_costs:
+		if M[weight] != weight:
+			print("Impossible")
+		else:
+			if weight in ambiguities:
+				print("Ambiguous")
+			else:
+				print(" ".join(str(x) for x in paths[weight][0]))
+
 
 def knapsack(weight: int, item_costs: list):
 	""" Subroutine calculating one knapsack """
@@ -22,10 +34,10 @@ def knapsack(weight: int, item_costs: list):
 	M = [0]*(weight+1)
 	M[0] = 0
 
-	#print(f"Knapsack with weight {weight}")
-
 	paths = defaultdict(lambda: list())
 	paths[0] = [[]]
+
+	ambiguities = []
 
 	# Knapsack algoritm with weight = value (subsetsum?)
 	for w in range(weight+1):
@@ -35,27 +47,34 @@ def knapsack(weight: int, item_costs: list):
 				pick_item_sum = M[w-item_costs[i]] + item_costs[i]
 				if M[w] <= pick_item_sum:
 					M[w] = pick_item_sum
-					for gedoens in paths[w-item_costs[i]]:
-						paths[w].append(gedoens + [i+1])
+					if (w-item_costs[i]) in ambiguities:
+						ambiguities.append(w)
+					else:
+						for gedoens in paths[w-item_costs[i]]:
+							ind = bs(gedoens, 0, len(gedoens)-1, i+1)
+							new_el = gedoens[:ind] + [i+1] + gedoens[ind:]
 
-				# M[w] = max(M[w], M[w-item_costs[i]] + item_costs[i])
+							len_old_list = len(paths[w])
+							if new_el not in paths[w]:
+								paths[w].append(new_el)
+								if len_old_list > 0:
+									ambiguities.append(w)
 
-	# Output
-	if M[weight] != weight:
-		return "Impossible"
-	else:
-		a = sorted(paths[w][0])
-		amb = False
-		for l in range(1, len(paths[w])):
-			n = sorted(paths[w][l])
-			if a != n:
-				amb = True
-				break
-		
-		if amb:
-			return "Ambiguous"
+	return ambiguities, paths, M
+
+def bs(el_list, l, h, x):
+	if h >= l:
+		m = (h+l)//2
+ 		
+		if el_list[m] == x:
+			return m
+		elif el_list[m] > x:
+			return bs(el_list, l, m - 1, x)
 		else:
-			return " ".join(str(x) for x in a)
+			return bs(el_list, m + 1, h, x)
+ 
+	else:
+		return l
 
 if __name__ == "__main__":
 	main()
