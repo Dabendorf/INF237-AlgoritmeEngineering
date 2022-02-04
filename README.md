@@ -1,12 +1,13 @@
 # INF237-AlgoritmeEngineering 
 Source code of my INF237 homework
+
 [Link to Kattis tasks](https://uib.kattis.com/courses/INF237/spring22)
 
 ## Temaer
 * 01 	[Introduction](#introduction)
 * 02 	[Graphs 1](#graphs-1)
 * 03 	[Sliding, searching and sorting](#sliding-searching-and-sorting)
-* 04 	Dynamic programming 1
+* 04 	[Dynamic programming 1](#dynamic-programming-1)
 * 05 	Graphs 2
 * 06 	Segment trees
 * 07 	Geometry 1
@@ -35,6 +36,12 @@ Source code of my INF237 homework
 * [x] Firefly
 * [ ] Kayaking Trip
 * [ ] Film Critics
+
+## Dynamic Programming 1
+* [ ] Plane Ticket Pricing
+* [ ] Spiderman's Workout
+* [x] Restaurant Orders
+* [ ] Bridge Automation
 
 ## Ideas
 ### Introduction
@@ -109,3 +116,18 @@ Solution:
 - Now add them together backwards (`[i-1] += [i]`) to make a cumulative list
 - Reverse one of the lists and add them together
 - Find the minimum value and how often it appears
+
+
+### Dynamic Programming 1
+
+#### Restaurant Orders
+There are given a list of prices of dishes at a restaurant and a list of bill-sums. The task is to find out if it is possible to combine food to come up with that sum. If that is possible, output which elements are ordered or that this is ambiguous
+
+Solution:
+- The solution is knapsack style with weights=values.
+- I create one big dynamic programming array with list size of the biggest bill
+- Also, there is a data structure saving paths to each node.
+- If there are multiple ways, the bill is ambiguous
+- I ran into TimeLimit and MemoryLimit error, so there are a lot of weird tricks and data structure alterations to avoid that
+- Inserting elements into the sorted path lists (sorted to compare them) happens by binary search
+	

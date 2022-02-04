@@ -3,6 +3,18 @@
 import sys
 from collections import defaultdict
 
+""" There are given a list of prices of dishes at a restaurant and a list of bill-sums.
+	The task is to find out if it is possible to combine food to come up with that sum.
+	If that is possible, output which elements are ordered or that this is ambiguous
+
+	Solution:
+	- The solution is knapsack style with weights=values.
+	- I create one big dynamic programming array with list size of the biggest bill
+	- Also, there is a data structure saving paths to each node.
+	- If there are multiple ways, the bill is ambiguous
+	- I ran into TimeLimit and MemoryLimit error, so there are a lot of weird tricks and data structure alterations to avoid that
+	- Inserting elements into the sorted path lists (sorted to compare them) happens by binary search
+	"""
 def main():
 	sys.stdin.readline()
 	item_costs = [int(i) for i in sys.stdin.readline().strip().split(" ")]
@@ -24,12 +36,12 @@ def main():
 				for x in paths[weight]:
 					print(x, end=" ")
 				print("")
-				#print(" ".join(str(x) for x in paths[weight]))
 
 
 def knapsack(weight: int, item_costs: list, to_search: list):
 	""" Subroutine calculating one knapsack """
 	num_of_items = len(item_costs)
+	num_max_element = max(item_costs)
 
 	# Initialise memory
 	M = [0]*(weight+1)
@@ -58,12 +70,17 @@ def knapsack(weight: int, item_costs: list, to_search: list):
 							ind = bs(gedoens, 0, len(gedoens)-1, i+1)
 							new_el = gedoens[:ind] + [i+1] + gedoens[ind:]
 
-							len_old_list = len(paths[w])
 							if new_el not in paths[w]:
-								if len_old_list > 0:
+								if len(paths[w]) > 0:
 									ambiguities.add(w)
 								else:
 									paths[w].append(new_el)
+
+				if ic == num_max_element:
+					if (w-ic) not in to_search:
+						paths[w-ic] = []
+					
+
 	for k, v in paths.items():
 		if len(v)>0:
 			paths[k] = v[0]
