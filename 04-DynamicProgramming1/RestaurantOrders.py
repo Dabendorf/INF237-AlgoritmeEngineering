@@ -37,7 +37,7 @@ def knapsack(weight: int, item_costs: list):
 	paths = defaultdict(lambda: list())
 	paths[0] = [[]]
 
-	ambiguities = []
+	ambiguities = set()
 
 	# Knapsack algoritm with weight = value (subsetsum?)
 	for w in range(weight+1):
@@ -48,9 +48,10 @@ def knapsack(weight: int, item_costs: list):
 				if M[w] <= pick_item_sum:
 					M[w] = pick_item_sum
 					if (w-item_costs[i]) in ambiguities:
-						ambiguities.append(w)
+						ambiguities.add(w)
 					else:
-						for gedoens in paths[w-item_costs[i]]:
+						if len(paths[w-item_costs[i]]) > 0:
+							gedoens = paths[w-item_costs[i]][0]
 							ind = bs(gedoens, 0, len(gedoens)-1, i+1)
 							new_el = gedoens[:ind] + [i+1] + gedoens[ind:]
 
@@ -58,21 +59,19 @@ def knapsack(weight: int, item_costs: list):
 							if new_el not in paths[w]:
 								paths[w].append(new_el)
 								if len_old_list > 0:
-									ambiguities.append(w)
+									ambiguities.add(w)
 
 	return ambiguities, paths, M
 
 def bs(el_list, l, h, x):
 	if h >= l:
 		m = (h+l)//2
- 		
 		if el_list[m] == x:
 			return m
 		elif el_list[m] > x:
-			return bs(el_list, l, m - 1, x)
+			return bs(el_list, l, m-1, x)
 		else:
-			return bs(el_list, m + 1, h, x)
- 
+			return bs(el_list, m+1, h, x)
 	else:
 		return l
 
