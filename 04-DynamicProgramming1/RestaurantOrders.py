@@ -1,13 +1,12 @@
 # https://open.kattis.com/problems/orders
 
 import sys
-from typing import Tuple
 from collections import defaultdict
 
 def main():
-	num_of_items = int(sys.stdin.readline())
+	sys.stdin.readline()
 	item_costs = [int(i) for i in sys.stdin.readline().strip().split(" ")]
-	num_of_orders = int(sys.stdin.readline())
+	sys.stdin.readline()
 	order_costs = [int(i) for i in sys.stdin.readline().strip().split(" ")]
 
 	max_weight = max(order_costs)
