@@ -11,21 +11,23 @@ def main():
 
 	max_weight = max(order_costs)
 	
-	ambiguities, paths, M = knapsack(weight=max_weight, item_costs=item_costs)
-	#print(ambiguities)
+	ambiguities, paths, M = knapsack(weight=max_weight, item_costs=item_costs, to_search=order_costs)
 
 	# Output
-	for weight in order_costs:
-		if M[weight] != weight:
+	for idx, weight in enumerate(order_costs):
+		if M[idx] != weight:
 			print("Impossible")
 		else:
 			if weight in ambiguities:
 				print("Ambiguous")
 			else:
-				print(" ".join(str(x) for x in paths[weight][0]))
+				for x in paths[weight]:
+					print(x, end=" ")
+				print("")
+				#print(" ".join(str(x) for x in paths[weight]))
 
 
-def knapsack(weight: int, item_costs: list):
+def knapsack(weight: int, item_costs: list, to_search: list):
 	""" Subroutine calculating one knapsack """
 	num_of_items = len(item_costs)
 
@@ -41,16 +43,18 @@ def knapsack(weight: int, item_costs: list):
 	# Knapsack algoritm with weight = value (subsetsum?)
 	for w in range(weight+1):
 		for i in range(num_of_items):
-			if item_costs[i] <= w:
+			ic = item_costs[i]
+			if ic <= w:
 				# Subproblem formula
-				pick_item_sum = M[w-item_costs[i]] + item_costs[i]
+				pick_item_sum = M[w-ic] + ic
 				if M[w] <= pick_item_sum:
 					M[w] = pick_item_sum
-					if (w-item_costs[i]) in ambiguities:
+					if (w-ic) in ambiguities:
 						ambiguities.add(w)
+						paths[w] = []
 					else:
-						if len(paths[w-item_costs[i]]) > 0:
-							gedoens = paths[w-item_costs[i]][0]
+						if len(paths[w-ic]) > 0:
+							gedoens = paths[w-ic][0]
 							ind = bs(gedoens, 0, len(gedoens)-1, i+1)
 							new_el = gedoens[:ind] + [i+1] + gedoens[ind:]
 
@@ -59,20 +63,30 @@ def knapsack(weight: int, item_costs: list):
 								paths[w].append(new_el)
 								if len_old_list > 0:
 									ambiguities.add(w)
+	for k, v in paths.items():
+		if len(v)>0:
+			paths[k] = v[0]
+	
+	results = []
+	for ind, el in enumerate(to_search):
+		results.append(M[el])
 
-	return ambiguities, paths, M
+	to_search = None
+	M = None
 
-def bs(el_list, l, h, x):
-	if h >= l:
-		m = (h+l)//2
-		if el_list[m] == x:
-			return m
-		elif el_list[m] > x:
-			return bs(el_list, l, m-1, x)
+	return ambiguities, paths, results
+
+def bs(el_list, l, r, x):
+	while l <= r:
+		mid = l+(r-l)//2
+
+		if el_list[mid] == x:
+			return mid
+		elif el_list[mid] < x:
+			l = mid + 1
 		else:
-			return bs(el_list, m+1, h, x)
-	else:
-		return l
+			r = mid - 1
+	return l # returns position where it would be inserted
 
 if __name__ == "__main__":
 	main()
