@@ -60,9 +60,10 @@ def knapsack(weight: int, item_costs: list, to_search: list):
 
 							len_old_list = len(paths[w])
 							if new_el not in paths[w]:
-								paths[w].append(new_el)
 								if len_old_list > 0:
 									ambiguities.add(w)
+								else:
+									paths[w].append(new_el)
 	for k, v in paths.items():
 		if len(v)>0:
 			paths[k] = v[0]
