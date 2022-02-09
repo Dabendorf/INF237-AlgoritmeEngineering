@@ -1,8 +1,6 @@
 # https://uib.kattis.com/problems/spiderman
 
 import sys
-from typing import Tuple
-from collections import defaultdict
 
 """ There is a list of numbers which represent movements either up or down.
 	Spiderman starts at level 0 and he does the moves in order, always going up or down.
@@ -74,17 +72,23 @@ def main():
 					if up < height:
 						#print(f"{i-1} {up}")
 						if dp[up][i-1] != None:
-							if down > -1 and dp[down][i-1] != None:
-								# both possible
-								#print(f"{i-1} {up}, {i-1} {down}")
-								if dp[up][i-1] < dp[down][i-1]:
+							if down > -1:
+								if dp[down][i-1] != None:
+									# both possible
+									#print(f"{i-1} {up}, {i-1} {down}")
+									if dp[up][i-1] < dp[down][i-1]:
+										overall_str += "U"
+										curr_height = up
+										#print("move up")
+									else:
+										overall_str += "D"
+										curr_height = down
+										#print("move down")
+								else:
+									# only up possible
 									overall_str += "U"
 									curr_height = up
 									#print("move up")
-								else:
-									overall_str += "D"
-									curr_height = down
-									#print("move down")
 							else:
 								# only up possible
 								overall_str += "U"
