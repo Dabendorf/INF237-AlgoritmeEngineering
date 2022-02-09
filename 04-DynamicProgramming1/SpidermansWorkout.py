@@ -29,13 +29,16 @@ def main():
 			dp[h][0] = 0
 
 		#print(moves)
+		#print(height)
 		start_points = {0}
 		for move_ind, move in enumerate(moves):
+			#print(start_points)
+			new_start_points = set()
 			for el in start_points:
-				new_start_points = set()
 				old_val = dp[el][move_ind]
 				if el+move < height:
 					to_go_to = el+move
+					#print(to_go_to)
 					new_val = max(old_val, to_go_to)
 					if dp[to_go_to][move_ind+1] == None:
 						dp[to_go_to][move_ind+1] = new_val
@@ -44,6 +47,7 @@ def main():
 					new_start_points.add(to_go_to)
 				if el-move > -1:
 					to_go_to = el-move
+					#print(to_go_to)
 					new_val = max(old_val, to_go_to)
 					if dp[to_go_to][move_ind+1] == None:
 						dp[to_go_to][move_ind+1] = new_val
@@ -54,6 +58,7 @@ def main():
 		
 		if dp[0][number_of_moves] == None:
 			print("IMPOSSIBLE")
+			#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 		else:
 			#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 			curr_height = 0
@@ -62,8 +67,8 @@ def main():
 				#print(f"New iteration on move {i}")
 				up = curr_height + moves[i-1]
 				down = curr_height - moves[i-1]
-				#print(f"{i-1} {up}")
-				#print(f"{i-1} {down}")
+				#print(f"{up} {i-1}")
+				#print(f"{down} {i-1}")
 
 				if up < height:
 					#print(f"{i-1} {up}")
