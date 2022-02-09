@@ -26,67 +26,69 @@ def main():
 		dp = [[None for _ in range(number_of_moves+1)] for _ in range(height)]
 		
 		for h in range(height):
-			dp[h][0] = (0, None)
+			dp[h][0] = 0
 
 		print(moves)
 		start_points = {0}
 		for move_ind, move in enumerate(moves):
 			for el in start_points:
 				new_start_points = set()
-				old_val = dp[el][move_ind][0]
+				old_val = dp[el][move_ind]
 				if el+move < height:
 					to_go_to = el+move
 					new_val = max(old_val, to_go_to)
 					if dp[to_go_to][move_ind+1] == None:
-						dp[to_go_to][move_ind+1] = (new_val, None)
+						dp[to_go_to][move_ind+1] = new_val
 					else:
-						dp[to_go_to][move_ind+1] = (min(dp[to_go_to][move_ind+1][0], new_val), None)
+						dp[to_go_to][move_ind+1] = min(dp[to_go_to][move_ind+1], new_val)
 					new_start_points.add(to_go_to)
 				if el-move > -1:
 					to_go_to = el-move
 					new_val = max(old_val, to_go_to)
 					if dp[to_go_to][move_ind+1] == None:
-						dp[to_go_to][move_ind+1] = (new_val, None)
+						dp[to_go_to][move_ind+1] = new_val
 					else:
-						dp[to_go_to][move_ind+1] = (min(dp[to_go_to][move_ind+1][0], new_val), None)
+						dp[to_go_to][move_ind+1] = min(dp[to_go_to][move_ind+1], new_val)
 					new_start_points.add(to_go_to)
 			start_points = new_start_points
 		
-		print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 		if dp[0][number_of_moves] == None:
 			print("IMPOSSIBLE")
 		else:
+			#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 			curr_height = 0
 			overall_str = ""
 			for i in range(number_of_moves, 0, -1):
-				up = curr_height + moves[i]
-				down = curr_height - moves[i]
-				"""if up < height:
-					dp[i-1][up]
-				if down > -1:
-					dp[i-1][down]"""
-				if up < height:
-					if down > -1:
+				#print(f"New iteration on move {i}")
+				up = curr_height + moves[i-1]
+				down = curr_height - moves[i-1]
+				#print(f"{i-1} {up}")
+				#print(f"{i-1} {down}")
+
+				if up < height and dp[i-1][up] != None:
+					if down > -1 and dp[i-1][down] != None:
 						# both possible
+						#print(f"{i-1} {up}, {i-1} {down}")
 						if dp[i-1][up] < dp[i-1][down]:
 							overall_str += "U"
 							curr_height = up
+							#print("move up")
 						else:
 							overall_str += "D"
 							curr_height = down
+							#print("move down")
 					else:
+						# only up possible
 						overall_str += "U"
 						curr_height = up
-						# only up possible
+						#print("move up")
 				else:
+					# only down possible
 					overall_str += "D"
 					curr_height = down
-					# only down possible
-				
-				#dp[i][curr_height]
+					#print("move down")
 
-				# if el+move < height:
-				# if el-move > -1:
+			print(overall_str)
 
 
 if __name__ == "__main__":
