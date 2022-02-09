@@ -17,6 +17,7 @@ def main():
 		#print("==========")
 		number_of_moves = int(sys.stdin.readline().strip())
 		moves_str = sys.stdin.readline().strip().split(" ")
+		#print(moves_str)
 		if number_of_moves > 0:
 			moves = [int(i) for i in moves_str]
 			sum_moves = sum(moves)
@@ -107,6 +108,7 @@ def main():
 						#print("move down")
 
 				print(overall_str)
+	exit(0)
 
 
 if __name__ == "__main__":
