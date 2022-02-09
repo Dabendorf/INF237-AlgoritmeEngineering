@@ -8,17 +8,21 @@ import sys
 	If it is possible, find the order of moves of the solution with lowest maximum height.
 
 	Solution:
-	-
+	- For every testcase there is a dynamic programming table of size (number_of_moves) x (max_possible_height)
+	- The first column is zero and it loops through every move (column), creating new entries for every possible new height
+	- The stored value is the maximum observed height on that path
+	- When two paths merge into one node, we take the lowest maximum
+	- The solution is impossible if it did not arrive back at zero height
+	- If it is possible, loop backwards through the table, always taking the lowest maximum
+	and appending "U" or "D" to the final string depending on the direction chosen
 	"""
 def main():
 	num_of_cases = int(sys.stdin.readline())
 
 	for case in range(num_of_cases*2):
-		#print("==========")
 		try:
 			number_of_moves = int(sys.stdin.readline().strip())
 			moves_str = sys.stdin.readline().strip().split(" ")
-			#print(moves_str)
 			if number_of_moves > 0:
 				moves = [int(i) for i in moves_str]
 				sum_moves = sum(moves)
@@ -29,17 +33,13 @@ def main():
 				for h in range(height):
 					dp[h][0] = 0
 
-				#print(moves)
-				#print(height)
 				start_points = {0}
 				for move_ind, move in enumerate(moves):
-					#print(start_points)
 					new_start_points = set()
 					for el in start_points:
 						old_val = dp[el][move_ind]
 						if el+move < height:
 							to_go_to = el+move
-							#print(to_go_to)
 							new_val = max(old_val, to_go_to)
 							if dp[to_go_to][move_ind+1] == None:
 								dp[to_go_to][move_ind+1] = new_val
@@ -48,7 +48,6 @@ def main():
 							new_start_points.add(to_go_to)
 						if el-move > -1:
 							to_go_to = el-move
-							#print(to_go_to)
 							new_val = max(old_val, to_go_to)
 							if dp[to_go_to][move_ind+1] == None:
 								dp[to_go_to][move_ind+1] = new_val
@@ -59,60 +58,42 @@ def main():
 				
 				if dp[0][number_of_moves] == None:
 					print("IMPOSSIBLE")
-					#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 				else:
 					#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 					curr_height = 0
 					overall_str = ""
 					for i in range(number_of_moves, 0, -1):
-						#print(f"New iteration on move {i}")
 						up = curr_height + moves[i-1]
 						down = curr_height - moves[i-1]
-						#print(f"{up} {i-1}")
-						#print(f"{down} {i-1}")
 
 						if up < height:
-							#print(f"{i-1} {up}")
 							if dp[up][i-1] != None:
 								if down > -1:
 									if dp[down][i-1] != None:
 										# both possible
-										#print(f"{i-1} {up}, {i-1} {down}")
 										if dp[up][i-1] < dp[down][i-1]:
-											#print(f"Up: {up}")
 											overall_str += "D"
 											curr_height = up
-											#print("move up")
 										else:
-											#print(f"Down: {down}")
 											overall_str += "U"
 											curr_height = down
-											#print("move down")
 									else:
 										# only up possible
-										#print(f"Up: {up}")
 										overall_str += "D"
 										curr_height = up
-										#print("move up")
 								else:
 									# only up possible
-									#print(f"Up: {up}")
 									overall_str += "D"
 									curr_height = up
-									#print("move up")
 							else:
 								# only down possible
-								#print(f"Down: {down}")
 								overall_str += "U"
 								curr_height = down
-								#print("move down")
 
 						else:
 							# only down possible
-							#print(f"Down: {down}")
 							overall_str += "U"
 							curr_height = down
-							#print("move down")
 
 					print(overall_str[::-1])
 		except ValueError:

@@ -38,8 +38,8 @@ Source code of my INF237 homework
 * [ ] Film Critics
 
 ## Dynamic Programming 1
+* [x] Spiderman's Workout
 * [ ] Plane Ticket Pricing
-* [ ] Spiderman's Workout
 * [x] Restaurant Orders
 * [ ] Bridge Automation
 
@@ -131,3 +131,13 @@ Solution:
 - I ran into TimeLimit and MemoryLimit error, so there are a lot of weird tricks and data structure alterations to avoid that
 - Inserting elements into the sorted path lists (sorted to compare them) happens by binary search
 	
+#### Spiderman' workout
+There is a list of numbers which represent movements either up or down. Spiderman starts at level 0 and he does the moves in order, always going up or down. Find out if its possible to end the workout of movements at zero again, without getting below zero. If it is possible, find the order of moves of the solution with lowest maximum height.
+
+Solution:
+- For every testcase there is a dynamic programming table of size (number_of_moves) x (max_possible_height)
+- The first column is zero and it loops through every move (column), creating new entries for every possible new height
+- The stored value is the maximum observed height on that path
+- When two paths merge into one node, we take the lowest maximum
+- The solution is impossible if it did not arrive back at zero height
+- If it is possible, loop backwards through the table, always taking the lowest maximum and appending "U" or "D" to the final string depending on the direction chosen
