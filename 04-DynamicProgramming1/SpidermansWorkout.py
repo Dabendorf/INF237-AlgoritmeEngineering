@@ -16,7 +16,7 @@ def main():
 	num_of_cases = int(sys.stdin.readline())
 
 	for case in range(num_of_cases*2):
-		print("==========")
+		#print("==========")
 		number_of_moves = int(sys.stdin.readline().strip())
 		moves_str = sys.stdin.readline().strip().split(" ")
 		moves = [int(i) for i in moves_str]
@@ -28,7 +28,7 @@ def main():
 		for h in range(height):
 			dp[h][0] = 0
 
-		print(moves)
+		#print(moves)
 		start_points = {0}
 		for move_ind, move in enumerate(moves):
 			for el in start_points:
@@ -65,23 +65,31 @@ def main():
 				#print(f"{i-1} {up}")
 				#print(f"{i-1} {down}")
 
-				if up < height and dp[i-1][up] != None:
-					if down > -1 and dp[i-1][down] != None:
-						# both possible
-						#print(f"{i-1} {up}, {i-1} {down}")
-						if dp[i-1][up] < dp[i-1][down]:
+				if up < height:
+					#print(f"{i-1} {up}")
+					if dp[up][i-1] != None:
+						if down > -1 and dp[down][i-1] != None:
+							# both possible
+							#print(f"{i-1} {up}, {i-1} {down}")
+							if dp[up][i-1] < dp[down][i-1]:
+								overall_str += "U"
+								curr_height = up
+								#print("move up")
+							else:
+								overall_str += "D"
+								curr_height = down
+								#print("move down")
+						else:
+							# only up possible
 							overall_str += "U"
 							curr_height = up
 							#print("move up")
-						else:
-							overall_str += "D"
-							curr_height = down
-							#print("move down")
 					else:
-						# only up possible
-						overall_str += "U"
-						curr_height = up
-						#print("move up")
+						# only down possible
+						overall_str += "D"
+						curr_height = down
+						#print("move down")
+
 				else:
 					# only down possible
 					overall_str += "D"
