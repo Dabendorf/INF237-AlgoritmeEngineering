@@ -28,7 +28,7 @@ def main():
 			for h in range(height):
 				dp[h][0] = 0
 
-			#print(moves)
+			print(moves)
 			#print(height)
 			start_points = {0}
 			for move_ind, move in enumerate(moves):
@@ -58,9 +58,9 @@ def main():
 			
 			if dp[0][number_of_moves] == None:
 				print("IMPOSSIBLE")
-				#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
+				print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 			else:
-				#print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
+				print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in dp]))
 				curr_height = 0
 				overall_str = ""
 				for i in range(number_of_moves, 0, -1):
@@ -78,36 +78,42 @@ def main():
 									# both possible
 									#print(f"{i-1} {up}, {i-1} {down}")
 									if dp[up][i-1] < dp[down][i-1]:
-										overall_str += "U"
+										print(f"Up: {up}")
+										overall_str += "D"
 										curr_height = up
 										#print("move up")
 									else:
-										overall_str += "D"
+										print(f"Down: {down}")
+										overall_str += "U"
 										curr_height = down
 										#print("move down")
 								else:
 									# only up possible
-									overall_str += "U"
+									print(f"Up: {up}")
+									overall_str += "D"
 									curr_height = up
 									#print("move up")
 							else:
 								# only up possible
-								overall_str += "U"
+								print(f"Up: {up}")
+								overall_str += "D"
 								curr_height = up
 								#print("move up")
 						else:
 							# only down possible
-							overall_str += "D"
+							print(f"Down: {down}")
+							overall_str += "U"
 							curr_height = down
 							#print("move down")
 
 					else:
 						# only down possible
-						overall_str += "D"
+						print(f"Down: {down}")
+						overall_str += "U"
 						curr_height = down
 						#print("move down")
 
-				print(overall_str)
+				print(overall_str[::-1])
 	exit(0)
 
 
