@@ -30,60 +30,52 @@ def main():
 	print(dijkstra(adj_list, s, t))
 
 def dijkstra(adj_list, start, end):
+	# Priority Queue
 	q = []
 	num_of_nodes = len(adj_list.items())
-	print("num of nodes: "+str(num_of_nodes))
 	
+	# Distances
 	dist = dict()
-	#pre = dict()
 
+	# Initially infinite distances
 	for i in range(num_of_nodes):
 		dist[i] = float('inf')
 
+	# Fill priority queue
 	for i in adj_list[start]:
 		q.append((i[1], i[0]))
-		#q.put((G[s][i]["weight"],i))
 
 
 	dist[start] = 0
-	#q.put((0, s))
 	q.append((0, start))
 	heapq.heapify(q)
 
-	visited = []
-	print(f"Initial neighbours: {q}")
+	# Already visited nodes
+	visited = [False] * num_of_nodes
+
+	# While priority queue nodes
 	while q:
 		u = heapq.heappop(q)
 
-		if u[1] not in visited:
-			print("========")
-			print("Next node: "+str(u[1]))
+		if not visited[u[1]]:
 			for v in adj_list[u[1]]:
-			#for v in G.neighbors(u):
-				if v[0] not in visited:
-					print("Neighbour: "+str(v[0]))
+				if not visited[v[0]]:
+					# Calculate alternative distance
 					alt = dist[u[1]] + v[1]
-					print(f"alt {alt}")
-					#alt = dist[u] + G[u][v]['weight']
-					print("Alternative distance: "+str(alt))
-					print(v)
-					print("Old distance: "+str(dist[v[0]]))
+
+					# If its smaller than original distance, replace it
 					if alt < dist[v[0]]:
 						dist[v[0]] = alt
-						#q.put((alt, v))
-						print(f"klingeer {v}")
 						heapq.heappush(q, (v[1], v[0]))
-						#pre[v] = u
 
-			print("Distances: ")
-			print(dist)
-
-			visited.append(u[1])
+			visited[u[1]] = True
 
 	print("Visited:")
 	print(visited)
 	print("Distances: ")
 	print(dist)
+
+	return dist[end]
 
 if __name__ == "__main__":
 	main()
