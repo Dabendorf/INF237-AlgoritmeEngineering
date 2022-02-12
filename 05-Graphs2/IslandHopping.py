@@ -12,7 +12,6 @@ def main():
 		num_of_islands = int(sys.stdin.readline())
 
 		endpoints = list()
-		adj_list = defaultdict(lambda: [])
 		weight_list = dict()
 
 		for idx_a in range(num_of_islands):
@@ -20,29 +19,33 @@ def main():
 
 			for idx_b, b in enumerate(endpoints):
 				dist = math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-				adj_list[idx_a].append(idx_b)
-				adj_list[idx_b].append(idx_a)
 				weight_list[(idx_a, idx_b)] = dist
 				weight_list[(idx_b, idx_a)] = dist
 
 			endpoints.append(a)
 
 		pq = PriorityQueue()
-		visited = defaultdict(lambda: False)
+		visited = [False] * num_of_islands
 		visited[0] = True
-		for neighbour in adj_list[0]:
+		not_visited_set = set()
+		for neighbour in range(1, num_of_islands):
 			pq.put((weight_list[0, neighbour], neighbour))
+			not_visited_set.add(neighbour)
 
 		edge_sum = 0
 		while not pq.empty():
 			next_smallest_node = pq.get()
+			d = next_smallest_node[0]
+			node = next_smallest_node[1]
 
-			if not visited[next_smallest_node[1]]:
-				visited[next_smallest_node[1]] = True
-				edge_sum += next_smallest_node[0]
-				for neighbour in adj_list[next_smallest_node[1]]:
-					if not visited[neighbour]:
-						pq.put((weight_list[next_smallest_node[1],neighbour], neighbour))
+			if not visited[node]:
+				visited[node] = True
+				not_visited_set.remove(node)
+				edge_sum += d
+
+				for neighbour in not_visited_set:
+					#if not visited[neighbour]:
+					pq.put((weight_list[node,neighbour], neighbour))
 		
 		print(f"{edge_sum}")
 
