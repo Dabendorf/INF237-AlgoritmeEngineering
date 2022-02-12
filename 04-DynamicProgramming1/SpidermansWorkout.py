@@ -19,7 +19,7 @@ import sys
 def main():
 	num_of_cases = int(sys.stdin.readline())
 
-	for case in range(num_of_cases*2):
+	for case in range(num_of_cases):
 		try:
 			number_of_moves = int(sys.stdin.readline().strip())
 			moves_str = sys.stdin.readline().strip().split(" ")
