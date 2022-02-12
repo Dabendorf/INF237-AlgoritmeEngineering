@@ -4,6 +4,7 @@ import sys
 from collections import defaultdict
 from queue import PriorityQueue
 import math
+import heapq
 
 def main():
 	num_of_cases = int(sys.stdin.readline())
@@ -24,17 +25,21 @@ def main():
 
 			endpoints.append(a)
 
-		pq = PriorityQueue()
+		#pq = PriorityQueue()
+		pq = []
 		visited = [False] * num_of_islands
 		visited[0] = True
 		not_visited_set = set()
 		for neighbour in range(1, num_of_islands):
-			pq.put((weight_list[0, neighbour], neighbour))
+			#pq.put((weight_list[0, neighbour], neighbour))
+			heapq.heappush(pq, (weight_list[0, neighbour], neighbour))
 			not_visited_set.add(neighbour)
 
 		edge_sum = 0
-		while not pq.empty():
-			next_smallest_node = pq.get()
+		#while not pq.empty():
+		while pq:
+			#next_smallest_node = pq.get()
+			next_smallest_node = heapq.heappop(pq)
 			d = next_smallest_node[0]
 			node = next_smallest_node[1]
 
@@ -45,7 +50,8 @@ def main():
 
 				for neighbour in not_visited_set:
 					#if not visited[neighbour]:
-					pq.put((weight_list[node,neighbour], neighbour))
+					heapq.heappush(pq, (weight_list[node,neighbour], neighbour))
+					#pq.put((weight_list[node,neighbour], neighbour))
 		
 		print(f"{edge_sum}")
 
