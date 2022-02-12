@@ -25,20 +25,17 @@ def main():
 
 			endpoints.append(a)
 
-		#pq = PriorityQueue()
 		pq = []
 		visited = [False] * num_of_islands
 		visited[0] = True
 		not_visited_set = set()
 		for neighbour in range(1, num_of_islands):
-			#pq.put((weight_list[0, neighbour], neighbour))
-			heapq.heappush(pq, (weight_list[0, neighbour], neighbour))
+			pq.append((weight_list[0, neighbour], neighbour))
 			not_visited_set.add(neighbour)
+		heapq.heapify(pq)
 
 		edge_sum = 0
-		#while not pq.empty():
 		while pq:
-			#next_smallest_node = pq.get()
 			next_smallest_node = heapq.heappop(pq)
 			d = next_smallest_node[0]
 			node = next_smallest_node[1]
@@ -49,9 +46,9 @@ def main():
 				edge_sum += d
 
 				for neighbour in not_visited_set:
-					#if not visited[neighbour]:
-					heapq.heappush(pq, (weight_list[node,neighbour], neighbour))
-					#pq.put((weight_list[node,neighbour], neighbour))
+					pq.append((weight_list[node,neighbour], neighbour))
+					#heapq.heappush(pq, (weight_list[node,neighbour], neighbour))
+				heapq.heapify(pq)
 		
 		print(f"{edge_sum}")
 
