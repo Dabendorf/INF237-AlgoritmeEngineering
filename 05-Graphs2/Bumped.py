@@ -5,6 +5,14 @@ from typing import Tuple
 from collections import defaultdict
 import heapq
 
+""" There is a road network with costs (directed graphs) and a start and an end point
+	Moreover, there is a list of cities connected by a flight and one can use one of these flights
+	for free instead of using the rights. Calculate the minimum distance between start and end
+
+	Solution:
+	- This is a classic problem for the Dijkstra algorithm
+	- However, it must be altered to use the information about one free flight
+	"""
 def main():
 	n, m, f, s, t = [int(i) for i in sys.stdin.readline().strip().split(" ")]
 	print(n)

@@ -2,10 +2,17 @@
 
 import sys
 from collections import defaultdict
-from queue import PriorityQueue
 import math
 import heapq
 
+""" There are n islands existing on a map and each of them has a coordinate (x,y) where one can start to build a bridge.
+	All islands should become connected and one needs to search the overall minimum length of all bridges to build.
+
+	Solution:
+	- This is a minimum spannung tree problem
+	- First we calculate all distances of all pairs
+		and then use the algorithm of Prim to get the sum of bridge lengths
+	"""
 def main():
 	num_of_cases = int(sys.stdin.readline())
 
