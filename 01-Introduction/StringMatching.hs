@@ -17,3 +17,5 @@ getPositions currIndex [] toSearch foundPos = unwords (map show foundPos)
 getPositions currIndex overallStr toSearch foundPos
     | isPrefixOf toSearch overallStr = getPositions (currIndex+1) (tail overallStr) toSearch (foundPos ++ [currIndex])
     | otherwise = getPositions (currIndex+1) (tail overallStr) (toSearch) foundPos
+
+-- findIndex ('b' `elem`)
