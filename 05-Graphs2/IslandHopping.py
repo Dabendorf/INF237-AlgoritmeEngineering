@@ -12,19 +12,20 @@ def main():
 		num_of_islands = int(sys.stdin.readline())
 
 		endpoints = list()
-		for _ in range(num_of_islands):
-			endpoints.append([float(i) for i in sys.stdin.readline().strip().split(" ")])
-
 		adj_list = defaultdict(lambda: [])
 		weight_list = dict()
-		for idx_a, a in enumerate(endpoints):
+
+		for idx_a in range(num_of_islands):
+			a = [float(i) for i in sys.stdin.readline().strip().split(" ")]
+
 			for idx_b, b in enumerate(endpoints):
-				if idx_a < idx_b:
-					dist = math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-					adj_list[idx_a].append(idx_b)
-					adj_list[idx_b].append(idx_a)
-					weight_list[(idx_a, idx_b)] = dist
-					weight_list[(idx_b, idx_a)] = dist
+				dist = math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+				adj_list[idx_a].append(idx_b)
+				adj_list[idx_b].append(idx_a)
+				weight_list[(idx_a, idx_b)] = dist
+				weight_list[(idx_b, idx_a)] = dist
+
+			endpoints.append(a)
 
 		pq = PriorityQueue()
 		visited = defaultdict(lambda: False)
