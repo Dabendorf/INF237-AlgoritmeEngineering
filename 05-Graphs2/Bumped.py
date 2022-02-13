@@ -44,15 +44,15 @@ def dijkstra(adj_list, start, end):
 	num_of_nodes = len(adj_list.items())
 	
 	# Distances
-	dist = dict()
+	dist = [float("inf")] * num_of_nodes
 	# Distances with flights
-	dist_fl = dict()
+	dist_fl = [float("inf")] * num_of_nodes
 
 	# Initially infinite distances
-	for i in range(num_of_nodes):
+	"""for i in range(num_of_nodes):
 		dist[i] = float('inf')
 	for i in range(num_of_nodes):
-		dist_fl[i] = float('inf')
+		dist_fl[i] = float('inf')"""
 
 	# Fill priority queue
 	for i in adj_list[start]:
