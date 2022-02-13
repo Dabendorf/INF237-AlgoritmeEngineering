@@ -30,11 +30,11 @@ def main():
 	#flights = defaultdict(lambda: [])
 	for _ in range(f):
 		u, v = [int(i) for i in sys.stdin.readline().strip().split(" ")]
-		#adj_list[u].append((-v, 0))
+		adj_list[u].append((-v, 0))
 		#flights[u].append(v)
 		#flights[v].append(u)
 
-	print(adj_list)
+	print(f"Adj: {dict(adj_list)}")
 	#print(flights)
 	print(dijkstra(adj_list, s, t))
 
@@ -72,21 +72,50 @@ def dijkstra(adj_list, start, end):
 		
 		for v in adj_list[u[1]]:
 			if not visited[v[0]]:
-				# Calculate alternative distance
-				alt = dist[u[1]] + v[1]
+				if v[0] < 0:
+					is_flight = True
+					v[0] *= -1
+				else:
+					is_flight = False
+				
+				# There was a flight to the original place
+				if dist_fl[u[1]] < float("inf"):
+					if not is_flight:
+						alt = dist_fl[u[1]] + v[1]
+						if alt < dist_fl[v[0]]:
+							dist_fl[v[0]] = alt
+							heapq.heappush(q, (v[1], v[0]))
 
-				# If its smaller than original distance, replace it
-				if alt < dist[v[0]]:
-					dist[v[0]] = alt
-					heapq.heappush(q, (v[1], v[0]))
+				else:
+					# Calculate alternative distance
+					alt = dist[u[1]] + v[1]
+
+					# If its smaller than original distance, replace it
+					if is_flight:
+						# If its a flight
+						if alt < dist_fl[v[0]]:
+							dist_fl[v[0]] = alt
+							heapq.heappush(q, (v[1], v[0]))
+					else:
+						# If not a flight
+						if alt < dist[v[0]]:
+							dist[v[0]] = alt
+							heapq.heappush(q, (v[1], v[0]))
+
+				
+
+				#if dist_fl[v[0]] < float("inf"):
+				#	print("There is a flight to here available")
 
 
 	print("Visited:")
 	print(visited)
 	print("Distances: ")
 	print(dist)
+	print("Flight distances:")
+	print(dist_fl)
 
-	return dist[end]
+	return min(dist[end], dist_fl[end])
 
 if __name__ == "__main__":
 	main()
