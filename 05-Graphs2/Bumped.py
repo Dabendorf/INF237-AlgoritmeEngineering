@@ -15,11 +15,11 @@ import heapq
 	"""
 def main():
 	n, m, f, s, t = [int(i) for i in sys.stdin.readline().strip().split(" ")]
-	print(n)
+	"""print(n)
 	print(m)
 	print(f)
 	print(s)
-	print(t)
+	print(t)"""
 
 	adj_list = defaultdict(lambda: [])
 	for _ in range(m):
@@ -34,7 +34,7 @@ def main():
 		#flights[u].append(v)
 		#flights[v].append(u)
 
-	print(f"Adj: {dict(adj_list)}")
+	#print(f"Adj: {dict(adj_list)}")
 	#print(flights)
 	print(dijkstra(adj_list, s, t))
 
@@ -67,11 +67,11 @@ def dijkstra(adj_list, start, end):
 
 	# While priority queue nodes
 	while q:
-		print(q)
+		#print(q)
 		u = heapq.heappop(q)
 		visited[u[1]] = True
 		for v in adj_list[u[1]]:
-			print(f"{u[1]} to {v[0]}")
+			#print(f"{u[1]} to {v[0]}")
 			if not visited[abs(v[0])]:
 				if v[0] < 0:
 					is_flight = True
@@ -86,14 +86,14 @@ def dijkstra(adj_list, start, end):
 				# There was a flight to the original place
 				if dist_fl[u[1]] < float("inf"):
 					if not is_flight:
-						alt = dist_fl[u[1]] + v[1]
+						alt = dist_fl[u[1]] + node_dist
 						if alt < dist_fl[node_num]:
 							dist_fl[node_num] = alt
 							heapq.heappush(q, (alt, node_num))
 
 				else:
 					# Calculate alternative distance
-					alt = dist[u[1]] + v[1]
+					alt = dist[u[1]] + node_dist
 
 					# If its smaller than original distance, replace it
 					if is_flight:
@@ -108,12 +108,12 @@ def dijkstra(adj_list, start, end):
 							heapq.heappush(q, (alt, node_num))
 
 
-	print("Visited:")
+	"""print("Visited:")
 	print(visited)
 	print("Distances: ")
 	print(dist)
 	print("Flight distances:")
-	print(dist_fl)
+	print(dist_fl)"""
 
 	return min(dist[end], dist_fl[end])
 
