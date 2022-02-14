@@ -63,14 +63,6 @@ def dijkstra_remover(adj_list, start, end, num_of_cities):
 					pre[v[0]] = u[1]
 					heapq.heappush(q, (v[1], v[0]))
 
-
-	"""print("Visited:")
-	print(visited)
-	print("Distances: ")
-	print(dist)
-	print("Pre")
-	print(pre)"""
-
 	new_adj_list = defaultdict(lambda: [])
 
 	for k, v in adj_list.items():
@@ -86,7 +78,7 @@ def dijkstra_remover(adj_list, start, end, num_of_cities):
 def bfs(s, adj_list, num_of_cities, end):
 	""" Its a BFS. The way a BFS always has behaved"""
 	output_list = set()
-	visited = defaultdict(lambda: False)
+	visited = [False] * num_of_cities
 
 	# Queue starts with start node
 	queue = [s]
@@ -107,8 +99,7 @@ def bfs(s, adj_list, num_of_cities, end):
 				visitedFrom[i] = s
 				visited[i] = True
 
-	# Returns list of all visited nodes
-	#print(f"Klinger: {visitedFrom}")
+	# Return either the path or impossible
 
 	if not visited[1]:
 		return "impossible"
@@ -123,66 +114,6 @@ def bfs(s, adj_list, num_of_cities, end):
 			counter_len += 1
 			#print(output_str)
 		return str(counter_len)+ " "+output_str
-
-	#return output_list
-
-"""def dijkstra(adj_list, start, end, num_of_cities):
-	# Priority Queue
-	q = []
-	num_of_nodes = num_of_cities
-	
-	# Distances
-	dist = [float("inf")] * num_of_nodes
-	pre = [None] * num_of_nodes
-
-	# Fill priority queue
-	for i in adj_list[start]:
-		q.append((i[1], i[0]))
-
-	dist[start] = 0
-	q.append((0, start))
-	heapq.heapify(q)
-
-	# Already visited nodes
-	visited = [False] * num_of_nodes
-
-	# While priority queue nodes
-	while q:
-		u = heapq.heappop(q)
-		visited[u[1]] = True
-		
-		for v in adj_list[u[1]]:
-			if not visited[v[0]]:
-				# Calculate alternative distance
-				alt = dist[u[1]] + v[1]
-
-				# If its smaller than original distance, replace it
-				if alt < dist[v[0]]:
-					dist[v[0]] = alt
-					pre[u[1]] = v[0]
-					heapq.heappush(q, (v[1], v[0]))
-
-
-	#print("Visited:")
-	#print(visited)
-	print("Distances: ")
-	print(dist)
-	print("Pre")
-	print(pre)
-
-	if dist[end] == float("inf"):
-		return "impossible"
-	else:
-		counter_len = 1
-		curr = 0
-		output_str = "0"
-
-		while curr != 1:
-			curr = pre[curr]
-			output_str += " "+str(curr)
-			counter_len += 1
-
-		return str(counter_len)+ " "+output_str"""
 
 if __name__ == "__main__":
 	main()
