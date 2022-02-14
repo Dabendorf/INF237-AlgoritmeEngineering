@@ -8,7 +8,7 @@ Source code of my INF237 homework
 * 02 	[Graphs 1](#graphs-1)
 * 03 	[Sliding, searching and sorting](#sliding-searching-and-sorting)
 * 04 	[Dynamic programming 1](#dynamic-programming-1)
-* 05 	Graphs 2
+* 05 	[Graphs 2](#graphs-2)
 * 06 	Segment trees
 * 07 	Geometry 1
 * 08 	Exponential time algorithms
@@ -42,6 +42,12 @@ Source code of my INF237 homework
 * [ ] Plane Ticket Pricing
 * [x] Restaurant Orders
 * [ ] Bridge Automation
+
+## Graphs 2
+* [x] Island Hopping
+* [ ] Bumped
+* [ ] Detour
+* [ ] Artwork
 
 ## Ideas
 ### Introduction
@@ -141,3 +147,12 @@ Solution:
 - When two paths merge into one node, we take the lowest maximum
 - The solution is impossible if it did not arrive back at zero height
 - If it is possible, loop backwards through the table, always taking the lowest maximum and appending "U" or "D" to the final string depending on the direction chosen
+
+### Graphs 2
+#### Island Hopping
+There are n islands existing on a map and each of them has a coordinate (x,y) where one can start to build a bridge.
+All islands should become connected and one needs to search the overall minimum length of all bridges to build.
+
+Solution:
+- This is a minimum spannung tree problem
+- First we calculate all distances of all pairs and then use the algorithm of Prim to get the sum of bridge lengths

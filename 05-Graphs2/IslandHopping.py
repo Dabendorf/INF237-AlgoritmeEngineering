@@ -61,7 +61,13 @@ def main():
 					w = weight_list[node][neighbour]
 					if shortest[neighbour] > w:
 						pq.append((w, neighbour))
+						for id, scheissverein in enumerate(pq):
+							if scheissverein[1] == neighbour:
+								to_delete = id
+								break
+						del pq[to_delete]
 						shortest[neighbour] = w
+
 				heapq.heapify(pq)
 		
 		print(f"{edge_sum}")
