@@ -5,10 +5,14 @@ from typing import Tuple
 from collections import defaultdict
 import heapq
 
-""" Problem description
+""" We drift from node 0 to node 1. There are many intersections and for each of them,
+	there is an unique shortest path to 1.
+	We are not allowed to take any shortest direction at any intersection (node)
+	Print a path were this is possible or output impossible if there is no such path
 
 	Solution:
-	- 
+	- Dijkstra to find the shortest edges from each node
+	- Then removing those nodes, we run a BFS
 	"""
 def main():
 	n, m = [int(i) for i in sys.stdin.readline().strip().split(" ")]
@@ -78,11 +82,9 @@ def dijkstra_remover(adj_list, start, end, num_of_cities):
 def bfs(s, adj_list, num_of_cities, end):
 	""" Its a BFS. The way a BFS always has behaved"""
 	output_list = set()
-	visited = [False] * num_of_cities
 
 	# Queue starts with start node
 	queue = [s]
-	visited[s] = True
 	visitedFrom = [None] * num_of_cities
 
 	# While queue, go through them
@@ -94,14 +96,13 @@ def bfs(s, adj_list, num_of_cities, end):
 
 		# Mark neighbours as visited and add to queue
 		for i in adj_list[s]:
-			if visited[i] == False:
+			if visitedFrom[i] == None:
 				queue.append(i)
 				visitedFrom[i] = s
-				visited[i] = True
 
 	# Return either the path or impossible
 
-	if not visited[1]:
+	if visitedFrom[1] == None:
 		return "impossible"
 	else:
 		counter_len = 1
