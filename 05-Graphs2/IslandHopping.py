@@ -20,15 +20,15 @@ def main():
 		num_of_islands = int(sys.stdin.readline())
 
 		endpoints = list()
-		weight_list = dict()
+		weight_list = [[None]*num_of_islands for _ in range(num_of_islands)] 
 
 		for idx_a in range(num_of_islands):
 			a = [float(i) for i in sys.stdin.readline().strip().split(" ")]
 
 			for idx_b, b in enumerate(endpoints):
 				dist = math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-				weight_list[(idx_a, idx_b)] = dist
-				weight_list[(idx_b, idx_a)] = dist
+				weight_list[idx_a][idx_b] = dist
+				weight_list[idx_b][idx_a] = dist
 
 			endpoints.append(a)
 
@@ -36,10 +36,13 @@ def main():
 		visited = [False] * num_of_islands
 		visited[0] = True
 		not_visited_set = set()
+
 		for neighbour in range(1, num_of_islands):
-			pq.append((weight_list[0, neighbour], neighbour))
+			pq.append((weight_list[0][neighbour], neighbour))
 			not_visited_set.add(neighbour)
 		heapq.heapify(pq)
+
+		shortest = [float("inf")] * num_of_islands
 
 		edge_sum = 0
 		while pq:
@@ -53,8 +56,10 @@ def main():
 				edge_sum += d
 
 				for neighbour in not_visited_set:
-					pq.append((weight_list[node,neighbour], neighbour))
-					#heapq.heappush(pq, (weight_list[node,neighbour], neighbour))
+					w = weight_list[node][neighbour]
+					if shortest[neighbour] > w:
+						pq.append((w, neighbour))
+						shortest[neighbour] = w
 				heapq.heapify(pq)
 		
 		print(f"{edge_sum}")
