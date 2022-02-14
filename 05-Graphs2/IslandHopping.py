@@ -36,16 +36,18 @@ def main():
 		visited = [False] * num_of_islands
 		visited[0] = True
 		not_visited_set = set()
-
+		shortest = [float("inf")] * num_of_islands
+		
 		for neighbour in range(1, num_of_islands):
-			pq.append((weight_list[0][neighbour], neighbour))
+			w = weight_list[0][neighbour]
+			pq.append((w, neighbour))
+			shortest[neighbour] = w
 			not_visited_set.add(neighbour)
 		heapq.heapify(pq)
 
-		shortest = [float("inf")] * num_of_islands
-
 		edge_sum = 0
 		while pq:
+			#print(str(pq)+"\n\n")
 			next_smallest_node = heapq.heappop(pq)
 			d = next_smallest_node[0]
 			node = next_smallest_node[1]
