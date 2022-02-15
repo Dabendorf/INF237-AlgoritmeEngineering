@@ -5,7 +5,7 @@ from typing import Tuple
 from collections import defaultdict
 import heapq
 
-""" We drift from node 0 to node 1. There are many intersections and for each of them,
+""" We drive from node 0 to node 1. There are many intersections and for each of them,
 	there is an unique shortest path to 1.
 	We are not allowed to take any shortest direction at any intersection (node)
 	Print a path were this is possible or output impossible if there is no such path
@@ -32,73 +32,56 @@ def main():
 	print(bfs(0, adj_list, n, 1))
 
 def dijkstra_remover(adj_list, start, end, num_of_cities):
-	# Priority Queue
-	q = []
-	num_of_nodes = num_of_cities
-	
-	# Distances
-	dist = [float("inf")] * num_of_nodes
-	pre = [None] * num_of_nodes
+	""" This is an altered dijkstra funksjon which outputs the paths of 
+		every shortest way from a node, and a function deleting those edges"""
+	visited = [False] * num_of_cities
+	dist = [float("inf")] * num_of_cities
+	path = [None] * num_of_cities
 
-	# Fill priority queue
-	for i in adj_list[start]:
-		q.append((i[1], i[0]))
+	q = []
 
 	dist[start] = 0
-	q.append((0, start))
-	heapq.heapify(q)
+	heapq.heappush(q, (0, start))
 
-	# Already visited nodes
-	visited = [False] * num_of_nodes
-
-	# While priority queue nodes
 	while q:
-		u = heapq.heappop(q)
-		visited[u[1]] = True
-		
-		for v in adj_list[u[1]]:
-			if not visited[v[0]]:
-				# Calculate alternative distance
-				alt = dist[u[1]] + v[1]
-
-				# If its smaller than original distance, replace it
-				if alt < dist[v[0]]:
-					dist[v[0]] = alt
-					pre[v[0]] = u[1]
-					heapq.heappush(q, (v[1], v[0]))
+		distance_u, u = heapq.heappop(q)
+		visited[u] = True
+		for v, distance_v in adj_list[u]:
+			if not visited[v]:
+				new_dist = distance_u + distance_v
+				if new_dist < dist[v]:
+					dist[v] = new_dist
+					path[v] = u
+					heapq.heappush(q, (new_dist, v))
 
 	new_adj_list = defaultdict(lambda: [])
 
 	for k, v in adj_list.items():
 		for el in v:
-			#print(k, el)
-			if el[0] != pre[k]:
+			if el[0] != path[k]:
 				new_adj_list[k].append(el[0])
-				#print(el)
 
-	#print(new_adj_list)
 	return new_adj_list
 
 def bfs(s, adj_list, num_of_cities, end):
 	""" Its a BFS. The way a BFS always has behaved"""
-	output_list = set()
 
 	# Queue starts with start node
 	queue = [s]
 	visitedFrom = [None] * num_of_cities
+	visitedFrom[s] = -1
 
 	# While queue, go through them
 	while queue:
 		s = queue.pop()
-
-		if s != None:
-			output_list.add(s)
 
 		# Mark neighbours as visited and add to queue
 		for i in adj_list[s]:
 			if visitedFrom[i] == None:
 				queue.append(i)
 				visitedFrom[i] = s
+
+	#print(visitedFrom)
 
 	# Return either the path or impossible
 
