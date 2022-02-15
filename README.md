@@ -46,7 +46,7 @@ Source code of my INF237 homework
 ## Graphs 2
 * [x] Island Hopping
 * [ ] Bumped
-* [ ] Detour
+* [x] Detour
 * [ ] Artwork
 
 ## Ideas
@@ -156,3 +156,12 @@ All islands should become connected and one needs to search the overall minimum 
 Solution:
 - This is a minimum spannung tree problem
 - First we calculate all distances of all pairs and then use the algorithm of Prim to get the sum of bridge lengths
+
+#### Detour
+We drive from node 0 to node 1. There are many intersections and for each of them, there is an unique shortest path to 1.
+We are not allowed to take any shortest direction at any intersection (node)
+Print a path were this is possible or output impossible if there is no such path
+
+Solution:
+- Dijkstra to find the shortest edges from each node
+- Then removing those nodes, we run a BFS
