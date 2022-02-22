@@ -7,14 +7,9 @@ def main():
 	data = [3, 5, 6, 2, 0, 9, 8, 1]
 
 	tree = [0] * len(data) + data
-
-	left = lambda i: 2 * i
-	right = lambda i: 2 * i + 1
-	parent = lambda i: i // 2
-	index = lambda T, i: len(T) // 2 + i
 	
 	tree2 = fill(tree)
-	
+
 	print(tree2)
 
 def fill(tree, op=sum):
