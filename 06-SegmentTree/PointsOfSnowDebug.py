@@ -4,15 +4,42 @@ from collections import defaultdict
 from math import ceil, log2
 
 def main():
-	N, K, Q = list(map(int,sys.stdin.readline().strip().split()))
-	#N = N+1
+	#N, K, Q = list(map(int,sys.stdin.readline().strip().split()))
+	N = 16 # width of snow range
+	L = 0 # Left boundary of new snow
+	R = 15 # Right boundary of new snow
+	D = 3 # Depth change
+
 	real_length = pow(2, ceil(log2(N)/log2(2)))
 
 	tree = [0] * 2*real_length
 	maxHeight = height(real_length)
 
-	counter = 0
-	for _ in range(K+Q):
+	# Update of tree
+	tree, val = update(tree, real_length+L, real_length+R, maxHeight, D, op=sum)
+	print(f"New tree: {tree}")
+	print(f"Updated nodes: {val}")
+	print(f"Snow depths: {[query(tree,real_length+i) for i in range(0,N)]}")
+
+	L = 5
+	R = 9
+	D = 2
+
+	tree, val = update(tree, real_length+L, real_length+R, maxHeight, D, op=sum)
+	print(f"New tree: {tree}")
+	print(f"Updated nodes: {val}")
+	print(f"Snow depths: {[query(tree,real_length+i) for i in range(0,N)]}")
+
+	L = 1
+	R = 10
+	D = -2
+
+	tree, val = update(tree, real_length+L, real_length+R, maxHeight, D, op=sum)
+	print(f"New tree: {tree}")
+	print(f"Updated nodes: {val}")
+	print(f"Snow depths: {[query(tree,real_length+i) for i in range(0,N)]}")
+
+	"""for _ in range(K+Q):
 		line_temp = sys.stdin.readline().strip().split()
 		
 		# Snow level change (L, R, D)
@@ -21,13 +48,15 @@ def main():
 			R = int(line_temp[2])
 			D = int(line_temp[3])
 			tree, val = update(tree, real_length+L, real_length+R, maxHeight, D, op=sum)
+			#print(val)
+			#print(tree)
+			#print([query(tree,real_length+i) for i in range(0,N)])
 
 		# Snow level query (X)
 		else:
-			counter += 1
 			X = int(line_temp[1])
-			level1 = query(tree, real_length+X)
-			#level2 = query(tree, real_length+X-1)
+			level = query(tree, real_length+X)
+			print(level)"""
 
 # Lambda functions
 left = lambda i: 2 * i
