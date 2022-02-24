@@ -9,7 +9,7 @@ Source code of my INF237 homework
 * 03 	[Sliding, searching and sorting](#sliding-searching-and-sorting)
 * 04 	[Dynamic programming 1](#dynamic-programming-1)
 * 05 	[Graphs 2](#graphs-2)
-* 06 	Segment trees
+* 06 	[Segment trees](#segment-trees)
 * 07 	Geometry 1
 * 08 	Exponential time algorithms
 * 09 	Dynamic programming 2
@@ -48,6 +48,12 @@ Source code of my INF237 homework
 * [ ] Bumped
 * [x] Detour
 * [ ] Artwork
+
+## Segment trees
+* [x] Points of Snow
+* [ ] Mega Inversions
+* [ ] Movie Collection
+* [ ] Nekameleoni
 
 ## Ideas
 ### Introduction
@@ -165,3 +171,14 @@ Print a path were this is possible or output impossible if there is no such path
 Solution:
 - Dijkstra to find the shortest edges from each node
 - Then removing those nodes, we run a BFS
+
+### Segment trees
+
+#### Points of Snow
+ We live in a one dimensional country and receive both weather reports telling about falling snow and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)
+ Write a programme which stores these values and calculates the amount of snow at different places
+
+Solution:
+- Implementation of a segment tree with a range update and a point query
+- The query is the sum of the path of a node up to the trees root
+- The update goes to the leafs and works iteratively up to the parents depending if it is within the range or not

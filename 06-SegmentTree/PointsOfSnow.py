@@ -1,17 +1,25 @@
+# https://uib.kattis.com/problems/uib.pointsofsnow
+
 import sys
 from typing import Tuple
 from collections import defaultdict
 from math import ceil, log2
 
+""" We live in a one dimensional country and receive both weather reports telling about falling snow
+	and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)
+	Write a programme which stores these values and calculates the amount of snow at different places
+
+	Solution:
+	- Implementation of a segment tree with a range update and a point query
+	- The query is the sum of the path of a node up to the trees root
+	- The update goes to the leafs and works iteratively up to the parents depending if it is within the range or not
+	"""
 def main():
 	N, K, Q = list(map(int,sys.stdin.readline().strip().split()))
-	#N = N+1
 	real_length = pow(2, ceil(log2(N)/log2(2)))
 
-	tree = [0] * 2*real_length
-	maxHeight = height(real_length)
+	tree = [0] * 2 * real_length
 
-	counter = 0
 	for _ in range(K+Q):
 		line_temp = sys.stdin.readline().strip().split()
 		
@@ -20,76 +28,57 @@ def main():
 			L = int(line_temp[1])
 			R = int(line_temp[2])
 			D = int(line_temp[3])
-			tree, val = update(tree, real_length+L, real_length+R, maxHeight, D, op=sum)
+			update(tree, index(tree, L), index(tree, R), D)
+
+			# Debug stuff
+			#print(tree)
+			#print(f"Snow depths: {[query(tree, index(tree, i)) for i in range(0,N)]}")
 
 		# Snow level query (X)
 		else:
-			counter += 1
 			X = int(line_temp[1])
-			level1 = query(tree, real_length+X)
-			#level2 = query(tree, real_length+X-1)
+			# Weird offset to the left
+			level = query(tree, index(tree, X-1))
+			print(level)
 
-# Lambda functions
+# Lambda functions copied from Påls slide
 left = lambda i: 2 * i
 right = lambda i: 2 * i + 1
 parent = lambda i: i // 2
-height = lambda i: int(log2(i))
+index = lambda T, i: len(T) // 2 + i
 
-# Calculates the range of leafs a node is representing
-leaf_range_left = lambda i, maxHeight: 2**((maxHeight-height(i)))*i
-leaf_range_right = lambda i, maxHeight: 2**((maxHeight-height(i)))*(i+1)-1
-
-def update(tree, L, R, maxHeight, value, op=sum):
-	""" Takes as arguments a tree, a left boundary, a right boundary, the max height,
+def update(tree, L, R, value):
+	""" Takes as arguments a tree, a left boundary, a right boundary
 		and the value of snow level change"""
-	#print(f"NEW VALUE {value}")
-	list_val = []
+	# Mark the left node
+	tree[L] += value
 
-	# Temporary left boundary value
-	l_temp = L
-	
-	# Infinite loop until a break condition happens
+	# Note: It looks like we must exclude the right place of the range to make it accepted in Kattis
+
+	# Infinite loop for left and right
 	while True:
-		# Calculate parent of current left border
-		parent_l_temp = parent(l_temp)
+		# Go up on both sides
+		parent_left = parent(L)
+		parent_right = parent(R)
 
-		# If that parent is the root, set value to root value and return
-		if parent_l_temp == 0:
-			tree[1] += value
-			list_val.append(1)
-			return tree, list_val
+		# If both paths merge, don't do anything more
+		if parent_left == parent_right:
+			return
 
-		# Else: Get leaf boundaries of that parent
-		bound_l = leaf_range_left(parent_l_temp, maxHeight)
-		bound_r = leaf_range_right(parent_l_temp, maxHeight)
+		# If original node comes from left, mark the right one
+		if L%2 == 0:
+			right_child = right(parent_left)
+			tree[right_child] += value
 
-		# If left boundary is to the left of L
-		# then increase value of current node
-		if bound_l < L:
-			tree[l_temp] += value
-			list_val.append(l_temp)
+		# Omvendt
+		if R%2 == 1:
+			left_child = left(parent_right)
+			tree[left_child] += value
 
-			# Update current left boundary to (right leaf boundary of parent node)+1
-			l_temp = bound_r + 1
-
-			# if that is larger than R, return tree
-			if l_temp > R:
-				return tree, list_val
-		# if calculated boundary to the right bigger than R
-		# then increase value of current node 
-		elif bound_r > R:
-			tree[l_temp] += value
-			list_val.append(l_temp)
-
-			# Update current left boundary to (right leaf boundary of origin node)+1
-			l_temp = leaf_range_right(l_temp, maxHeight)+1
-
-			# if that is larger than R, return tree
-			if l_temp > R:
-				return tree, list_val
-		else:
-			# if neither of this happens, go one node up to the parent
-			l_temp = parent_l_temp
+		# Go one up
+		L = parent_left
+		R = parent_right
+		
 
 def query(tree, idx):
 	""" Query on tree with idx """
