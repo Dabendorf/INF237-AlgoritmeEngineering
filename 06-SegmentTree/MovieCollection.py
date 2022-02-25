@@ -3,13 +3,12 @@ from typing import Tuple
 from collections import defaultdict
 
 def main():
-	data = [3, 5, 6, 2, 0, 9, 8, 1]
+	num_of_cases = int(sys.stdin.readline())
 
-	tree = [0] * len(data) + data
-	
-	tree2 = fill(tree)
+	for _ in range(num_of_cases):
+		num_of_movies, num_of_requests = list(map(int, sys.stdin.readline().strip().split(" ")))
+		requests = list(map(int, sys.stdin.readline().strip().split(" ")))
 
-	print(tree2)
 
 
 # Lambda functions copied from Påls slide
@@ -45,7 +44,6 @@ def query_(T, l, r):
 		if r % 2 == 1:
 			yield T[left(pr)]
 		l,r = pl, pr
-		
 
 if __name__ == "__main__":
 	main()
