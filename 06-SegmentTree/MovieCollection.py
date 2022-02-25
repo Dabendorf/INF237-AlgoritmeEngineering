@@ -18,7 +18,14 @@ def main():
 		
 		fill(tree)
 
-		positions = {k:(num_of_movies-k) for k in range(1, num_of_movies+1)}
+		#positions_old = {k:(num_of_movies-k) for k in range(1, num_of_movies+1)}
+		positions = [0]
+		for k in range(1, num_of_movies+1):
+			positions.append(num_of_movies-k)
+
+		#print(positions)
+		#print(positions_old)
+		#exit(0)
 
 		top_index = index(tree, num_of_movies)
 
