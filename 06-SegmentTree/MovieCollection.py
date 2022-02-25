@@ -18,21 +18,28 @@ def main():
 		
 		fill(tree)
 
-		print(tree)
-		print(len(tree))
 		positions = {k:(num_of_movies-k) for k in range(1, num_of_movies+1)}
-		print(positions)
 
 		top_index = index(tree, num_of_movies)
-		print(top_index)
-		print(tree[top_index])
 
-		nr = 3
+		output_list = []
+		for req in requests:
+			#print(f"Current tree: {tree}")
+			#print(f"Range: [{index(tree, positions[req]+1)},{top_index})")
+			#print(f"Query: {query(tree, index(tree, positions[req]+1), top_index)}")
+			#print(f"To search for: {req}")
+			#print(f"Dict: {positions}")
+			pos_in_stack = query(tree, index(tree, positions[req]+1), top_index)
+			output_list.append(str(pos_in_stack))
+			to_remove = index(tree, positions[req])
+			# to add is the top_index
+			update(tree, to_remove, 0)
+			update(tree, top_index, 1)
+			positions[req] = top_index-next_power_of_2
 
-		print(f"Range: [{index(tree, positions[nr]+1)},{top_index})")
-		print(f"Query: {query(tree, index(tree, positions[nr]+1), top_index)}")
-		top_index += 1
-		print("==========")
+			top_index += 1
+		
+		print(" ".join(output_list))
 
 
 # Lambda functions copied from Påls slide
@@ -48,7 +55,9 @@ def fill(tree, op=sum):
 
 def update(tree, idx, value, op=sum):
 	tree[idx] = value
-	while (idx := parent(idx)) > 0:
+	
+	while idx > 0:
+		idx = parent(idx)
 		tree[idx] = op((tree[left(idx)], tree[right(idx)]))
 
 def query(T, l, r, op=sum):
