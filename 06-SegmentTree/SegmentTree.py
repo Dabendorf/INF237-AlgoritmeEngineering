@@ -7,9 +7,9 @@ def main():
 
 	tree = [0] * len(data) + data
 	
-	tree2 = fill(tree)
+	fill(tree)
 
-	print(tree2)
+	print(tree)
 
 
 # Lambda functions copied from Påls slide
@@ -22,8 +22,6 @@ def fill(tree, op=sum):
 	internal = range(1, len(tree) // 2)
 	for idx in reversed(internal): # internal nodes backwards
 		tree[idx] = op((tree[left(idx)], tree[right(idx)]))
-
-	return tree
 
 def update(tree, idx, value, op=sum):
 	tree[idx] = value
