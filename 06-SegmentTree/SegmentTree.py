@@ -12,10 +12,14 @@ def main():
 
 	print(tree2)
 
-def fill(tree, op=sum):
-	left = lambda i: 2 * i
-	right = lambda i: 2 * i + 1
 
+# Lambda functions copied from Påls slide
+left = lambda i: 2 * i
+right = lambda i: 2 * i + 1
+parent = lambda i: i // 2
+index = lambda T, i: len(T) // 2 + i
+
+def fill(tree, op=sum):
 	internal = range(1, len(tree) // 2)
 	for idx in reversed(internal): # internal nodes backwards
 		tree[idx] = op((tree[left(idx)], tree[right(idx)]))
@@ -23,19 +27,14 @@ def fill(tree, op=sum):
 	return tree
 
 def update(tree, idx, value, op=sum):
-	left = lambda i: 2 * i
-	right = lambda i: 2 * i + 1
-	parent = lambda i: i // 2
-
 	tree[idx] = value
 	while (idx := parent(idx)) > 0:
 		tree[idx] = op((tree[left(idx)], tree[right(idx)]))
 
-def query_(T, l, r):
-	left = lambda i: 2 * i
-	right = lambda i: 2 * i + 1
-	parent = lambda i: i // 2
+def query(T, l, r, op=sum):
+	return op(query_(T, l, r))
 
+def query_(T, l, r):
 	yield T[l] # [l, r)
 	while True:
 		pl = parent(l)
