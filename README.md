@@ -52,7 +52,7 @@ Source code of my INF237 homework
 ## Segment trees
 * [x] Points of Snow
 * [ ] Mega Inversions
-* [ ] Movie Collection
+* [x] Movie Collection
 * [ ] Nekameleoni
 
 ## Ideas
@@ -175,10 +175,23 @@ Solution:
 ### Segment trees
 
 #### Points of Snow
- We live in a one dimensional country and receive both weather reports telling about falling snow and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)
- Write a programme which stores these values and calculates the amount of snow at different places
+We live in a one dimensional country and receive both weather reports telling about falling snow and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)
+Write a programme which stores these values and calculates the amount of snow at different places
 
 Solution:
 - Implementation of a segment tree with a range update and a point query
 - The query is the sum of the path of a node up to the trees root
 - The update goes to the leafs and works iteratively up to the parents depending if it is within the range or not
+
+#### Movie Collection
+There is a stack of movies with numbers 1 to n
+Each time we are interested in a movie, the programme outputs at which position from the top the movie is situated
+It then updates the positions of all movies
+
+Solution:
+- Implementation of a segment tree with a point update and a range query
+- The original leaf length is the number of movies + number of coming requests
+- Each leaf is either 0 or 1 depending if there is a movie there or not
+- There is a dictionary (list) telling at which leaf position every movie is situated
+- If a movie is requested, it sends a range query how many movies there are between its position and the top
+- It then updates at two positions, removing the movie at its old position, putting it into the new one
