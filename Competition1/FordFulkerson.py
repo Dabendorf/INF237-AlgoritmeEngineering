@@ -1,123 +1,71 @@
 from collections import defaultdict
 import sys
-#from networkx.exception import NetworkXError, NetworkXNoPath
-#import numpy as np
-#import networkx as nx
 import pprint as pp
+from collections import deque
+
+class Graph:
+	V = ["s", "a", "b", "c", "d", "e", "f", "g", "t"]
+	edges = defaultdict(lambda: defaultdict(lambda: None))
+	R = defaultdict(lambda: defaultdict(lambda: 0))
+
+	def __init__(self):
+		orig_cap = [('a', 's', 1), ('s', 'b', 5), ('s', 'c', 5), ('b', 'a', 3), ('a', 'd', 3),
+			('d', 'b', 1), ('b', 'e', 2), ('c', 'b', 1), ('e', 'c', 1), ('c', 'f', 5), 
+			('d', 'e', 3), ('d', 't', 2), ('e', 't', 3), ('f', 'e', 1), ('f', 'g', 5), 
+			('g', 't', 5)]
+
+		for k in orig_cap:
+			a,b,w = k
+			self.edges[a][b] = w
+			self.R[a][b] = w
 
 def main():
-	#G_orig = nx.DiGraph()
-	#G = nx.DiGraph()
-	#G_f = nx.DiGraph()
-	G_orig = defaultdict(lambda: dict())
-	G = defaultdict(lambda: dict())
-	G_f = defaultdict(lambda: dict())
+	graph = Graph()
+	s = "s"
+	t = "t"
 
-	# Insert original capacities in here
-	orig_cap = [('a', 's', 1), ('s', 'b', 5), ('s', 'c', 5), ('b', 'a', 3), ('a', 'd', 3),
-	('d', 'b', 1), ('b', 'e', 2), ('c', 'b', 1), ('e', 'c', 1), ('c', 'f', 5), 
-	('d', 'e', 3), ('d', 't', 2), ('e', 't', 3), ('f', 'e', 1), ('f', 'g', 5), 
-	('g', 't', 5)]
-	# orig_cap = [('s', 'a', 50), ('s', 'b', 50), ('a', 't', 1), ('b', 't', 2), ('a', 'b', 1)]
-	
-	num_of_nodes = len(orig_cap)
-	for el in orig_cap:
-		fra, til, weight = el
-		#G_orig[fra].append((til, weight))
-		#G[fra].append((til, 0))
-		#G_f[fra].append((til, weight))
-		G_orig[fra][til] = weight
-		G[fra][til] = 0
-		G_f[fra][til] = weight
-	print(G_f)
+	print(maxflow(graph, s, t))
 
-	shortest_path = bfs("s", G_f, num_of_nodes, "t")
+	for fra, v in graph.edges.items():
+		for til, weight in v.items():
+			val_res = graph.R[til][fra]
+			if val_res != 0:
+				print(fra, til, val_res)
 
-	counter = 0
-	while shortest_path != None:
-		shortest_path = bfs("s", G_f, num_of_nodes, "t")
-		
-		if shortest_path != None:
-			print(shortest_path)
-			edge_lenghts = []
-			for edge_ind in range(len(shortest_path)-1):
-				edge_lenghts.append(G_f[shortest_path[edge_ind]][shortest_path[edge_ind+1]])
-				#edge_lenghts.append(G_f.get_edge_data(shortest_path[edge_ind], shortest_path[edge_ind+1])["weight"])
-			print(edge_lenghts)
-			min_edge_length = min(edge_lenghts)
+edges = lambda p: zip(p, p[1:])
 
-			# Set edge sizes in flow graph
-			for edge_ind in range(len(shortest_path)-1):
-				# If G has that Node, increase size by min_edge_length
-				if G.has_edge(shortest_path[edge_ind], shortest_path[edge_ind+1]):
-					G[shortest_path[edge_ind]][shortest_path[edge_ind+1]]['weight'] += min_edge_length
-				else:
-					# If G doesn't have it:
-					# Check if original G had it and set it to this size
-					# (thats the case if edge was empty for some time)
-					if G_orig.has_edge(shortest_path[edge_ind], shortest_path[edge_ind+1]):
-						G.add_edge(shortest_path[edge_ind], shortest_path[edge_ind+1], weight= min_edge_length)
-					else:
-						# Otherwise its a backwards edge, substract value from edge in other direction
-						G[shortest_path[edge_ind+1]][shortest_path[edge_ind]]['weight'] -= min_edge_length
+def bfs(graph, s, t):
+	q = deque([s])
+	parent = {}
+	while q:
+		v = q.popleft()
+		for u in graph.V: # !
+			if u in parent:
+				continue # seen it before
+			if graph.R[v][u] <= 0:
+				continue # vu saturated
+			parent[u] = v
+			q.append(u)
+			if u == t:
+				return create_path(parent, s, t)
 
-				# Decrease edge capacity in residential graph
-				G_f[shortest_path[edge_ind]][shortest_path[edge_ind+1]]['weight'] -= min_edge_length
+def create_path(parent, s, t):
+	path = [t]
+	while t != s:
+		t = parent[t]
+		path.append(t)
+	return tuple(reversed(path))
 
-				# If that edge now is zero in residential graph, delete it
-				if G_f[shortest_path[edge_ind]][shortest_path[edge_ind+1]]['weight'] == 0:
-					G_f.remove_edge(shortest_path[edge_ind], shortest_path[edge_ind+1])
-				
-				# If G_f has backwards edge, add min_edge-length to it, if not create edge
-				if G_f.has_edge(shortest_path[edge_ind+1], shortest_path[edge_ind]):
-					G_f[shortest_path[edge_ind+1]][shortest_path[edge_ind]]['weight'] += min_edge_length
-				else:
-					G_f.add_edge(shortest_path[edge_ind+1], shortest_path[edge_ind], weight=min_edge_length)
-
-				# If that edge now is zero in residential graph, delete it
-				if G_f[shortest_path[edge_ind+1]][shortest_path[edge_ind]]['weight'] == 0:
-					G_f.remove_edge(shortest_path[edge_ind+1], shortest_path[edge_ind])
-		
-			print("Iteration")
-			print(shortest_path)
-			pp.pprint(list(G.edges(data=True)))
-			print("Outgoing flow: "+str(G.out_degree('s', weight="weight")))
-			print("Ingoing flow: "+str(G.in_degree('t', weight="weight")))
-			print("=============")
-			
-	print("Finished")
-	print("Output flow")
-	pp.pprint(list(G.edges(data=True)))
-	print("Outgoing flow: "+str(G.out_degree('s', weight="weight")))
-	print("Ingoing flow: "+str(G.in_degree('t', weight="weight")))
-	print("Residential graph")
-	pp.pprint(list(G_f.edges(data=True)))
-	print("Min-cut: "+str(list(nx.dfs_postorder_nodes(G_f, 's'))))
-
-def bfs(s, adj_list, num_of_nodes, end):
-	""" Its a BFS. The way a BFS always has behaved"""
-
-	# Queue starts with start node
-	queue = [s]
-	visitedFrom = defaultdict(lambda: None)#[None] * num_of_nodes
-
-	# While queue, go through them
-	while queue:
-		s = queue.pop()
-
-		# Mark neighbours as visited and add to queue
-		for i in adj_list[s]:
-			if visitedFrom[i[0]] == None:
-				queue.append(i[0])
-				visitedFrom[i[0]] = s
-
-	curr = end
-	output = [end]
-
-	while curr != s:
-		curr = visitedFrom[curr]
-		output.append(curr)
-	return output[::-1]
+def maxflow(graph, s, t):
+	flow = 0
+	while P := bfs(graph, s, t):
+		F = min(graph.R[v][u] for (v, u) in edges(P))
+		flow += F
+		for i in range(1, len(P)):
+			v, u = P[i - 1], P[i]
+			graph.R[v][u] -= F
+			graph.R[u][v] += F
+	return flow
 
 if __name__ == "__main__":
 	main()
