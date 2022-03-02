@@ -1,17 +1,14 @@
-from collections import defaultdict
 import sys
-#from networkx.exception import NetworkXError, NetworkXNoPath
-#import numpy as np
-#import networkx as nx
+from networkx.exception import NetworkXError, NetworkXNoPath
+import numpy as np
+import networkx as nx
 import pprint as pp
 
+# python FordFulkerson.py
 def main():
-	#G_orig = nx.DiGraph()
-	#G = nx.DiGraph()
-	#G_f = nx.DiGraph()
-	G_orig = defaultdict(lambda: dict())
-	G = defaultdict(lambda: dict())
-	G_f = defaultdict(lambda: dict())
+	G_orig = nx.DiGraph()
+	G = nx.DiGraph()
+	G_f = nx.DiGraph()
 
 	# Insert original capacities in here
 	orig_cap = [('a', 's', 1), ('s', 'b', 5), ('s', 'c', 5), ('b', 'a', 3), ('a', 'd', 3),
@@ -19,31 +16,34 @@ def main():
 	('d', 'e', 3), ('d', 't', 2), ('e', 't', 3), ('f', 'e', 1), ('f', 'g', 5), 
 	('g', 't', 5)]
 	# orig_cap = [('s', 'a', 50), ('s', 'b', 50), ('a', 't', 1), ('b', 't', 2), ('a', 'b', 1)]
-	
-	num_of_nodes = len(orig_cap)
-	for el in orig_cap:
-		fra, til, weight = el
-		#G_orig[fra].append((til, weight))
-		#G[fra].append((til, 0))
-		#G_f[fra].append((til, weight))
-		G_orig[fra][til] = weight
-		G[fra][til] = 0
-		G_f[fra][til] = weight
-	print(G_f)
 
-	shortest_path = bfs("s", G_f, num_of_nodes, "t")
+	G_orig.add_weighted_edges_from(orig_cap)
+	G.add_weighted_edges_from(orig_cap)
+	G_f.add_weighted_edges_from(orig_cap)
+
+	for u,v,a in G.edges(data=True):
+		G[u][v]['weight'] = 0
+
+	shortest_path = None
+	try:
+		shortest_path = nx.shortest_path(G_f, 's', 't')
+	except NetworkXNoPath:
+		shortest_path = None
 
 	counter = 0
 	while shortest_path != None:
-		shortest_path = bfs("s", G_f, num_of_nodes, "t")
+		try:
+			shortest_path = nx.shortest_path(G_f, 's', 't')
+		except NetworkXNoPath:
+			shortest_path = None
 		
 		if shortest_path != None:
-			print(shortest_path)
 			edge_lenghts = []
 			for edge_ind in range(len(shortest_path)-1):
-				edge_lenghts.append(G_f[shortest_path[edge_ind]][shortest_path[edge_ind+1]])
-				#edge_lenghts.append(G_f.get_edge_data(shortest_path[edge_ind], shortest_path[edge_ind+1])["weight"])
-			print(edge_lenghts)
+				#print(shortest_path[edge_ind], shortest_path[edge_ind+1])
+				edge_lenghts.append(G_f.get_edge_data(shortest_path[edge_ind], shortest_path[edge_ind+1])["weight"])
+				#print(G_f.get_edge_data(shortest_path[edge_ind], shortest_path[edge_ind+1])["weight"])
+			#exit(0)
 			min_edge_length = min(edge_lenghts)
 
 			# Set edge sizes in flow graph
@@ -94,30 +94,6 @@ def main():
 	pp.pprint(list(G_f.edges(data=True)))
 	print("Min-cut: "+str(list(nx.dfs_postorder_nodes(G_f, 's'))))
 
-def bfs(s, adj_list, num_of_nodes, end):
-	""" Its a BFS. The way a BFS always has behaved"""
-
-	# Queue starts with start node
-	queue = [s]
-	visitedFrom = defaultdict(lambda: None)#[None] * num_of_nodes
-
-	# While queue, go through them
-	while queue:
-		s = queue.pop()
-
-		# Mark neighbours as visited and add to queue
-		for i in adj_list[s]:
-			if visitedFrom[i[0]] == None:
-				queue.append(i[0])
-				visitedFrom[i[0]] = s
-
-	curr = end
-	output = [end]
-
-	while curr != s:
-		curr = visitedFrom[curr]
-		output.append(curr)
-	return output[::-1]
 
 if __name__ == "__main__":
 	main()
