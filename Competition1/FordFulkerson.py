@@ -1,29 +1,22 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 import sys
-from collections import deque
 
 class Graph:
-	V = ["s", "a", "b", "c", "d", "e", "f", "g", "t"]
 	edges = defaultdict(lambda: defaultdict(lambda: None))
 	R = defaultdict(lambda: defaultdict(lambda: 0))
 
-	def __init__(self):
-		orig_cap = [('a', 's', 1), ('s', 'b', 5), ('s', 'c', 5), ('b', 'a', 3), ('a', 'd', 3),
-			('d', 'b', 1), ('b', 'e', 2), ('c', 'b', 1), ('e', 'c', 1), ('c', 'f', 5), 
-			('d', 'e', 3), ('d', 't', 2), ('e', 't', 3), ('f', 'e', 1), ('f', 'g', 5), 
-			('g', 't', 5)]
-
+	def __init__(self, orig_cap, V):
 		for k in orig_cap:
-			a,b,w = k
+			a, b, w = k
 			self.edges[a][b] = w
 			self.R[a][b] = w
 
 def main():
-	graph = Graph()
+	graph = Graph(orig_cap, V)
 	s = "s"
 	t = "t"
 
-	print(maxflow(graph, s, t))
+	maxflow(graph, s, t)
 
 	for fra, v in graph.edges.items():
 		for til, weight in v.items():
