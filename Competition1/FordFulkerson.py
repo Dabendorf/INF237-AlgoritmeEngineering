@@ -1,6 +1,5 @@
 from collections import defaultdict
 import sys
-import pprint as pp
 from collections import deque
 
 class Graph:

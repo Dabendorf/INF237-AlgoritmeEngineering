@@ -1,7 +1,19 @@
 from struct import pack_into
 import sys
 from typing import Tuple
-from collections import defaultdict
+from collections import defaultdict, deque
+
+class Graph:
+	#V = ["s", "a", "b", "c", "d", "e", "f", "g", "t"]
+	edges = defaultdict(lambda: defaultdict(lambda: None))
+	R = defaultdict(lambda: defaultdict(lambda: 0))
+
+	def __init__(self, orig_cap, V):
+		for k in orig_cap:
+			a,b,w = k
+			self.edges[a][b] = w
+			self.R[a][b] = w
+		self.V = V
 
 def main():
 	num_pedestals, num_vases = list(map(int, sys.stdin.readline().strip().split()))
@@ -13,17 +25,88 @@ def main():
 		ped_diam.append((a, b))
 	vases_diam = list(map(int, sys.stdin.readline().strip().split()))
 
-	print(ped_diam)
-	print(vases_diam)
+	#print(ped_diam)
+	#print(vases_diam)
 
+	orig_cap = list()
+	V = ["s", "t"]
 	for idx_v, v in enumerate(vases_diam):
+		orig_cap.append(("s", "v"+str(idx_v+1), 1))
+		V.append("v"+str(idx_v+1))
 		for idx_p, p in enumerate(ped_diam):
 			if v == p[0] or v == p[1]:
-				adj_list["v"+str(idx_v+1)].add("p"+str(idx_p+1))
-				adj_list["p"+str(idx_p+1)].add("v"+str(idx_v+1))
+				orig_cap.append(("v"+str(idx_v+1), "p"+str(idx_p+1), 1))
+				#orig_cap.append(("p"+str(idx_p+1), "v"+str(idx_v+1), 1))
+				#adj_list["v"+str(idx_v+1)].add("p"+str(idx_p+1))
+				#adj_list["p"+str(idx_p+1)].add("v"+str(idx_v+1))
 				#print(f"{idx_v} {idx_p}, {v} {p}")
+
+	for idx_p, p in enumerate(ped_diam):
+		orig_cap.append(("p"+str(idx_p+1), "t", 1))
+		V.append("p"+str(idx_p+1))
 	
-	print(adj_list)
+	#print(adj_list)
+	#print(orig_cap)
+
+	graph = Graph(orig_cap, V)
+	s = "s"
+	t = "t"
+
+	#print(maxflow(graph, s, t))
+	maxflow(graph, s, t)
+	solutions = list()
+	#print(graph.R)
+	for fra, v in graph.edges.items():
+		for til, weight in v.items():
+			val_res = graph.R[til][fra]
+			#print(fra, til, val_res)
+			if val_res != 0 and fra != "s" and til != "t":
+				#print(fra, til, val_res)
+				solutions.append(til[1:])
+
+	#print(solutions)
+	if len(solutions) == num_vases:
+		for el in solutions:
+			print(el)
+	else:
+		print("impossible")
+
+	
+
+edges = lambda p: zip(p, p[1:])
+
+def bfs(graph, s, t):
+	q = deque([s])
+	parent = {}
+	while q:
+		v = q.popleft()
+		for u in graph.V: # !
+			if u in parent:
+				continue # seen it before
+			if graph.R[v][u] <= 0:
+				continue # vu saturated
+			parent[u] = v
+			q.append(u)
+			if u == t:
+				return create_path(parent, s, t)
+
+def create_path(parent, s, t):
+	path = [t]
+	while t != s:
+		t = parent[t]
+		path.append(t)
+	return tuple(reversed(path))
+
+def maxflow(graph, s, t):
+	flow = 0
+	while P := bfs(graph, s, t):
+		F = min(graph.R[v][u] for (v, u) in edges(P))
+		flow += F
+		for i in range(1, len(P)):
+			v, u = P[i - 1], P[i]
+			graph.R[v][u] -= F
+			graph.R[u][v] += F
+	return flow
 
 if __name__ == "__main__":
 	main()
