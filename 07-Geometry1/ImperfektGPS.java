@@ -12,7 +12,7 @@ public class ImperfektGPS {
         Kattio io = new Kattio(System.in, System.out);
 
 		// Reading cases
-        int numOfPositions = io.getInt();
+        /*int numOfPositions = io.getInt();
 		int intervallLength = io.getInt();
 
 		Point2D[] points = new Point2D[numOfPositions];
@@ -25,6 +25,10 @@ public class ImperfektGPS {
 			points[posNum] = new Point2D.Double(x, y);
 			times[posNum] = t;
 		}
+
+		int maxTime = times[numOfPositions-1];
+		System.out.println("MaxTime: "+maxTime);
+		System.out.println("Num of GPS times: "+(Math.ceil(maxTime/2.0)+1));
 		
 
 		System.out.println(Arrays.toString(points));
@@ -36,6 +40,22 @@ public class ImperfektGPS {
 		}
 
 		System.out.println(sumOriginalDistances);
+
+		for(int gpsTimeNum=0; gpsTimeNum < (int)(Math.ceil(maxTime/2.0)+1); gpsTimeNum++) {
+			int gpsTime = intervallLength*gpsTimeNum;
+			gpsTime = Math.min(gpsTime, maxTime);
+		}*/
+
+		int time0 = 3;
+		int time1 = 9;
+		Point2D p0 = new Point2D.Double(1, 1);
+		Point2D p1 = new Point2D.Double(3, 5);
+		int timeGPS = 9;
+		System.out.println(findMiddlePoint(p0, p1, time_percentage(time0, time1, timeGPS)));
+
+		// Working until here
+
+		//  getLineFromPoints(Point2D p, Point2D q)
 
 		/*System.out.println(time_percentage(1, 5, 1)); // 0
 		System.out.println(time_percentage(1, 5, 5)); // 1
@@ -80,9 +100,9 @@ public class ImperfektGPS {
 		return perc;
 	}
 
-	private static double distBetweenPoints(Point2D p, Point2D q) {
+	/*private static double distBetweenPoints(Point2D p, Point2D q) {
 		return p.distance(q);
-	}
+	}*/
 
 	private static String getLineFromPoints(Point2D p, Point2D q) {
 		// find formula ax + by = c
@@ -96,5 +116,9 @@ public class ImperfektGPS {
 			return (diffY+"x"+" + "+diffX+"y = "+c);
 		}
 	}
- 
+
+	private static Point2D findMiddlePoint(Point2D p, Point2D q, double percentage) {
+		return new Point2D.Double(p.getX() + (q.getX()-p.getX()) * percentage, p.getY() + (q.getY()-p.getY()) * percentage);
+	}
+
 }
