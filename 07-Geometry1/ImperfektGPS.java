@@ -59,7 +59,7 @@ public class ImperfektGPS {
 		Point2D[] gpsPoints = new Point2D[numOfGPStimes];
 
 		for(int i=0; i<numOfGPStimes; i++) {
-			System.out.println("====");
+			//System.out.println("====");
 			int nextGPStime = gpsTimes[i];
 
 			//boolean addingDone = false;
@@ -71,14 +71,14 @@ public class ImperfektGPS {
 
 			//if(times[posInTimes] == nextGPStime) {
 			if(posInTimes > -1) {
-				//gpsPoints[i] = points[posInTimes];
-				System.out.println(nextGPStime+" Korrekt pos: "+points[posInTimes]);
+				gpsPoints[i] = points[posInTimes];
+				//System.out.println(nextGPStime+" Korrekt pos: "+points[posInTimes]);
 			} else {
-				System.out.println(posInTimes);
+				//System.out.println(posInTimes);
 				posInTimes = -posInTimes-1;
-				System.out.println(nextGPStime+" Between pos: "+points[posInTimes-1]+","+points[posInTimes]);
+				//System.out.println(nextGPStime+" Between pos: "+points[posInTimes-1]+","+points[posInTimes]);
 				//System.out.println("Changed position: "+posInTimes);
-				//gpsPoints[i] = findMiddlePoint(points[posInTimes-1], points[posInTimes+0], time_percentage(times[posInTimes-1], times[posInTimes+0], nextGPStime));
+				gpsPoints[i] = findMiddlePoint(points[posInTimes-1], points[posInTimes+0], time_percentage(times[posInTimes-1], times[posInTimes+0], nextGPStime));
 			}
 			/*while(!addingDone) {
 				if(times[pointerToNonGPStimes] == nextGPStime) {
@@ -94,7 +94,12 @@ public class ImperfektGPS {
 		}
 		System.out.println(Arrays.toString(gpsPoints));
 
-		
+		double sumGPSDistances = 0;
+		for(int pointNum=0; pointNum < numOfGPStimes-1; pointNum++) {
+			sumGPSDistances += gpsPoints[pointNum].distance(gpsPoints[pointNum+1]);
+		}
+
+		System.out.println("GPS distance: "+sumGPSDistances);
 
 
 
