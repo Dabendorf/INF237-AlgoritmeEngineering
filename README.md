@@ -10,7 +10,7 @@ Source code of my INF237 homework
 * 04 	[Dynamic programming 1](#dynamic-programming-1)
 * 05 	[Graphs 2](#graphs-2)
 * 06 	[Segment trees](#segment-trees)
-* 07 	Geometry 1
+* 07 	[Geometry 1](#geometry-1)
 * 08 	Exponential time algorithms
 * 09 	Dynamic programming 2
 * 10 	Graphs 3
@@ -54,6 +54,12 @@ Source code of my INF237 homework
 * [ ] Mega Inversions
 * [x] Movie Collection
 * [ ] Nekameleoni
+
+## Geometry 1
+* [ ] Imperfect GPS
+* [x] White Water Rafting
+* [ ] Pesky Mosquitoes
+* [ ] Cleaning Pipes
 
 ## Ideas
 ### Introduction
@@ -195,3 +201,21 @@ Solution:
 - There is a dictionary (list) telling at which leaf position every movie is situated
 - If a movie is requested, it sends a range query how many movies there are between its position and the top
 - It then updates at two positions, removing the movie at its old position, putting it into the new one
+
+### Geometry 1
+
+#### White Water Rafting
+There are an inner and an outer polygon, which do not touch each other.
+Moreover, there is a circular raft which rafts through the inner path between those polygons.
+Find the biggest possible radius of the raft s.t. this is possible
+
+Solution:
+- Go through each pair of points from one polygon and line segments from the other (2 times for each way around)
+- Calculate the distance between them and output the minimum of all
+- Calculating the distance is done by known line-to-point-distance formula
+
+- Problem: What if perpendicular intersection point outside of line segment?
+- Calculate intersection value (how far from the left boundary is point on line?):
+- If < 0, its outside on the left, if > 1, its outside on the right
+- In this situation set intersection point to the boundary
+- Then return the distance between that intersection point and the original one
