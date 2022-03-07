@@ -18,12 +18,15 @@ public class WhiteWaterRaftingDebug {
 		//int[] lineA = {-1, -1};
 		//int[] lineB = {-4, 2};
 		//int[] point = {0, 0};
-		int[] lineA = {0, 0};
-		int[] lineB = {5, 0};
-		int[] point = {2, 1};
+		//int[] lineA = {0, 0};
+		//int[] lineB = {5, 0};
+		//int[] point = {2, 1};
+		Point2D lineA = new Point2D.Double(0, 0);
+		Point2D lineB = new Point2D.Double(5, 0);
+		Point2D point = new Point2D.Double(2, 1);
 
-		System.out.println("Line: "+Arrays.toString(lineA)+" -> "+Arrays.toString(lineB));
-		System.out.println("Point: "+Arrays.toString(point));
+		System.out.println("Line: "+lineA);
+		System.out.println("Point: "+lineB);
 		System.out.println("Dist: "+distance(lineA, lineB, point));
 		// Calculate interception value on line segment
 			
@@ -32,24 +35,24 @@ public class WhiteWaterRaftingDebug {
 	//public static double distance(int[] point_line0, int[] point_line1, int[] point_sep) {
 	public static double distance(Point2D p1, Point2D p2, Point2D p3) {
 		// First calculate interception value
-		int delta_x_point = point_sep[0] - point_line0[0];
-		int delta_y_point = point_sep[1] - point_line0[1];
-		int delta_x_line = point_line1[0] - point_line0[0];
-		int delta_y_line = point_line1[1] - point_line0[1];
+		double delta_x_point = p3.getX() - p1.getX();
+		double delta_y_point = p3.getY() - p1.getY();
+		double delta_x_line = p2.getX() - p1.getX();
+		double delta_y_line = p2.getY() - p1.getY();
 
-		int norm = delta_x_line * delta_x_line + delta_y_line * delta_y_line;
+		//int norm = delta_x_line * delta_x_line + delta_y_line * delta_y_line;
 		System.out.println("Delta x Line: "+delta_x_line);
 		System.out.println("Delta y Line: "+delta_y_line);
 		System.out.println("Delta x Point: "+delta_x_point);
 		System.out.println("Delta y Point: "+delta_y_point);
 
-		double intercept = (delta_x_point*delta_x_line + delta_y_point*delta_y_line) / norm;
-		System.out.println("Intercept value: "+intercept);
+		//double intercept = (delta_x_point*delta_x_line + delta_y_point*delta_y_line) / norm;
+		//System.out.println("Intercept value: "+intercept);
 
 		//final double xDelta = p2.getX() - p1.getX();
 		//final double yDelta = p2.getY() - p1.getY();
 
-		//final double u = ((p3.getX() - p1.getX()) * xDelta + (p3.getY() - p1.getY()) * yDelta) / (xDelta * xDelta + yDelta * yDelta);
+		double intercept = ((p3.getX() - p1.getX()) * delta_x_line + (p3.getY() - p1.getY()) * delta_y_line) / (delta_x_line * delta_x_line + delta_y_line * delta_y_line);
 		
 		//System.out.println("Intercept old "+intercept);
 		double intercept_point_x;
@@ -57,17 +60,17 @@ public class WhiteWaterRaftingDebug {
 
 		if(intercept>=1) {
 			intercept = 1;
-			intercept_point_x = point_line1[0];
-			intercept_point_y = point_line1[1];
+			intercept_point_x = p2.getX();
+			intercept_point_y = p2.getY();
 			System.out.println("Set intercept to point 1");
 		} else if(intercept<=0) {
 			intercept = 0;
-			intercept_point_x = point_line0[0];
-			intercept_point_y = point_line0[1];
+			intercept_point_x = p1.getX();
+			intercept_point_y = p1.getY();
 			System.out.println("Set intercept to point 0");
 		} else {
-			intercept_point_x = point_line0[0] + intercept * (delta_x_line);
-			intercept_point_y = point_line0[1] + intercept * (delta_y_line);
+			intercept_point_x = p1.getX() + intercept * (delta_x_line);
+			intercept_point_y = p1.getY()+ intercept * (delta_y_line);
 		}
 		System.out.println("Intercept point: ("+intercept_point_x+","+intercept_point_y+")");
 
@@ -75,8 +78,8 @@ public class WhiteWaterRaftingDebug {
 
 		// calculate final distance
 
-		//Point2D p3 = new Point2D.Double(intercept_point_x, intercept_point_y);
-		//System.out.println(p3.distance(point_sep[0], point_sep[1]));
-		return Math.sqrt(Math.pow(intercept_point_x-point_sep[0], 2)+Math.pow(intercept_point_y-point_sep[1], 2));
+		Point2D insect = new Point2D.Double(intercept_point_x, intercept_point_y);
+		return insect.distance(p3.getX(), p3.getY());
+		//return Math.sqrt(Math.pow(intercept_point_x-point_sep[0], 2)+Math.pow(intercept_point_y-point_sep[1], 2));
 	}
 }
