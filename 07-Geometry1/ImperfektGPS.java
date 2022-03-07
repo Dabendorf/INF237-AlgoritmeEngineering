@@ -1,6 +1,7 @@
 // https://open.kattis.com/problems/imperfectgps
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Problem description
@@ -12,7 +13,7 @@ public class ImperfektGPS {
         Kattio io = new Kattio(System.in, System.out);
 
 		// Reading cases
-        /*int numOfPositions = io.getInt();
+        int numOfPositions = io.getInt();
 		int intervallLength = io.getInt();
 
 		Point2D[] points = new Point2D[numOfPositions];
@@ -39,21 +40,75 @@ public class ImperfektGPS {
 			sumOriginalDistances += points[pointNum].distance(points[pointNum+1]);
 		}
 
-		System.out.println(sumOriginalDistances);
+		System.out.println("Original distance: "+sumOriginalDistances);
 
-		for(int gpsTimeNum=0; gpsTimeNum < (int)(Math.ceil(maxTime/2.0)+1); gpsTimeNum++) {
+		int numOfGPStimes = (int)(Math.ceil(maxTime/2.0)+1);
+		int[] gpsTimes = new int[numOfGPStimes];
+
+		for(int gpsTimeNum=0; gpsTimeNum < numOfGPStimes; gpsTimeNum++) {
 			int gpsTime = intervallLength*gpsTimeNum;
 			gpsTime = Math.min(gpsTime, maxTime);
-		}*/
+			gpsTimes[gpsTimeNum] = gpsTime;
+		}
 
+		//System.out.println(Arrays.toString(gpsTimes));
+
+		//Point2D from = points[0];
+		//int currentTime = times[0];
+		int pointerToNonGPStimes = 0;
+		Point2D[] gpsPoints = new Point2D[numOfGPStimes];
+
+		for(int i=0; i<numOfGPStimes; i++) {
+			System.out.println("====");
+			int nextGPStime = gpsTimes[i];
+
+			//boolean addingDone = false;
+
+			int posInTimes = Arrays.binarySearch(times, nextGPStime);
+			//System.out.println(Arrays.toString(times));
+			//System.out.println(nextGPStime);
+			//System.out.println(posInTimes);
+
+			//if(times[posInTimes] == nextGPStime) {
+			if(posInTimes > -1) {
+				//gpsPoints[i] = points[posInTimes];
+				System.out.println(nextGPStime+" Korrekt pos: "+points[posInTimes]);
+			} else {
+				System.out.println(posInTimes);
+				posInTimes = -posInTimes-1;
+				System.out.println(nextGPStime+" Between pos: "+points[posInTimes-1]+","+points[posInTimes]);
+				//System.out.println("Changed position: "+posInTimes);
+				//gpsPoints[i] = findMiddlePoint(points[posInTimes-1], points[posInTimes+0], time_percentage(times[posInTimes-1], times[posInTimes+0], nextGPStime));
+			}
+			/*while(!addingDone) {
+				if(times[pointerToNonGPStimes] == nextGPStime) {
+					gpsPoints[i] = points[i];
+					addingDone = true;
+				} else if(times[pointerToNonGPStimes] < nextGPStime) {
+					
+				} else {
+
+				}
+			}*/
+			
+		}
+		System.out.println(Arrays.toString(gpsPoints));
+
+		
+
+
+
+
+		/*
+		//find middle point based on distance
 		int time0 = 3;
 		int time1 = 9;
 		Point2D p0 = new Point2D.Double(1, 1);
 		Point2D p1 = new Point2D.Double(3, 5);
 		int timeGPS = 9;
 		System.out.println(findMiddlePoint(p0, p1, time_percentage(time0, time1, timeGPS)));
+		*/
 
-		// Working until here
 
 		//  getLineFromPoints(Point2D p, Point2D q)
 
