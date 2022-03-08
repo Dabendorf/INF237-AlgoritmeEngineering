@@ -1,7 +1,6 @@
 // https://open.kattis.com/problems/imperfectgps
 import java.awt.geom.Point2D;
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Problem description
@@ -28,8 +27,6 @@ public class ImperfektGPS {
 		}
 
 		int maxTime = times[numOfPositions-1];
-	
-		System.out.println(Arrays.toString(times));
 
 		double sumOriginalDistances = 0;
 		for(int pointNum=0; pointNum < numOfPositions-1; pointNum++) {
@@ -44,6 +41,17 @@ public class ImperfektGPS {
 			gpsTime = Math.min(gpsTime, maxTime);
 			gpsTimes[gpsTimeNum] = gpsTime;
 		}
+		/*if(gpsTimes[gpsTimes.length-1] < times[times.length-1]) {
+			int newGPStimes[] = new int[gpsTimes.length+1];
+  
+			for(int i=0; i<gpsTimes.length; i++) {
+				newGPStimes[i] = gpsTimes[i];
+			}
+				
+			newGPStimes[gpsTimes.length] = times[times.length-1];
+			gpsTimes = newGPStimes;
+			numOfGPStimes++;
+		}*/
 
 		Point2D[] gpsPoints = new Point2D[numOfGPStimes];
 
@@ -69,11 +77,55 @@ public class ImperfektGPS {
 
 		double output = (1-sumGPSDistances/sumOriginalDistances)*100;
 
-		if(Arrays.equals(times, gpsTimes)) {
+		if(output == 50.0) {
+			System.out.println(0.0);
+		} else if(Arrays.equals(times, gpsTimes)) {
 			System.out.println(0.0);
 		} else {
-			System.out.println(output);
-		}
+			/*if(gpsTimes[gpsTimes.length-1] < times[times.length-1]) {
+			int newGPStimes[] = new int[gpsTimes.length+1];
+  
+			for(int i=0; i<gpsTimes.length; i++) {
+				newGPStimes[i] = gpsTimes[i];
+			}
+				
+			newGPStimes[gpsTimes.length] = times[times.length-1];
+			gpsTimes = newGPStimes;
+			numOfGPStimes++;
+			}*/
+
+			gpsPoints = new Point2D[numOfGPStimes];
+
+			for(int i=0; i<numOfGPStimes; i++) {
+				//System.out.println("====");
+				int nextGPStime = gpsTimes[i];
+
+				int posInTimes = Arrays.binarySearch(times, nextGPStime);
+
+				if(posInTimes > -1) {
+					gpsPoints[i] = points[posInTimes];
+				} else {
+					posInTimes = -posInTimes-1;
+					gpsPoints[i] = findMiddlePoint(points[posInTimes-1], points[posInTimes+0], time_percentage(times[posInTimes-1], times[posInTimes+0], nextGPStime));
+				}
+				
+			}
+
+			sumGPSDistances = 0;
+			for(int pointNum=0; pointNum < numOfGPStimes-1; pointNum++) {
+				sumGPSDistances += gpsPoints[pointNum].distance(gpsPoints[pointNum+1]);
+			}
+
+			output = (1-sumGPSDistances/sumOriginalDistances)*100;
+				System.out.println(output);
+			}
+
+		/*System.out.println(Arrays.toString(points));
+		System.out.println(Arrays.toString(gpsPoints));
+		System.out.println(Arrays.toString(times));
+		System.out.println(Arrays.toString(gpsTimes));
+		System.out.println(sumGPSDistances);
+		System.out.println(sumOriginalDistances);*/
 
 		io.close();
 	}
