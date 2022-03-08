@@ -7,7 +7,7 @@ import java.util.Arrays;
  * 
  * Solution: 
  */
-public class ImperfektGPS {
+public class ImperfektGPSdeb {
     public static void main(String[] args) {
         Kattio io = new Kattio(System.in, System.out);
 
@@ -41,8 +41,6 @@ public class ImperfektGPS {
 			gpsTime = Math.min(gpsTime, maxTime);
 			gpsTimes[gpsTimeNum] = gpsTime;
 		}
-
-		// if the last point is missing, add it
 		if(gpsTimes[gpsTimes.length-1] < times[times.length-1]) {
 			int newGPStimes[] = new int[gpsTimes.length+1];
   
@@ -58,6 +56,7 @@ public class ImperfektGPS {
 		Point2D[] gpsPoints = new Point2D[numOfGPStimes];
 
 		for(int i=0; i<numOfGPStimes; i++) {
+			//System.out.println("====");
 			int nextGPStime = gpsTimes[i];
 
 			int posInTimes = Arrays.binarySearch(times, nextGPStime);
@@ -83,13 +82,10 @@ public class ImperfektGPS {
 		} else {
 			System.out.println(output);
 		}
-
-		/*System.out.println(Arrays.toString(points));
+		System.out.println(Arrays.toString(points));
 		System.out.println(Arrays.toString(gpsPoints));
 		System.out.println(Arrays.toString(times));
 		System.out.println(Arrays.toString(gpsTimes));
-		System.out.println(sumGPSDistances);
-		System.out.println(sumOriginalDistances);*/
 
 		io.close();
 	}
