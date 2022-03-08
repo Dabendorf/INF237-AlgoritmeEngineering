@@ -33,7 +33,9 @@ public class ImperfektGPS {
 			sumOriginalDistances += points[pointNum].distance(points[pointNum+1]);
 		}
 
-		int numOfGPStimes = (int)(Math.ceil(maxTime/2.0)+1);
+		//int numOfGPStimes = (int)(Math.ceil(maxTime/2.0)+1);
+
+		int numOfGPStimes = (int)(Math.ceil(maxTime/intervallLength)+1);
 		int[] gpsTimes = new int[numOfGPStimes];
 
 		for(int gpsTimeNum=0; gpsTimeNum < numOfGPStimes; gpsTimeNum++) {
