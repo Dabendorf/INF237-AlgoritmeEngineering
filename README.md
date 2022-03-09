@@ -56,7 +56,7 @@ Source code of my INF237 homework
 * [ ] Nekameleoni
 
 ## Geometry 1
-* [ ] Imperfect GPS
+* [x] Imperfect GPS
 * [x] White Water Rafting
 * [ ] Pesky Mosquitoes
 * [ ] Cleaning Pipes
@@ -203,6 +203,20 @@ Solution:
 - It then updates at two positions, removing the movie at its old position, putting it into the new one
 
 ### Geometry 1
+
+#### Imperfect GPS
+There are given coordinates and timestamps when a walker was at these positions.
+Also, there is a time intervall at which GPS measures the positions.
+Calculate how much the GPS distance differs from the real walking distance
+
+Solution:
+- There are four arrays, one for given points, one for the given timestamps
+- The same exists for the GPS coordinates and time stamps.
+- The GPS timestamps get calculated by the given intervall, the points are calculated given that.
+- I loop through the GPS times and look if they have corresponding times in the original time array.
+- If this is the case, I copy the points. If not, I use binary search to find the timestamps at the left and the right.
+- From that, I calculate the point in between.
+- Then, given these two point arrays, I calculate both sums of distances and return the difference of them.
 
 #### White Water Rafting
 There are an inner and an outer polygon, which do not touch each other.
