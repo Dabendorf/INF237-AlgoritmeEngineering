@@ -49,11 +49,6 @@ public class BirthdayBoy {
 						dateOfMaxDist = Math.min(dateOfMaxDist, possibleNewDate);
 					}
 				}
-				/*if(dateOfMaxDist<0) {
-					dateOfMaxDist = dates[i+1]-1;
-				} else {
-					dateOfMaxDist = Math.min(dateOfMaxDist, dates[i+1]-1);
-				}*/
 			}
 		}
 
