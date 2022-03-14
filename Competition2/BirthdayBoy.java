@@ -15,7 +15,7 @@ public class BirthdayBoy {
 
 		//dates[0] = -1;
 		for(int i=0; i<numOfNames; i++) {
-			String tull = io.getWord();
+			io.getWord();
 			String birthdayString = io.getWord();
 			dates[i] = dateStringToNum(birthdayString);
 		}
@@ -28,13 +28,11 @@ public class BirthdayBoy {
 		int dateOfMaxDist = 0;
 		for(int i=0; i<numOfNames; i++) {
 			int newDist = dates[i+1]-dates[i];
-			//System.out.println(newDist);
 			if(newDist > maxDistance) {
 				maxDistance = newDist;
 				dateOfMaxDist = dates[i+1]-1;
 			} else if(newDist == maxDistance) {
 				maxDistance = newDist;
-				//dateOfMaxDist = Math.min(dateOfMaxDist, dates[i+1]-1);
 				int possibleNewDate = dates[i+1]-1;
 				if(possibleNewDate > dayNumOf27Oct) {
 					if(dateOfMaxDist > dayNumOf27Oct) {
@@ -77,7 +75,6 @@ public class BirthdayBoy {
 		if(dateNum < 0) {
 			dateNum = 365+dateNum;
 		}
-		//System.out.println(dateNum);
 
 		String month = "";
 		int pointer=10;

@@ -1,7 +1,5 @@
-// https://open.kattis.com/contests/miojc3/problems/dirtydriving
-import java.awt.geom.Point2D;
+// https://open.kattis.com/problems/dirtydriving
 import java.util.Arrays;
-import java.util.Collections;
 
 public class DirtyDriving {
     public static void main(String[] args) {

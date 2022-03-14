@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 // https://open.kattis.com/problems/irrationaldivision
 
 public class IrrationalDivision {
