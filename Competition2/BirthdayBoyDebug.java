@@ -1,24 +1,32 @@
 import java.util.Arrays;
+import java.util.Random;
 
 // https://open.kattis.com/problems/birthdayboy
 
-public class BirthdayBoy {
+public class BirthdayBoyDebug {
     public static void main(String[] args) {
         Kattio io = new Kattio(System.in, System.out);
 
 		int dayNumOf27Oct = dateStringToNum("10-27");
 
 		// Reading cases
-        int numOfNames = io.getInt();
+        //int numOfNames = io.getInt();
+		Random random = new Random();
+        // generate random number from 0 to 3
+        int numOfNames = random.nextInt(100)+1;
 
 		int[] dates = new int[numOfNames+1];
 
 		//dates[0] = -1;
-		for(int i=0; i<numOfNames; i++) {
+		/*for(int i=0; i<numOfNames; i++) {
 			String tull = io.getWord();
 			String birthdayString = io.getWord();
 			dates[i] = dateStringToNum(birthdayString);
+		}*/
+		for(int i=0; i<numOfNames; i++) {
+			dates[i] = random.nextInt(364);
 		}
+
 		//System.out.println(Arrays.toString(dates));
 		Arrays.sort(dates);
 		dates[0] = -(365-dates[dates.length-1]);
@@ -88,7 +96,7 @@ public class BirthdayBoy {
 				break;
 			} else {
 				pointer--;
-				if(pointer<0) {
+				if(pointer<=0) {
 					month = "01";
 					break;
 				}
