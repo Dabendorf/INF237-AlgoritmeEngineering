@@ -1,7 +1,19 @@
-import java.util.Arrays;
-
 // https://open.kattis.com/problems/birthdayboy
 
+import java.util.Arrays;
+
+/**
+ * There is a group of people with different birthdays.
+ * We would like to find the date which has the biggest time having passed since the last birthday
+ * If two dates have the same time passed, choose the day with shortest time passed since 27 October
+ * 
+ * Solution: Write conversion methods date<->dayNumOfTheYear.
+ * Convert the dates to dayNumOfTheYear and sort them.
+ * Add the last birthday a second time as the first birthday with index 365-day
+ * 
+ * Find the minimum span between two neighbouring dates and output it converted back to date
+ * If two have same distance, output date nearest to 27 October
+ */
 public class BirthdayBoy {
     public static void main(String[] args) {
         Kattio io = new Kattio(System.in, System.out);
@@ -13,17 +25,17 @@ public class BirthdayBoy {
 
 		int[] dates = new int[numOfNames+1];
 
-		//dates[0] = -1;
+		// Read birthdays
 		for(int i=0; i<numOfNames; i++) {
 			io.getWord();
 			String birthdayString = io.getWord();
 			dates[i] = dateStringToNum(birthdayString);
 		}
-		//System.out.println(Arrays.toString(dates));
+		
 		Arrays.sort(dates);
 		dates[0] = -(365-dates[dates.length-1]);
-		//System.out.println(Arrays.toString(dates));
 
+		// Calculate distance between two neighbouring days
 		int maxDistance = 0;
 		int dateOfMaxDist = 0;
 		for(int i=0; i<numOfNames; i++) {
@@ -34,6 +46,8 @@ public class BirthdayBoy {
 			} else if(newDist == maxDistance) {
 				maxDistance = newDist;
 				int possibleNewDate = dates[i+1]-1;
+
+				// Special case for two days with same distance
 				if(possibleNewDate > dayNumOf27Oct) {
 					if(dateOfMaxDist > dayNumOf27Oct) {
 						dateOfMaxDist = Math.min(dateOfMaxDist, possibleNewDate);
@@ -55,6 +69,11 @@ public class BirthdayBoy {
 		io.close();
 	}
 
+	/**
+	 * Converts date into dayNum between 0 and 364 (ignoring leap years)
+	 * @param datestring mm-dd
+	 * @return Number between 0 and 364
+	 */
 	public static int dateStringToNum(String datestring) {
 		int[] lengthMonths = {31,28,31,30,31,30,31,31,30,31,30,31};
 
@@ -68,14 +87,19 @@ public class BirthdayBoy {
 		return dateNum+Integer.parseInt(parts[1])-1;
 	}
 
+	/**
+	 * Converts dayOfTheYear back to day format
+	 * @param dateNum Number between 0 and 364
+	 * @return mm-dd
+	 */
 	public static String dateNumToString(int dateNum) {
-		//int[] lengthMonths = {31,28,31,30,31,30,31,31,30,31,30,31};
 		int[] monthsGone = {31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
 
 		if(dateNum < 0) {
 			dateNum = 365+dateNum;
 		}
 
+		// Looping backwards through monthsGone array to determine the month
 		String month = "";
 		int pointer=10;
 		while(true) {

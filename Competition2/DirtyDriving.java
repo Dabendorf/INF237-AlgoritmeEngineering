@@ -1,6 +1,12 @@
 // https://open.kattis.com/problems/dirtydriving
+
 import java.util.Arrays;
 
+/**
+ * There is given an array how much distance a car has to all of the cars driving in front of it.
+ * Given a weird formula, calculate the distance it should have to the car driving before.
+ * 
+ */
 public class DirtyDriving {
     public static void main(String[] args) {
         Kattio io = new Kattio(System.in, System.out);

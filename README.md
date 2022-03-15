@@ -11,7 +11,7 @@ Source code of my INF237 homework
 * 05 	[Graphs 2](#graphs-2)
 * 06 	[Segment trees](#segment-trees)
 * 07 	[Geometry 1](#geometry-1)
-* 08 	Exponential time algorithms
+* 08 	[Exponential time algorithms](#exponential-time-algorithms)
 * 09 	Dynamic programming 2
 * 10 	Graphs 3
 * 11 	Geometry 2
@@ -60,6 +60,12 @@ Source code of my INF237 homework
 * [x] White Water Rafting
 * [ ] Pesky Mosquitoes
 * [ ] Cleaning Pipes
+
+## Exponential time algorithms
+* [ ] .
+* [ ] .
+* [ ] .
+* [ ] .
 
 ## Ideas
 ### Introduction
@@ -233,3 +239,5 @@ Solution:
 - If < 0, its outside on the left, if > 1, its outside on the right
 - In this situation set intersection point to the boundary
 - Then return the distance between that intersection point and the original one
+
+### Exponential time algorithms
