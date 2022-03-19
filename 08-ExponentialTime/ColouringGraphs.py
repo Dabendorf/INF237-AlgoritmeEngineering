@@ -26,7 +26,7 @@ def main():
 		"""first_neighbour_of_0 = list(adj_list[0])[0]
 		num_of_cols = 3
 		found = False
-		while not found and not num_of_cols == 5:
+		while not found and not num_of_cols == 6:
 			it = product(list(range(num_of_cols)), repeat=num_of_nodes-2)
 			for iteration_temp in it:
 				iteration = (0,) + iteration_temp[0:first_neighbour_of_0] + (1,) + iteration_temp[first_neighbour_of_0:]
@@ -48,36 +48,34 @@ def main():
 			num_of_cols += 1"""
 
 		# not found five colours solution
-		print(colouring(adj_list, num_of_nodes))
+		c = colouring(adj_list, num_of_nodes)
+		print(c)
 
 def colouring(adj_list, num_of_nodes):
-	# Init list with first node being colour 0 and rest None
-	results = [None] * num_of_nodes
-	results[0] = 0
+	result = [None] * num_of_nodes
 
-	available = [False] * num_of_nodes
- 
-	# Assign colours to rest
-	for u in range(1, num_of_nodes):
-		for i in adj_list[u]:
-			if results[i] != None:
-				available[results[i]] = True
- 
-		cr = 0
-		while cr < num_of_nodes:
-			if available[cr] == False:
+	for node in range(num_of_nodes):
+		assigned_neighbour_colours = set([result[i] for i in adj_list[node] if i is not None])
+
+		# this fancy code doesnt work
+		#colour = list(set(range(num_of_nodes)).difference(assigned_neighbour_colours)).sort()[0]
+		#colour = sorted(list(set(range(num_of_nodes)).difference(assigned_neighbour_colours)))[0]
+		#print(colour)
+
+		# bad alternative
+		colour = 0
+		for assigned_col in assigned_neighbour_colours:
+			if colour != assigned_col:
 				break
-			 
-			cr += 1
-			 
-		results[u] = cr
+			colour += 1
  
-		for i in adj_list[u]:
-			if results[i] != None:
-				available[results[i]] = False
+		result[node] = colour
  
-	print(results)
-	return len(list(set(results)))
+	#print(result)
+	#if None in result:
+	#	return len(list(set(list(result))))-1
+	return len(list(set(list(result))))
+
 
 def is_bipartite(adj_list, components):
 	""" Checks if graph is bipartite by giving it colours"""
@@ -103,8 +101,6 @@ def is_bipartite(adj_list, components):
 					queue.append(neighbour)
 					colours[neighbour] = not colours[el]
 	return True
-
-		
 
 if __name__ == "__main__":
 	main()
