@@ -16,13 +16,14 @@ def main():
 
 def augustus(todecode, key, azlist, letter_ind):
 	output_string = ""
-	print(f"Len key: {len(key)}")
+	#print(f"Len key: {len(key)}")
 	for idx, letter in enumerate(todecode):
-		ord_num_of_letter = letter_ind[key[idx_temp]]
-
 		idx_temp = idx%len(key)
-		print(f"idx: {idx} {idx_temp} {key[idx_temp]}")
-		print(f"letter: {letter} {letter_ind[letter]}")
+		ord_num_of_letter = letter_ind[letter] - letter_ind[key[idx_temp]]
+
+		
+		#print(f"idx: {idx} {idx_temp} {key[idx_temp]}")
+		#print(f"letter: {letter} {letter_ind[letter]}")
 
 		if ord_num_of_letter % 2 == 0:
 			output_letter = caesar(letter, -letter_ind[key[idx_temp]], azlist, letter_ind)
