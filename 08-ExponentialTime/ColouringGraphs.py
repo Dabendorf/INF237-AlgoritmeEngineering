@@ -2,9 +2,7 @@
 
 import sys
 from collections import defaultdict
-import math
-import heapq
-from itertools import combinations_with_replacement, product
+from itertools import product
 
 """ Problem
 
@@ -28,8 +26,9 @@ def main():
 		num_of_cols = 3
 		found = False
 		while not found and not num_of_cols == 7:
-			it = product(list(range(num_of_cols)), repeat=num_of_nodes)
-			for iteration in it:
+			it = product(list(range(num_of_cols)), repeat=num_of_nodes-1)
+			for iteration_temp in it:
+				iteration = (0,) + iteration_temp
 				wrong = False
 				for idx_node, col_node in enumerate(iteration):
 					if wrong:
