@@ -23,12 +23,13 @@ def main():
 	if is_bipartite(adj_list, [0]):
 		print(2)
 	else:
+		"""first_neighbour_of_0 = list(adj_list[0])[0]
 		num_of_cols = 3
 		found = False
-		while not found and not num_of_cols == 7:
-			it = product(list(range(num_of_cols)), repeat=num_of_nodes-1)
+		while not found and not num_of_cols == 5:
+			it = product(list(range(num_of_cols)), repeat=num_of_nodes-2)
 			for iteration_temp in it:
-				iteration = (0,) + iteration_temp
+				iteration = (0,) + iteration_temp[0:first_neighbour_of_0] + (1,) + iteration_temp[first_neighbour_of_0:]
 				wrong = False
 				for idx_node, col_node in enumerate(iteration):
 					if wrong:
@@ -44,7 +45,39 @@ def main():
 					print(num_of_cols)
 					exit(0)
 
-			num_of_cols += 1
+			num_of_cols += 1"""
+
+		# not found five colours solution
+		print(colouring(adj_list, num_of_nodes))
+
+def colouring(adj_list, num_of_nodes):
+	# Init list with first node being colour 0 and rest None
+	results = [None] * num_of_nodes
+	results[0] = 0
+
+	available = [False] * num_of_nodes
+ 
+	# Assign colours to rest
+	for u in range(1, num_of_nodes):
+		for i in adj_list[u]:
+			if results[i] != None:
+				available[results[i]] = True
+ 
+		cr = 0
+		while cr < num_of_nodes:
+			if available[cr] == False:
+				break
+			 
+			cr += 1
+			 
+		results[u] = cr
+ 
+		for i in adj_list[u]:
+			if results[i] != None:
+				available[results[i]] = False
+ 
+	print(results)
+	return len(list(set(results)))
 
 def is_bipartite(adj_list, components):
 	""" Checks if graph is bipartite by giving it colours"""
