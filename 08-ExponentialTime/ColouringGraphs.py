@@ -4,7 +4,7 @@ import sys
 from collections import defaultdict
 import math
 import heapq
-from itertools import combinations_with_replacement
+from itertools import combinations_with_replacement, product
 
 """ Problem
 
@@ -22,28 +22,26 @@ def main():
 			adj_list[i].add(n)
 			adj_list[n].add(i)
 
-	print(adj_list)
 	if is_bipartite(adj_list, [0]):
 		print(2)
 	else:
 		num_of_cols = 3
 		found = False
-		while not found:
-			it = combinations_with_replacement(list(range(num_of_cols)), num_of_nodes)
+		while not found and not num_of_cols == 7:
+			it = product(list(range(num_of_cols)), repeat=num_of_nodes)
 			for iteration in it:
 				wrong = False
-				for idx, node_col in enumerate(iteration):
+				for idx_node, col_node in enumerate(iteration):
 					if wrong:
 						break
-					for neighbour in adj_list[idx]:
+					for neighbour in adj_list[idx_node]:
 						if wrong:
 							break
-						if node_col == neighbour:
+						if col_node == iteration[neighbour]:
 							wrong = True
-				
+
 				if not wrong:
-					found = True
-					print(iteration)
+					#print(iteration)
 					print(num_of_cols)
 					exit(0)
 
