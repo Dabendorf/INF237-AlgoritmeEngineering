@@ -27,6 +27,8 @@ def main():
 
 		#output = greedy_colouring(adj_list, num_nodes)
 		#print(output)
+		
+
 		if num_edges == 0:
 			print(1)
 		elif num_edges == (num_nodes * (num_nodes-1))/2:
@@ -37,25 +39,70 @@ def main():
 		else:
 			if is_bipartite(adj_list, 0):
 				print(2)
-			elif num_edges <= 3*num_nodes - 6:
-				print("dadasdasda")
+			else:
+				found = False
+				for num_colours in range(2,4):
+					colour_array = [0]*num_nodes
+					#print(f"Nodes: {num_nodes} {num_edges} {num_colours}")
+					if graphColoring(adj_list, num_colours, 0, colour_array, num_nodes):
+						print(num_colours)
+						found = True
+						break
+				if not found:
+					print("many")
+				"""output = greedy_colouring(adj_list, num_nodes)
+				run_num = 300
+				if run_num > 0 and output > 3:
+					output = min(greedy_colouring(adj_list, num_nodes), output)
+					run_num -= 1
+				print(output)"""
+				#print("check if 3, 4 or many colourable")
+
+			"""elif num_edges <= 3*num_nodes - 6:
 				# graph is planar
 				#print("check if 3 or 4 colourable")
 				output = greedy_colouring(adj_list, num_nodes)
 				if output > 4:
 					print(4)
 				else:
-					print(output)
-			else:
-				output = greedy_colouring(adj_list, num_nodes)
-				run_num = 30
-				if run_num > 0 and output > 3:
-					output = min(greedy_colouring(adj_list, num_nodes), output)
-					print("Kldasda")
-					exit(0)
-					run_num -= 1
-				print(output)
-				#print("check if 3, 4 or many colourable")
+					print(output)"""
+def isSafe(adj_list, color, num_nodes):
+	#print("isSafe")
+	for i in range(num_nodes):
+		for j in range(i + 1, num_nodes):
+			if j in adj_list[i] and color[j] == color[i]:
+				return False
+	return True
+ 
+# /* This function solves the m Coloring
+# problem using recursion. It returns
+# false if the m colours cannot be assigned,
+# otherwise, return true and prints
+# assignments of colours to all vertices.
+# Please note that there may be more than
+# one solutions, this function prints one
+# of the feasible solutions.*/
+def graphColoring(adj_list, m, i, color, num_nodes):
+	#print("graphColouring")
+	# if current index reached end
+	if i == num_nodes:
+ 
+		# if coloring is safe
+		if isSafe(adj_list, color, num_nodes):
+			# Print the solution
+			#printSolution(color)
+			return True
+		return False
+ 
+	# Assign each color from 1 to m
+	for j in range(1, m + 1):
+		color[i] = j
+ 
+		# Recur of the rest vertices
+		if graphColoring(adj_list, m, i + 1, color, num_nodes):
+			return True
+		color[i] = 0
+	return False
 
 def greedy_colouring(adj_list, num_of_nodes):
 	colours = [None] * num_of_nodes
@@ -69,7 +116,7 @@ def greedy_colouring(adj_list, num_of_nodes):
 			continue
 		#print(f"Node: {node}, adj_list: {adj_list[node]}")
 		#print(f"|V|: {num_of_nodes}, adj_list={adj_list}")
-		colours_used_redundant = [neighbour for neighbour in adj_list[node_idx] if colours[neighbour] is not None]
+		colours_used_redundant = [neighbour for neighbour in adj_list[node] if colours[neighbour] is not None]
 		colours_used = set(colours_used_redundant)
 		#print(f"Colours used for edge neighbours {node}: {colours_used}")
 
@@ -79,7 +126,7 @@ def greedy_colouring(adj_list, num_of_nodes):
 				next_col = i
 				break
 
-		colours[node_idx] = next_col
+		colours[node] = next_col
 		if next_col == 4:
 			return 5
 	
