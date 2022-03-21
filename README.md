@@ -1,6 +1,5 @@
 # INF237-AlgoritmeEngineering 
-Source code of my INF237 homework
-
+Source code of my INF237 homework<br/>
 [Link to Kattis tasks](https://uib.kattis.com/courses/INF237/spring22)
 
 ## Temaer
@@ -74,14 +73,12 @@ Read two numbers, add them together
 #### Greetings2
 Check the number of e with count, multiply quantity by two
 #### Tarifa
-X gigabytes to spent per months, N months
-
+X gigabytes to spent per months, N months<br/>
 The following months are quantity of data spent
 
 Solution: Multiply (N+1)*X and substract every monthly value 
 #### EarlyWinter
-n years historical weather data and information d_i for every year about number of days between summer and snow
-
+n years historical weather data and information d_i for every year about number of days between summer and snow<br/>
 Find out number of consecutive years before this one with larger summer-snow gap
 	
 Solution: Enumerate through yearly data
@@ -91,16 +88,11 @@ Solution: Enumerate through yearly data
 
 ### Graphs 1
 #### ThroughTheGrapevine
-Spread a rumor to as many people as possible.
-
-Every person has skepicism level.
-
-It's number of people from which they want to hear the rumor before spreading it themselves.
-
-One starting person spreads it to all people she knows (represented by graph)
-
-Every day the next people who did hear it the day before spread it
-
+Spread a rumor to as many people as possible.<br/>
+Every person has skepicism level.<br/>
+It's number of people from which they want to hear the rumor before spreading it themselves.<br/>
+One starting person spreads it to all people she knows (represented by graph)<br/>
+Every day the next people who did hear it the day before spread it<br/>
 Find out number of people who know the rumors
 
 Solution:
@@ -111,8 +103,7 @@ Solution:
 - Add their spreader to the told_list and check skepticism level. If it is reached, mark them as a next_round_spreader
 	
 #### Hoppers
-A new virus is spreading only two the neighbours of the neighbours of a infected computer.
-
+A new virus is spreading only two the neighbours of the neighbours of a infected computer.<br/>
 Find out how many connections are missing such that one computer infects all
 	
 Solution:
@@ -127,7 +118,7 @@ Solution:
 ### Sliding, searching, and sorting 
 
 #### Tired Terry
-Terry has a sleep pattern of size n (repeating) consisting of seconds of sleep (Z) or awakeness (W). 
+Terry has a sleep pattern of size n (repeating) consisting of seconds of sleep (Z) or awakeness (W).<br/> 
 Given a period of seconds p, how many seconds i are there for which intervals [i-p+1, i] he was sleeping for less than d seconds?
 	
 Solution:
@@ -138,10 +129,8 @@ Solution:
 - This solution counts number of Z in first window and then just removes the first and adds the next letter to the z-counter
 
 #### Firefly
-There is cave with alternating stalagtites and stalagmites all having a length
-
-There is a firefly flying horizontally at a chosen level, destroying all obsticles
-
+There is cave with alternating stalagtites and stalagmites all having a length<br/>
+There is a firefly flying horizontally at a chosen level, destroying all obsticles<br/>
 Find out what is the minimum number of obsticles to destroy and how many of these levels with that number exist
 
 Solution:
@@ -176,8 +165,7 @@ Solution:
 
 ### Graphs 2
 #### Island Hopping
-There are n islands existing on a map and each of them has a coordinate (x,y) where one can start to build a bridge.
-
+There are n islands existing on a map and each of them has a coordinate (x,y) where one can start to build a bridge.<br/>
 All islands should become connected and one needs to search the overall minimum length of all bridges to build.
 
 Solution:
@@ -185,10 +173,8 @@ Solution:
 - First we calculate all distances of all pairs and then use the algorithm of Prim to get the sum of bridge lengths
 
 #### Detour
-We drive from node 0 to node 1. There are many intersections and for each of them, there is an unique shortest path to 1.
-
-We are not allowed to take any shortest direction at any intersection (node)
-
+We drive from node 0 to node 1. There are many intersections and for each of them, there is an unique shortest path to 1.<br/>
+We are not allowed to take any shortest direction at any intersection (node)<br/>
 Print a path were this is possible or output impossible if there is no such path
 
 Solution:
@@ -198,8 +184,7 @@ Solution:
 ### Segment trees
 
 #### Points of Snow
-We live in a one dimensional country and receive both weather reports telling about falling snow and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)
-
+We live in a one dimensional country and receive both weather reports telling about falling snow and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)<br/>
 Write a programme which stores these values and calculates the amount of snow at different places
 
 Solution:
@@ -208,10 +193,8 @@ Solution:
 - The update goes to the leafs and works iteratively up to the parents depending if it is within the range or not
 
 #### Movie Collection
-There is a stack of movies with numbers 1 to n
-
-Each time we are interested in a movie, the programme outputs at which position from the top the movie is situated
-
+There is a stack of movies with numbers 1 to n<br/>
+Each time we are interested in a movie, the programme outputs at which position from the top the movie is situated<br/>
 It then updates the positions of all movies
 
 Solution:
@@ -225,10 +208,8 @@ Solution:
 ### Geometry 1
 
 #### Imperfect GPS
-There are given coordinates and timestamps when a walker was at these positions.
-
-Also, there is a time intervall at which GPS measures the positions.
-
+There are given coordinates and timestamps when a walker was at these positions.<br/>
+Also, there is a time intervall at which GPS measures the positions.<br/>
 Calculate how much the GPS distance differs from the real walking distance
 
 Solution:
@@ -241,10 +222,8 @@ Solution:
 - Then, given these two point arrays, I calculate both sums of distances and return the difference of them.
 
 #### White Water Rafting
-There are an inner and an outer polygon, which do not touch each other.
-
-Moreover, there is a circular raft which rafts through the inner path between those polygons.
-
+There are an inner and an outer polygon, which do not touch each other.<br/>
+Moreover, there is a circular raft which rafts through the inner path between those polygons.<br/>
 Find the biggest possible radius of the raft s.t. this is possible
 
 Solution:
@@ -261,10 +240,8 @@ Solution:
 ### Exponential time algorithms
 
 #### Social Advertising
-There are n people and each of them has a list of friends.
-
-We would like to post advertisements on their social media wall which all of their friends are going to see (including themselves)
-
+There are n people and each of them has a list of friends.<br/>
+We would like to post advertisements on their social media wall which all of their friends are going to see (including themselves)<br/>
 Find the minimum amount of people to post advertisement to such that all peopel are reached
 
 Solution:
