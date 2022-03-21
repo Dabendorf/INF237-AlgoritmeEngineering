@@ -62,10 +62,10 @@ Source code of my INF237 homework
 * [ ] Cleaning Pipes
 
 ## Exponential time algorithms
-* [ ] .
-* [ ] .
-* [ ] .
-* [ ] .
+* [x] Social Advertising
+* [ ] Map Colouring
+* [ ] Holey N-Queens (Batman)
+* [ ] Rubik's Revenge in ... 2D!? 3D?
 
 ## Ideas
 ### Introduction
@@ -241,3 +241,16 @@ Solution:
 - Then return the distance between that intersection point and the original one
 
 ### Exponential time algorithms
+
+#### Social Advertising
+There are n people and each of them has a list of friends.
+We would like to post advertisements on their social media wall which all of their friends are going to see (including themselves)
+Find the minimum amount of people to post advertisement to such that all peopel are reached
+
+Solution:
+- After reading friend lists, one converts friend lists into binary strings (integers)
+- Person x is 2**(x-1), e.g. {1,4,5} is 1+8+16=25
+- If we have n people, we need to reach to number 2**n-1 by logical OR on an amount of subsets (represented by integer)
+- At first I prune duplicates (same friend lists) and go through pairs of them and remove numbers which are subsets of others
+- In the end, I loop through each size from 2 to n and try for each combination if they output 2**n-1 after logical or
+- If this is the case, the loop breaks and the minimum number is found

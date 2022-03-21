@@ -1,3 +1,5 @@
+# https://uib.kattis.com/problems/socialadvertising
+
 import sys
 import itertools
 from functools import reduce
