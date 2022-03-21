@@ -75,7 +75,9 @@ Read two numbers, add them together
 Check the number of e with count, multiply quantity by two
 #### Tarifa
 X gigabytes to spent per months, N months
+
 The following months are quantity of data spent
+
 Solution: Multiply (N+1)*X and substract every monthly value 
 #### EarlyWinter
 n years historical weather data and information d_i for every year about number of days between summer and snow
@@ -90,11 +92,15 @@ Solution: Enumerate through yearly data
 ### Graphs 1
 #### ThroughTheGrapevine
 Spread a rumor to as many people as possible.
+
 Every person has skepicism level.
+
 It's number of people from which they want to hear the rumor before spreading it themselves.
 
 One starting person spreads it to all people she knows (represented by graph)
+
 Every day the next people who did hear it the day before spread it
+
 Find out number of people who know the rumors
 
 Solution:
@@ -106,6 +112,7 @@ Solution:
 	
 #### Hoppers
 A new virus is spreading only two the neighbours of the neighbours of a infected computer.
+
 Find out how many connections are missing such that one computer infects all
 	
 Solution:
@@ -120,7 +127,8 @@ Solution:
 ### Sliding, searching, and sorting 
 
 #### Tired Terry
-Terry has a sleep pattern of size n (repeating) consisting of seconds of sleep (Z) or awakeness (W). Given a period of seconds p, how many seconds i are there for which intervals [i-p+1, i] he was sleeping for less than d seconds?
+Terry has a sleep pattern of size n (repeating) consisting of seconds of sleep (Z) or awakeness (W). 
+Given a period of seconds p, how many seconds i are there for which intervals [i-p+1, i] he was sleeping for less than d seconds?
 	
 Solution:
 - Append the list of letters by the length of p-1 and make a sliding window of size p over it
@@ -131,6 +139,7 @@ Solution:
 
 #### Firefly
 There is cave with alternating stalagtites and stalagmites all having a length
+
 There is a firefly flying horizontally at a chosen level, destroying all obsticles
 
 Find out what is the minimum number of obsticles to destroy and how many of these levels with that number exist
@@ -140,7 +149,6 @@ Solution:
 - Now add them together backwards (`[i-1] += [i]`) to make a cumulative list
 - Reverse one of the lists and add them together
 - Find the minimum value and how often it appears
-
 
 ### Dynamic Programming 1
 
@@ -169,6 +177,7 @@ Solution:
 ### Graphs 2
 #### Island Hopping
 There are n islands existing on a map and each of them has a coordinate (x,y) where one can start to build a bridge.
+
 All islands should become connected and one needs to search the overall minimum length of all bridges to build.
 
 Solution:
@@ -177,7 +186,9 @@ Solution:
 
 #### Detour
 We drive from node 0 to node 1. There are many intersections and for each of them, there is an unique shortest path to 1.
+
 We are not allowed to take any shortest direction at any intersection (node)
+
 Print a path were this is possible or output impossible if there is no such path
 
 Solution:
@@ -188,6 +199,7 @@ Solution:
 
 #### Points of Snow
 We live in a one dimensional country and receive both weather reports telling about falling snow and queries how much snow there is at one place. Snow falls in the range [a,b) (badly described)
+
 Write a programme which stores these values and calculates the amount of snow at different places
 
 Solution:
@@ -197,7 +209,9 @@ Solution:
 
 #### Movie Collection
 There is a stack of movies with numbers 1 to n
+
 Each time we are interested in a movie, the programme outputs at which position from the top the movie is situated
+
 It then updates the positions of all movies
 
 Solution:
@@ -212,7 +226,9 @@ Solution:
 
 #### Imperfect GPS
 There are given coordinates and timestamps when a walker was at these positions.
+
 Also, there is a time intervall at which GPS measures the positions.
+
 Calculate how much the GPS distance differs from the real walking distance
 
 Solution:
@@ -226,7 +242,9 @@ Solution:
 
 #### White Water Rafting
 There are an inner and an outer polygon, which do not touch each other.
+
 Moreover, there is a circular raft which rafts through the inner path between those polygons.
+
 Find the biggest possible radius of the raft s.t. this is possible
 
 Solution:
@@ -244,7 +262,9 @@ Solution:
 
 #### Social Advertising
 There are n people and each of them has a list of friends.
+
 We would like to post advertisements on their social media wall which all of their friends are going to see (including themselves)
+
 Find the minimum amount of people to post advertisement to such that all peopel are reached
 
 Solution:
