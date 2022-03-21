@@ -1,6 +1,6 @@
 from random import randint
 
-num_test_cases = 33
+num_test_cases = 300
 print(num_test_cases)
 
 for _ in range(num_test_cases):

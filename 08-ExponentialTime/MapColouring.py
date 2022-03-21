@@ -41,11 +41,17 @@ def main():
 				print(2)
 			else:
 				found = False
-				for num_colours in range(2,4):
-					colour_array = [0]*num_nodes
-					#print(f"Nodes: {num_nodes} {num_edges} {num_colours}")
-					if graphColoring(adj_list, num_colours, 0, colour_array, num_nodes):
-						print(num_colours)
+				for i in range(2,5):
+					ignore_set = set()
+					for key, val in adj_list.items():
+						num_neighbours = len(list(val))
+						if num_neighbours == 0:
+							ignore_set.add(key)
+						if num_neighbours == 1:
+							ignore_set.add(key)
+							adj_list[list(val)[0]].remove(key)
+					if graphColoring(adj_list, i, 0, [0]*num_nodes, num_nodes, ignore_set):
+						print(i)
 						found = True
 						break
 				if not found:
@@ -67,7 +73,6 @@ def main():
 				else:
 					print(output)"""
 def isSafe(adj_list, color, num_nodes):
-	#print("isSafe")
 	for i in range(num_nodes):
 		for j in range(i + 1, num_nodes):
 			if j in adj_list[i] and color[j] == color[i]:
@@ -82,8 +87,7 @@ def isSafe(adj_list, color, num_nodes):
 # Please note that there may be more than
 # one solutions, this function prints one
 # of the feasible solutions.*/
-def graphColoring(adj_list, m, i, color, num_nodes):
-	#print("graphColouring")
+def graphColoring(adj_list, m, i, color, num_nodes, ignore_set):
 	# if current index reached end
 	if i == num_nodes:
  
@@ -95,14 +99,23 @@ def graphColoring(adj_list, m, i, color, num_nodes):
 		return False
  
 	# Assign each color from 1 to m
-	for j in range(1, m + 1):
-		color[i] = j
- 
+	if i in ignore_set:
+		color[i] = 0
+
 		# Recur of the rest vertices
-		if graphColoring(adj_list, m, i + 1, color, num_nodes):
+		if graphColoring(adj_list, m, i + 1, color, num_nodes, ignore_set):
 			return True
 		color[i] = 0
-	return False
+		return False
+	else:
+		for j in range(1, m + 1):
+			color[i] = j
+	
+			# Recur of the rest vertices
+			if graphColoring(adj_list, m, i + 1, color, num_nodes, ignore_set):
+				return True
+			color[i] = 0
+		return False
 
 def greedy_colouring(adj_list, num_of_nodes):
 	colours = [None] * num_of_nodes
