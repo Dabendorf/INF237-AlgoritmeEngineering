@@ -1,6 +1,10 @@
 import sys
-from typing import Tuple
 from collections import defaultdict
+
+if len(sys.argv) > 1:
+	debug = print
+else:
+	debug = lambda *_,**__:None
 
 def main():
 	num_of_cases = int(sys.stdin.readline())

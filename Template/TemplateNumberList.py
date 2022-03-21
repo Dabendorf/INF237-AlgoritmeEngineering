@@ -1,14 +1,17 @@
 import sys
-from typing import Tuple
 from collections import defaultdict
+
+if len(sys.argv) > 1:
+	debug = print
+else:
+	debug = lambda *_,**__:None
 
 def main():
 	num_of_cases = int(sys.stdin.readline())
 
 	for line in sys.stdin:
         # Reads one list of integers per line
-		case_str = line.strip().split(" ")
-		case = [int(i) for i in case_str]
+		case = [int(i) for i in line.strip().split(" ")]
 		
 
 if __name__ == "__main__":
