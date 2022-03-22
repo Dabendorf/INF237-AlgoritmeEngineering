@@ -1,4 +1,3 @@
-from ctypes import pointer
 import sys
 from collections import defaultdict
 
@@ -30,13 +29,6 @@ def main():
 	debug(orig_positions_temp)
 	orig_positions = list_to_bin(orig_positions_temp)
 	goal_positions = list_to_bin(goal_temp)
-
-	#printBinBlocks(orig_positions)
-	#print("====")
-	#printBinBlocks(goal_positions)
-
-	#for i in neighbours(orig_positions):
-	#	printBinBlocks(i)
 
 	print(bidirectional_search(orig_positions, goal_positions))
 
@@ -73,7 +65,9 @@ def bidirectional_search(start, goal):
 	meeting_point = None # later used together with parent to find the depth
 
 	# This still seems terribly slow
-	while queue_start and queue_goal and meeting_point is None:
+	# This must change to pointer < length, but since there always is a solution, this should be a problem
+	#while queue_start and queue_goal and meeting_point is None:
+	while meeting_point is None:
 		# Forward direction
 		s = queue_start[pointer_start]
 		pointer_start += 1
@@ -122,10 +116,10 @@ def bidirectional_search(start, goal):
 	return path_start+path_end-1
 
 def swap_positions(pattern, ind0, ind1, ind2, ind3, left):
-	mask0 = 3 << (16-ind0-1)*2
-	mask1 = 3 << (16-ind1-1)*2
-	mask2 = 3 << (16-ind2-1)*2
-	mask3 = 3 << (16-ind3-1)*2
+	mask0 = 3 << ind0*2
+	mask1 = 3 << ind1*2
+	mask2 = 3 << ind2*2
+	mask3 = 3 << ind3*2
 
 	val0 = pattern & mask0
 	val1 = pattern & mask1
@@ -137,21 +131,21 @@ def swap_positions(pattern, ind0, ind1, ind2, ind3, left):
 	pattern = pattern & ~mask2
 	pattern = pattern & ~mask3
 
-	val0 >>= (16-ind0-1)*2
-	val1 >>= (16-ind1-1)*2
-	val2 >>= (16-ind2-1)*2
-	val3 >>= (16-ind3-1)*2
+	val0 >>= ind0*2
+	val1 >>= ind1*2
+	val2 >>= ind2*2
+	val3 >>= ind3*2
 
 	if left:
-		pattern |= val0 << (16-ind1-1)*2
-		pattern |= val1 << (16-ind2-1)*2
-		pattern |= val2 << (16-ind3-1)*2
-		pattern |= val3 << (16-ind0-1)*2
+		pattern |= val0 << ind1*2
+		pattern |= val1 << ind2*2
+		pattern |= val2 << ind3*2
+		pattern |= val3 << ind0*2
 	else:
-		pattern |= val0 << (16-ind3-1)*2
-		pattern |= val1 << (16-ind0-1)*2
-		pattern |= val2 << (16-ind1-1)*2
-		pattern |= val3 << (16-ind2-1)*2
+		pattern |= val0 << ind3*2
+		pattern |= val1 << ind0*2
+		pattern |= val2 << ind1*2
+		pattern |= val3 << ind2*2
 
 	return pattern
 
