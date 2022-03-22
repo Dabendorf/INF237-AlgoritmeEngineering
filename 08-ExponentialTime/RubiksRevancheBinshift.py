@@ -31,7 +31,11 @@ def main():
 	goal_positions = list_to_bin(goal_temp)
 
 	#printBinBlocks(orig_positions)
+	#print("====")
 	#printBinBlocks(goal_positions)
+
+	#for i in neighbours(orig_positions):
+	#	printBinBlocks(i)
 
 	print(bidirectional_search(orig_positions, goal_positions))
 
@@ -45,8 +49,8 @@ def list_to_bin(l):
 def bidirectional_search(start, goal):
 	visited_start = set()
 	visited_end = set()
-	parent_start = dict()
-	parent_end = dict()
+	parent_start = defaultdict(lambda: -1)
+	parent_end = defaultdict(lambda: -1)
 
 	queue_start = [start]
 	queue_goal = [goal]
@@ -66,7 +70,9 @@ def bidirectional_search(start, goal):
 				parent_start[u] = s
 
 		if s == goal or s in queue_goal:
-			return True
+			meeting_point = s
+			#return True
+			break
 
 		t = queue_goal.pop()
 		for v in neighbours(t):
@@ -76,8 +82,26 @@ def bidirectional_search(start, goal):
 				visited_end.add(v)
 				parent_end[v] = t
 
-		if t == start or s in queue_start:
-			return True
+		if t == start or t in queue_start:
+			meeting_point = t
+			#return True
+			break
+	
+	#debug(meeting_point)
+	path_start = 0
+	node1 = meeting_point
+	while node1 != -1:
+		path_start += 1
+		#printBinBlocks(node1)
+		node1 = parent_start[node1]
+
+	path_end = 0
+	node2 = parent_end[meeting_point]
+	while node2 != -1:
+		path_end += 1
+		#printBinBlocks(node2)
+		node2 = parent_end[node2]
+	return path_start+path_end
 
 def swap_positions(pattern, ind0, ind1, ind2, ind3, left):
 	mask0 = 3 << (16-ind0-1)*2

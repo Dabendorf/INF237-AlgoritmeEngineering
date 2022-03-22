@@ -50,10 +50,15 @@ val1 >>= (16-ind1-1)*2
 val2 >>= (16-ind2-1)*2
 val3 >>= (16-ind3-1)*2
 
-pattern |= val0 << (16-ind1-1)*2
+"""pattern |= val0 << (16-ind1-1)*2
 pattern |= val1 << (16-ind2-1)*2
 pattern |= val2 << (16-ind3-1)*2
-pattern |= val3 << (16-ind0-1)*2
+pattern |= val3 << (16-ind0-1)*2"""
+
+pattern |= val0 << (16-ind3-1)*2
+pattern |= val1 << (16-ind0-1)*2
+pattern |= val2 << (16-ind1-1)*2
+pattern |= val3 << (16-ind2-1)*2
 
 print("Famoser output")
 printBinBlocks(pattern)
