@@ -1,109 +1,161 @@
+from ctypes import pointer
 import sys
 from collections import defaultdict
 
+def printBinBlocks(num):
+	overall_str = list(bin(num)[2:].rjust(32, "0"))
+	for outer in range(4):
+		for middle in range(4):
+			for inner in range(2):
+				ind = outer*8+middle*2+inner
+				debug(overall_str[ind], end="")
+			debug(" ", end="")
+		debug("| ", end="")
+	debug()
+	
 if len(sys.argv) > 1:
 	debug = print
 else:
 	debug = lambda *_,**__:None
 
 def main():
-	orig_positions = list()
-	goal = [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3]
+	orig_positions_temp = list()
+	goal_temp = [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3]
 	letter_to_num = {"R":0, "G":1, "B":2, "Y":3}
 
 	for i in range(4):
 		line = [letter_to_num[i] for i in list(sys.stdin.readline().strip())]
-		orig_positions.extend(line)
+		orig_positions_temp.extend(line)
 
-	debug(orig_positions)
+	debug(orig_positions_temp)
+	orig_positions = list_to_bin(orig_positions_temp)
+	goal_positions = list_to_bin(goal_temp)
+
+	#printBinBlocks(orig_positions)
+	#print("====")
+	#printBinBlocks(goal_positions)
+
 	#for i in neighbours(orig_positions):
+	#	printBinBlocks(i)
 
-	print(bidirectional_search(orig_positions, goal))
+	print(bidirectional_search(orig_positions, goal_positions))
+
+def list_to_bin(l):
+	out = l[0]
+	for ind in range(1, 16):
+		out = out << 2
+		out += l[ind]
+	return out
 
 def bidirectional_search(start, goal):
+	# Every state is represented by an integer (binary number with 32 digits where pairs of 2 are the colour at one position)
+	# This neighbouring function works 100% correct, I checked this
+
+	# Sets of visited states from start and end
+	visited_start = set()
+	visited_end = set()
+
+	# Parents of visited states (where did we visit them from)
+	parent_start = defaultdict(lambda: -1)
+	parent_end = defaultdict(lambda: -1)
+
+	# Queues for the bidirectional search
 	queue_start = [start]
 	queue_goal = [goal]
 
-	visited_start = [start]
-	visited_goal = [goal]
+	visited_start.add(start)
+	visited_end.add(goal)
 
-	"""depth_start = dict()
-	depth_goal = dict()
-	depth_start[tuple(start)] = 0
-	depth_goal[tuple(end)] = 0"""
+	pointer_start = 0
+	pointer_goal = 0
 
-	while queue_start and queue_goal:
-		s = queue_start.pop()
-		#depth_s = depth_start[tuple(s)]
-		
-		if s == goal or s in queue_goal:
-			#print(depth_start[tuple(s)]+depth_goal[tuple(s)])
-			return True
+	# The middle point where both BFSs will meet each other
+	meeting_point = None # later used together with parent to find the depth
 
+	# This still seems terribly slow
+	while queue_start and queue_goal and meeting_point is None:
+		# Forward direction
+		s = queue_start[pointer_start]
+		pointer_start += 1
 		for u in neighbours(s):
+			#print(f"neighbour u, visited: {len(visited_start)}")
 			if not u in visited_start:
-				#depth_start[tuple(u)] = depth_s +1
 				queue_start.append(u)
-				visited_start.append(u)
+				visited_start.add(u)
+				parent_start[u] = s
 
-		t = queue_goal.pop()
-		#depth_t = depth_goal[tuple(t)]
+		if s == goal or s in queue_goal:
+			meeting_point = s
+			#return True
+			break
+
+		# Backwards direction
+		t = queue_goal[pointer_goal]
+		pointer_goal += 1
+		for v in neighbours(t):
+			#print(f"neighbour v, visited: {len(visited_end)}")
+			if not v in visited_end:
+				queue_goal.append(v)
+				visited_end.add(v)
+				parent_end[v] = t
 
 		if t == start or t in queue_start:
-			#print(depth_start[tuple(s)]+depth_goal[tuple(s)])
-			return True
+			meeting_point = t
+			#return True
+			break
+	
+	#debug(meeting_point)
+	# Calculate the length of the path (I guess this is wrong?)
+	path_start = 0
+	node1 = meeting_point
+	while node1 != -1:
+		path_start += 1
+		#printBinBlocks(node1)
+		node1 = parent_start[node1]
 
-		for v in neighbours(t):
-			if not v in visited_goal:
-				#depth_goal[tuple(v)] = depth_t +1
-				queue_goal.append(v)
-				visited_goal.append(v)
-	return False
+	path_end = 0
+	node2 = parent_end[meeting_point]
+	while node2 != -1:
+		path_end += 1
+		#printBinBlocks(node2)
+		node2 = parent_end[node2]
+	return path_start+path_end-1
 
-def bfs(s, adj_list):
-	""" Its a BFS. The way a BFS always has behaved"""
-	output_list = set()
-	visited = defaultdict(lambda: False)
+def swap_positions(pattern, ind0, ind1, ind2, ind3, left):
+	mask0 = 3 << (16-ind0-1)*2
+	mask1 = 3 << (16-ind1-1)*2
+	mask2 = 3 << (16-ind2-1)*2
+	mask3 = 3 << (16-ind3-1)*2
 
-	# Queue starts with start node
-	queue = [s]
-	visited[s] = True
+	val0 = pattern & mask0
+	val1 = pattern & mask1
+	val2 = pattern & mask2
+	val3 = pattern & mask3
 
-	# While queue, go through them
-	while queue:
-		s = queue.pop()
+	pattern = pattern & ~mask0
+	pattern = pattern & ~mask1
+	pattern = pattern & ~mask2
+	pattern = pattern & ~mask3
 
-		if s != None:
-			output_list.add(s)
-
-		# Mark neighbours as visited and add to queue
-		for i in adj_list[s]:
-			if visited[i] == False:
-				queue.append(i)
-				visited[i] = True
-
-	# Returns list of all visited nodes
-	return output_list
-
-def swap_positions(pos_old, a, b, c, d, left):
-	pos = pos_old.copy()
+	val0 >>= (16-ind0-1)*2
+	val1 >>= (16-ind1-1)*2
+	val2 >>= (16-ind2-1)*2
+	val3 >>= (16-ind3-1)*2
 
 	if left:
-		swap = pos[a]
-		pos[a] = pos[b]
-		pos[b] = pos[c]
-		pos[c] = pos[d]
-		pos[d] = swap
+		pattern |= val0 << (16-ind1-1)*2
+		pattern |= val1 << (16-ind2-1)*2
+		pattern |= val2 << (16-ind3-1)*2
+		pattern |= val3 << (16-ind0-1)*2
 	else:
-		swap = pos[d]
-		pos[d] = pos[c]
-		pos[c] = pos[b]
-		pos[b] = pos[a]
-		pos[a] = swap
-	return pos
+		pattern |= val0 << (16-ind3-1)*2
+		pattern |= val1 << (16-ind0-1)*2
+		pattern |= val2 << (16-ind1-1)*2
+		pattern |= val3 << (16-ind2-1)*2
 
-def neighbours(orig_positions):
-	pos = orig_positions.copy()
+	return pattern
+
+def neighbours(pos):
 	yield swap_positions(pos, 0,1,2,3, False)
 	yield swap_positions(pos, 4,5,6,7, False)
 	yield swap_positions(pos, 8,9,10,11, False)
