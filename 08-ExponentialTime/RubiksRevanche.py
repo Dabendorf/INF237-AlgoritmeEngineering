@@ -102,6 +102,9 @@ def bidirectional_search(start, goal):
 	# Calculate the length of the path (I guess this is wrong?)
 	path_start = 0
 	node1 = meeting_point
+	debug(f"Len visited: {len(visited_start)}")
+	debug(f"Len visited: {len(visited_end)}")
+	
 	while node1 != -1:
 		path_start += 1
 		#printBinBlocks(node1)

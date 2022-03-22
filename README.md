@@ -62,7 +62,7 @@ Source code of my INF237 homework<br/>
 
 ## Exponential time algorithms
 * [x] Social Advertising
-* [ ] Map Colouring
+* [x] Map Colouring
 * [ ] Holey N-Queens (Batman)
 * [ ] Rubik's Revenge in ... 2D!? 3D?
 
@@ -109,8 +109,8 @@ Find out how many connections are missing such that one computer infects all
 Solution:
 - Find number of connected components via usage of BFS/DFS
 - This needs n-1 links between them
-- If the graph contains odd-cycle, it possible to spread all of them
-- If there is no odd cycle, one more edge needs to be added to obtain that
+- If the graph contains odd-cycle, it is possible to spread to all of them
+- If there is no odd cycle, one more edge needed to be added to obtain that
 - Odd cycle detection via bipartite graph detection, looping through the graph given all nodes colours
 	
 - In the end, return n or n-1 depending on the odd-cycle thing
@@ -251,3 +251,5 @@ Solution:
 - At first I prune duplicates (same friend lists) and go through pairs of them and remove numbers which are subsets of others
 - In the end, I loop through each size from 2 to n and try for each combination if they output 2**n-1 after logical or
 - If this is the case, the loop breaks and the minimum number is found
+
+#### Map Colouring

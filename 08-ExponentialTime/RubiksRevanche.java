@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 public class RubiksRevanche {
@@ -65,6 +64,8 @@ public class RubiksRevanche {
 
 		int pointer_start = 0;
 		int pointer_goal = 0;
+		parent_start.put(start, -1);
+		parent_end.put(goal, -1);
 
 		// The middle point where both BFSs will meet each other
 		int meeting_point = -1; // later used together with parent to find the depth
@@ -73,7 +74,7 @@ public class RubiksRevanche {
 		// This still seems terribly slow
 		// This must change to pointer < length, but since there always is a solution, this should be a problem
 		//while queue_start and queue_goal and meeting_point is None:
-		while(!found) {
+		while(meeting_point == -1) {
 			// Forward direction
 			int s = queue_start.get(pointer_start);
 			pointer_start += 1;
@@ -115,11 +116,14 @@ public class RubiksRevanche {
 		// Calculate the length of the path (I guess this is wrong?)
 		int path_start = 0;
 		int node1 = meeting_point;
+		//System.out.println(visited_start.size());
+		//System.out.println(visited_end.size());
 		while(node1 != -1) {
 			path_start += 1;
-			try {
+
+			if(parent_start.containsKey(node1)) {
 				node1 = parent_start.get(node1);
-			} catch(NullPointerException n) {
+			} else {
 				break;
 			}
 			
@@ -129,9 +133,9 @@ public class RubiksRevanche {
 		int node2 = parent_end.get(meeting_point);
 		while(node2 != -1) {
 			path_end += 1;
-			try {
+			if(parent_end.containsKey(node2)) {
 				node2 = parent_end.get(node2);
-			} catch(NullPointerException n) {
+			} else {
 				break;
 			}
 		}

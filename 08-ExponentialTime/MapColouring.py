@@ -2,12 +2,17 @@
 
 import sys
 from collections import defaultdict
-from random import shuffle
 
-""" Problem
+""" Colour a map. Determine how many colours are needed. If more than 4 are needed, just output "many"
 
 	Solution:
-	- 
+	- There are some initial if conditions to make things easier
+	- If there are no edges, only one colour is needed
+	- If graph is fully connected, it needs as many colours as nodes
+	- I reused my bipartite matching algorithm to check if something is 2-colourable
+	- If nothing of these works, it checks if the graph is 3 colourable or 4 colourable
+	- If none of these work, it returns "many"
+	- Functionality of the {3,4}-colourable algorithm
 	"""
 def main():
 	num_of_testcases = int(sys.stdin.readline())
@@ -25,46 +30,34 @@ def main():
 			adj_list[node_a].add(node_b)
 			adj_list[node_b].add(node_a)
 
-		#output = greedy_colouring(adj_list, num_nodes)
-		#print(output)
-		
-
+		# if no edges, one colour is possible
 		if num_edges == 0:
 			print(1)
 		elif num_edges == (num_nodes * (num_nodes-1))/2:
+			# if graph is fully connected, it needs num_of_nodes colours
 			if num_nodes < 5:
 				print(num_nodes)
 			else:
 				print("many")
 		else:
+			# check if bipartite
 			if is_bipartite(adj_list, 0):
 				print(2)
 			else:
+				# check if it works for 3 or 4, if not return many
 				found = False
-				for i in range(2,5):
-					ignore_set = set()
-					for key, val in adj_list.items():
-						num_neighbours = len(list(val))
-						if num_neighbours == 0:
-							ignore_set.add(key)
-						if num_neighbours == 1:
-							ignore_set.add(key)
-							adj_list[list(val)[0]].remove(key)
-					if graphColoring(adj_list, i, 0, [0]*num_nodes, num_nodes, ignore_set):
+				for i in range(3,5):
+					colours = [None] * num_nodes
+					colours[0] = 1
+					if graph_colouring(adj_list, colours, i, 1, num_nodes):
 						print(i)
 						found = True
 						break
 				if not found:
 					print("many")
-				"""output = greedy_colouring(adj_list, num_nodes)
-				run_num = 300
-				if run_num > 0 and output > 3:
-					output = min(greedy_colouring(adj_list, num_nodes), output)
-					run_num -= 1
-				print(output)"""
-				#print("check if 3, 4 or many colourable")
 
-			"""elif num_edges <= 3*num_nodes - 6:
+			""" An extracase for planar graphs which for same weird reason doesnt work
+			elif num_edges <= 3*num_nodes - 6:
 				# graph is planar
 				#print("check if 3 or 4 colourable")
 				output = greedy_colouring(adj_list, num_nodes)
@@ -72,81 +65,39 @@ def main():
 					print(4)
 				else:
 					print(output)"""
-def isSafe(adj_list, color, num_nodes):
-	for i in range(num_nodes):
-		for j in range(i + 1, num_nodes):
-			if j in adj_list[i] and color[j] == color[i]:
-				return False
-	return True
- 
-# /* This function solves the m Coloring
-# problem using recursion. It returns
-# false if the m colours cannot be assigned,
-# otherwise, return true and prints
-# assignments of colours to all vertices.
-# Please note that there may be more than
-# one solutions, this function prints one
-# of the feasible solutions.*/
-def graphColoring(adj_list, m, i, color, num_nodes, ignore_set):
-	# if current index reached end
-	if i == num_nodes:
- 
-		# if coloring is safe
-		if isSafe(adj_list, color, num_nodes):
-			# Print the solution
-			#printSolution(color)
-			return True
-		return False
- 
-	# Assign each color from 1 to m
-	if i in ignore_set:
-		color[i] = 0
 
-		# Recur of the rest vertices
-		if graphColoring(adj_list, m, i + 1, color, num_nodes, ignore_set):
-			return True
-		color[i] = 0
-		return False
-	else:
-		for j in range(1, m + 1):
-			color[i] = j
+def graph_colouring(adj_list, colours, n, v, num_nodes):
+	""" This checks if the graph can be coloured with a certain amount of colours
+		It is an recursive algorithm, taking 5 parameters
+		:param adj_list: The adjacency list of the graph
+		:param colours: A list of colours for each country-index
+		:param n:
+		:param v:
+		:param num_nodes: number of nodes (countries)
 	
-			# Recur of the rest vertices
-			if graphColoring(adj_list, m, i + 1, color, num_nodes, ignore_set):
+	"""
+	# Basecase
+	if v >= num_nodes:
+		return True
+
+	for i in range(1, n+1):
+		valid = True
+
+		for j in range(num_nodes):
+			if j in adj_list[v] and i == colours[j]:
+				valid = False
+		
+		if valid:
+			colours[v] = i
+			if graph_colouring(adj_list, colours, n, v+1, num_nodes):
 				return True
-			color[i] = 0
-		return False
+		colours[v] = 0
 
-def greedy_colouring(adj_list, num_of_nodes):
-	colours = [None] * num_of_nodes
-	colours[0] = 0
-
-	node_list = list(range(num_of_nodes))
-	shuffle(node_list)
-	
-	for node_idx, node in enumerate(node_list):
-		if node_idx == 0:
-			continue
-		#print(f"Node: {node}, adj_list: {adj_list[node]}")
-		#print(f"|V|: {num_of_nodes}, adj_list={adj_list}")
-		colours_used_redundant = [neighbour for neighbour in adj_list[node] if colours[neighbour] is not None]
-		colours_used = set(colours_used_redundant)
-		#print(f"Colours used for edge neighbours {node}: {colours_used}")
-
-		next_col = 4
-		for i in range(0, 3):
-			if i not in colours_used:
-				next_col = i
-				break
-
-		colours[node] = next_col
-		if next_col == 4:
-			return 5
-	
-	return len(list(set(colours)))
+	return False
 
 def is_bipartite(adj_list, c):
-	""" Checks if graph is bipartite by giving it colours"""
+	""" Checks if graph is bipartite by giving it colours
+		Code reused from my graphs 1 solutions"""
 	# Colours are just True and False
 	colours = dict()
 
