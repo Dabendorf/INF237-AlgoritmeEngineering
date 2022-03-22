@@ -47,21 +47,31 @@ def list_to_bin(l):
 	return out
 
 def bidirectional_search(start, goal):
+	# Every state is represented by an integer (binary number with 32 digits where pairs of 2 are the colour at one position)
+	# This neighbouring function works 100% correct, I checked this
+
+	# Sets of visited states from start and end
 	visited_start = set()
 	visited_end = set()
+
+	# Parents of visited states (where did we visit them from)
 	parent_start = defaultdict(lambda: -1)
 	parent_end = defaultdict(lambda: -1)
 
+	# Queues for the bidirectional search
 	queue_start = [start]
 	queue_goal = [goal]
 
 	visited_start.add(start)
 	visited_end.add(goal)
 
+	# The middle point where both BFSs will meet each other
 	meeting_point = None # later used together with parent to find the depth
 
+	# This still seems terribly slow
 	while queue_start and queue_goal and meeting_point is None:
-		s = queue_start.pop()
+		# Forward direction
+		s = queue_start.pop(0)
 		for u in neighbours(s):
 			#print(f"neighbour u, visited: {len(visited_start)}")
 			if not u in visited_start:
@@ -74,7 +84,8 @@ def bidirectional_search(start, goal):
 			#return True
 			break
 
-		t = queue_goal.pop()
+		# Backwards direction
+		t = queue_goal.pop(0)
 		for v in neighbours(t):
 			#print(f"neighbour v, visited: {len(visited_end)}")
 			if not v in visited_end:
@@ -88,6 +99,7 @@ def bidirectional_search(start, goal):
 			break
 	
 	#debug(meeting_point)
+	# Calculate the length of the path (I guess this is wrong?)
 	path_start = 0
 	node1 = meeting_point
 	while node1 != -1:
@@ -101,7 +113,7 @@ def bidirectional_search(start, goal):
 		path_end += 1
 		#printBinBlocks(node2)
 		node2 = parent_end[node2]
-	return path_start+path_end
+	return path_start+path_end-1
 
 def swap_positions(pattern, ind0, ind1, ind2, ind3, left):
 	mask0 = 3 << (16-ind0-1)*2
