@@ -1,7 +1,6 @@
 // https://uib.kattis.com/problems/rubiksrevenge
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -70,7 +69,6 @@ public class RubiksRevanche {
 		// The middle point where both BFSs will meet each other
 		int meeting_point = -1; // later used together with parent to find the depth
 		
-		boolean found = false;
 		// This still seems terribly slow
 		// This must change to pointer < length, but since there always is a solution, this should be a problem
 		//while queue_start and queue_goal and meeting_point is None:
@@ -89,7 +87,6 @@ public class RubiksRevanche {
 
 			if(s == goal || queue_goal.contains(s)) {
 				meeting_point = s;
-				found = true;
 				break;
 			}
 
@@ -107,7 +104,6 @@ public class RubiksRevanche {
 
 			if(t == start || queue_start.contains(t)) {
 				meeting_point = t;
-				found = true;
 				break;
 			}
 		

@@ -253,3 +253,20 @@ Solution:
 - If this is the case, the loop breaks and the minimum number is found
 
 #### Map Colouring
+Colour a map. Determine how many colours are needed. If more than 4 are needed, just output "many"
+
+Solution:
+- There are some initial if conditions to make things easier
+- If there are no edges, only one colour is needed
+- If graph is fully connected, it needs as many colours as nodes
+- I reused my bipartite matching algorithm to check if something is 2-colourable
+- If nothing of these works, it checks if the graph is 3 colourable or 4 colourable
+- If none of these work, it returns "many"
+
+Functionality of the {3,4}-colourable algorithm:
+- The algorithm takes five arguments, which are the adjacency list, the colour list, the number of colours and the number of nodes
+- The fifth one changes in each recursion step, which is the number of the current node going up
+- The base case is that the current node number is bigger than the number of nodes, so every node got colours
+- Otherwise, the algorithm goes through all colours and tries each of them on the node
+- If a neighbour has the same colour, this recursion step gets trashed, if there is an success, the algorithm continues recursively with the next node
+	

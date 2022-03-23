@@ -3,6 +3,11 @@
 import sys
 from collections import defaultdict
 
+if len(sys.argv) > 1:
+	debug = print
+else:
+	debug = lambda *_,**__:None
+
 """ Colour a map. Determine how many colours are needed. If more than 4 are needed, just output "many"
 
 	Solution:
@@ -12,7 +17,14 @@ from collections import defaultdict
 	- I reused my bipartite matching algorithm to check if something is 2-colourable
 	- If nothing of these works, it checks if the graph is 3 colourable or 4 colourable
 	- If none of these work, it returns "many"
-	- Functionality of the {3,4}-colourable algorithm
+	
+	Functionality of the {3,4}-colourable algorithm:
+	- The algorithm takes five arguments, which are the adjacency list, the colour list, the number of colours and the number of nodes
+	- The fifth one changes in each recursion step, which is the number of the current node going up
+	- The base case is that the current node number is bigger than the number of nodes, so every node got colours
+	- Otherwise, the algorithm goes through all colours and tries each of them on the node
+	- If a neighbour has the same colour, this recursion step gets trashed, if there is an success, the algorithm continues recursively with the next node
+	
 	"""
 def main():
 	num_of_testcases = int(sys.stdin.readline())
@@ -20,7 +32,8 @@ def main():
 	# <= 16 countries
 	# <= 120 borders
 
-	for _ in range(num_of_testcases):
+	for test_num in range(num_of_testcases):
+		debug(f"Test nummer: {test_num}")
 		adj_list = defaultdict(lambda: set())
 		num_nodes, num_edges = list(map(int, sys.stdin.readline().strip().split(" ")))
 		
@@ -44,13 +57,15 @@ def main():
 			if is_bipartite(adj_list, 0):
 				print(2)
 			else:
+				debug("1 or 2 colours not possible, check 3 or 4")
+				debug(f"Num of nodes: {num_nodes}, num of edges: {num_edges}")
 				# check if it works for 3 or 4, if not return many
 				found = False
-				for i in range(3,5):
+				for num_of_colours in range(3,5):
 					colours = [None] * num_nodes
 					colours[0] = 1
-					if graph_colouring(adj_list, colours, i, 1, num_nodes):
-						print(i)
+					if graph_colouring(adj_list, colours, num_of_colours, 1, num_nodes):
+						print(num_of_colours)
 						found = True
 						break
 				if not found:
@@ -66,33 +81,44 @@ def main():
 				else:
 					print(output)"""
 
-def graph_colouring(adj_list, colours, n, v, num_nodes):
+def graph_colouring(adj_list, colours, num_of_colours, current_node, num_nodes):
 	""" This checks if the graph can be coloured with a certain amount of colours
 		It is an recursive algorithm, taking 5 parameters
+
 		:param adj_list: The adjacency list of the graph
 		:param colours: A list of colours for each country-index
-		:param n:
-		:param v:
+		:param num_of_colours: Number of colours available
+		:param current_node: Current node number to look at
 		:param num_nodes: number of nodes (countries)
-	
+
+		The adjacency list, the colour list, the number of colours and number of nodes stay the same
+		There is one variable changing in each iteration, which is the node, since the algorithm goes through all nodes after each other
+		The base case is that the current node number is bigger than the number of nodes, so every node got colours
+		Otherwise, the algorithm goes through all colours and tries each of them on the node
+		If a neighbour has the same colour, this recursion step gets trashed, if there is an success, the algorithm continues recursively with the next node
 	"""
-	# Basecase
-	if v >= num_nodes:
+	# Basecase; if node number is bigger than actual number of nodes, return true since algorithm finished
+	if current_node >= num_nodes:
 		return True
 
-	for i in range(1, n+1):
+	# Go through all colours available for that node
+	for current_colour in range(1, num_of_colours+1):
 		valid = True
 
-		for j in range(num_nodes):
-			if j in adj_list[v] and i == colours[j]:
+		# Check if any neighbour has the same colour
+		# If so, the colour is not valid
+		for neighbour in adj_list[current_node]:
+			if current_colour == colours[neighbour]:
 				valid = False
 		
+		# If the colour is valid, colour it with that colour and call recursion
 		if valid:
-			colours[v] = i
-			if graph_colouring(adj_list, colours, n, v+1, num_nodes):
+			colours[current_node] = current_colour
+			if graph_colouring(adj_list, colours, num_of_colours, current_node+1, num_nodes):
 				return True
-		colours[v] = 0
+		colours[current_node] = 0
 
+	# Colouring not possible if the code gets to this point
 	return False
 
 def is_bipartite(adj_list, c):
