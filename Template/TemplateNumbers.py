@@ -1,7 +1,7 @@
 import sys
 from collections import defaultdict
 
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
 	debug = print
 else:
 	debug = lambda *_,**__:None
