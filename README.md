@@ -3,19 +3,19 @@ Source code of my INF237 homework<br/>
 [Link to Kattis tasks](https://uib.kattis.com/courses/INF237/spring22)
 
 ## Temaer
-* 01 	[Introduction](#introduction)
-* 02 	[Graphs 1](#graphs-1)
-* 03 	[Sliding, searching and sorting](#sliding-searching-and-sorting)
-* 04 	[Dynamic programming 1](#dynamic-programming-1)
-* 05 	[Graphs 2](#graphs-2)
-* 06 	[Segment trees](#segment-trees)
-* 07 	[Geometry 1](#geometry-1)
-* 08 	[Exponential time algorithms](#exponential-time-algorithms)
-* 09 	Dynamic programming 2
-* 10 	Graphs 3
-* 11 	Geometry 2
-* 12 	Strings
-* 13 	Mathematics
+* 01 	[Introduction](#introduction) ([Problems: ](#introduction-1))
+* 02 	[Graphs 1](#graphs-1) ([Problems: ](#graphs-1-1))
+* 03 	[Sliding, searching and sorting](#sliding-searching-and-sorting) ([Problems: ](#sliding-searching-and-sorting-1))
+* 04 	[Dynamic programming 1](#dynamic-programming-1) ([Problems: ](#dynamic-programming-1-1))
+* 05 	[Graphs 2](#graphs-2) ([Problems: ](#graphs-2-1))
+* 06 	[Segment trees](#segment-trees) ([Problems: ](#segment-trees-1))
+* 07 	[Geometry 1](#geometry-1) ([Problems: ](#geometry-1-1))
+* 08 	[Exponential time algorithms](#exponential-time-algorithms) ([Problems: ](#exponential-time-algorithms-1))
+* 09 	[Dynamic programming 2](#dynamic-programming-2) ([Problems: ](#dynamic-programming-2-1))
+* 10 	[Graphs 3](#graphs-3) ([Problems: ](#graphs-3-1))
+* 11 	[Geometry 2](#geometry-2) ([Problems: ](#geometry-2-1))
+* 12 	[Strings](#strings) ([Problems: ](#strings-1))
+* 13 	[Mathematics](#mathematics) ([Problems: ](#mathematics-1))
 
 ## Introduction
 * [x] TwoSums
@@ -65,6 +65,36 @@ Source code of my INF237 homework<br/>
 * [x] Map Colouring
 * [ ] Holey N-Queens (Batman)
 * [ ] Rubik's Revenge in ... 2D!? 3D?
+
+## Dynamic Programming 2
+* [ ] 
+* [ ] 
+* [ ] 
+* [ ] 
+
+## Graphs 3
+* [ ] 
+* [ ] 
+* [ ] 
+* [ ] 
+
+## Geometry 2
+* [ ] 
+* [ ] 
+* [ ] 
+* [ ] 
+
+## Strings
+* [ ] 
+* [ ] 
+* [ ] 
+* [ ] 
+
+## Mathematics
+* [ ] 
+* [ ] 
+* [ ] 
+* [ ] 
 
 ## Ideas
 ### Introduction
@@ -269,4 +299,18 @@ Functionality of the {3,4}-colourable algorithm:
 - The base case is that the current node number is bigger than the number of nodes, so every node got colours
 - Otherwise, the algorithm goes through all colours and tries each of them on the node
 - If a neighbour has the same colour, this recursion step gets trashed, if there is an success, the algorithm continues recursively with the next node
-	
+
+### Dynamic programming 2
+
+
+### Graphs 3
+
+
+### Geometry 2
+
+
+### Strings
+
+
+### Mathematics
+
