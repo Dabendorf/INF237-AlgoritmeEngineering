@@ -302,6 +302,33 @@ Functionality of the {3,4}-colourable algorithm:
 
 ### Dynamic programming 2
 #### The Citrus Intern
+A companies structure is built up like a tree with every person having up to one boss and several subordinates<br/>
+We want every person in the company to be controlled by either being bribed or having a "talk" to a bribe boss or subordinate<br/>
+Every bribed person talks to his/her boss and the subordinates<br/>
+No two people talking with each other should be bribed at the same time and the money spend on bribery should be minimised<br/>
+<br/>
+Indendent Set & Dominating Set, see INF234 weighted independent set on trees<br/>
+<br/>
+Solution:
+- First: Find the root node and the postorder of the tree structure.
+- Finding root: Start at the leafes and go up until one does not have a boss anymore
+- Postorder: Using DFS, returning a stack of postorder. This way, one can start dynamic programming at the leafes going up
+
+- Now, its a dynamic programming problem. There are three 1D-lists being:
+- m_bribe[u]: The money spent until u if u gets bribed
+- m_notbribed[u]: The money spent until u if u is not bribed
+- m_notbribed_butchild[u]: The money spent until u if u is not bribed but at least one of the child
+- The latter one is relevant such that there is no hole in the tree where one person is not bribed
+ 
+- Base case: For every leaf u: m_bribed[u] = m_notbribed_butchild[u] = w_u; m_notbribed[u] = 0
+- Recurrance:
+- m_bribed[u] = sum of all neighbours v not being bribed + bribing money of u
+- m_notbribed[u] = sum of all neighbours v with value of the minimum of v being bribed or a child of v behind bribed
+- m_notbribed_butchild[u] = minimum bribing value of neighbour which is sum of not bribing u but bribing v + the minimum of bribing v or not bribing v but its children
+- It is basically not taking u and then calculating which child to take
+- The best child is that one which has minimum cost of taking it, it is a merging of branches
+
+- The final output is the minimum of bribing v or one of its children
 
 ### Graphs 3
 

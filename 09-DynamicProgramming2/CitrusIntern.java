@@ -1,6 +1,8 @@
 // https://open.kattis.com/problems/citrusintern
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -21,14 +23,18 @@ import java.util.TreeSet;
  * - Now, its a dynamic programming problem. There are three 1D-lists being:
  * - m_bribe[u]: The money spent until u if u gets bribed
  * - m_notbribed[u]: The money spent until u if u is not bribed
- * - m_notbribed_butchildren[u]: The money spent until u if u is not bribed but at least one of the children
+ * - m_notbribed_butchild[u]: The money spent until u if u is not bribed but at least one of the child
  * - The latter one is relevant such that there is no hole in the tree where one person is not bribed
  * 
- * - Base case: For every leaf u: m_bribed[u] = m_notbribed_butchildren[u] = w_u; m_notbribed[u] = 0
+ * - Base case: For every leaf u: m_bribed[u] = m_notbribed_butchild[u] = w_u; m_notbribed[u] = 0
  * - Recurrance:
  * - m_bribed[u] = sum of all neighbours v not being bribed + bribing money of u
  * - m_notbribed[u] = sum of all neighbours v with value of the minimum of v being bribed or a child of v behind bribed
- * - m_notbribed_butchildren[u] = 
+ * - m_notbribed_butchild[u] = minimum bribing value of neighbour which is sum of not bribing u but bribing v + the minimum of bribing v or not bribing v but its children
+ * - It is basically not taking u and then calculating which child to take
+ * - The best child is that one which has minimum cost of taking it, it is a merging of branches
+ * 
+ * - The final output is the minimum of bribing v or one of its children
  */
 public class CitrusIntern {
 	public static void main(String[] args) {
@@ -66,18 +72,18 @@ public class CitrusIntern {
 		// Initialise three new arrays
 		// m_bribe: The person gets bribed
 		// m_notbribe: The person does not get bribed
-		// m_notbribe_butchildren: The person does not get bribed, but at least one child is (which is a condition)
+		// m_notbribe_butchild: The person does not get bribed, but at least one child is (which is a condition)
 
 		long[] m_bribe = new long[numOfPeople];
 		long[] m_notbribe = new long[numOfPeople];
-		long[] m_notbribe_butchildren = new long[numOfPeople];
+		long[] m_notbribe_butchild = new long[numOfPeople];
 
 		// Base Cases, leafs
 		for(int personIndex = 0; personIndex<numOfPeople; personIndex++) {
 			if(subordinates.get(personIndex).size()==0) {
 				m_bribe[personIndex] = bribe[personIndex];
 				m_notbribe[personIndex] = 0L;
-				m_notbribe_butchildren[personIndex] = bribe[personIndex];
+				m_notbribe_butchild[personIndex] = bribe[personIndex];
 			}
 		}
 
@@ -90,8 +96,11 @@ public class CitrusIntern {
 			//traversing through postorder
 			int u = postorder.pop();
 
+			if(leafs.contains(u)) {
+				continue;
+			}
 			// Calculate m_bribe if we bribe u
-			// Sum of all children v when they arent bribed + bribing money of u itself
+			// Sum of all child v when they arent bribed + bribing money of u itself
 			long sum = bribe[u];
 			for(int v: subordinates.get(u)) {
 				sum += m_notbribe[v];
@@ -99,24 +108,30 @@ public class CitrusIntern {
 			m_bribe[u] = sum;
 
 			// Calculate m_notbribe if we dont bribe u
-			// Sum of minimum of every childrens bribe and "children bribed" array
+			// Sum of minimum of every childs bribe and "child bribed" array
 			sum = 0;
 			for(int v: subordinates.get(u)) {
-				sum += Math.min(m_bribe[v], m_notbribe_butchildren[v]);
+				sum += Math.min(m_bribe[v], m_notbribe_butchild[v]);
 			}
 			m_notbribe[u] = sum;
 
-			// Calculate m_notbribe_butchildren if we dont bribe u but one of the children got bribed
-			// Explanation
-			sum = Long.MAX_VALUE;
+			// Calculate m_notbribe_butchild if we dont bribe u but one of the child got bribed
+			// The minimum bribing value of neighbour which is sum of not bribing u but bribing v
+			// + the minimum of bribing v or not bribing v but its children
+			ArrayList<Long> neighbourbribes = new ArrayList<Long>();
 			for(int v: subordinates.get(u)) {
-				long temp = m_notbribe[u] - Math.min(m_bribe[v], m_notbribe_butchildren[v]) + m_bribe[v];
-				sum = Math.min(sum, temp);
+				long temp = m_bribe[v] - Math.min(m_bribe[v], m_notbribe_butchild[v]);
+				neighbourbribes.add(temp);
 			}
-			m_notbribe_butchildren[u] = sum;
+			m_notbribe_butchild[u] = m_notbribe[u] + Collections.min(neighbourbribes);
+
+			/*System.out.println(u);
+			System.out.println(Arrays.toString(m_bribe));
+			System.out.println(Arrays.toString(m_notbribe));
+			System.out.println(Arrays.toString(m_notbribe_butchild));*/
 		}
 
-		System.out.println(Math.min(m_bribe[root], m_notbribe_butchildren[root]));
+		System.out.println(Math.min(m_bribe[root], m_notbribe_butchild[root]));
 		io.close();
 	}
 
