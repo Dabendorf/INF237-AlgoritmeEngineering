@@ -301,7 +301,7 @@ Functionality of the {3,4}-colourable algorithm:
 - If a neighbour has the same colour, this recursion step gets trashed, if there is an success, the algorithm continues recursively with the next node
 
 ### Dynamic programming 2
-
+#### The Citrus Intern
 
 ### Graphs 3
 
