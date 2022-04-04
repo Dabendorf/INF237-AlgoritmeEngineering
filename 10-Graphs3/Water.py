@@ -14,6 +14,20 @@ class Graph:
 			self.R[a][b] = w
 		self.V = V
 
+""" There is a flow network existing, using pumping stations. 
+	This means flow can go in both directions in each edge.
+	Calculate the maximum flow from node 1 to node 2
+	There will be k "improvements" which means that the edge capacities will increase (or start to exist)
+	Give out k more numbers being the new network flows after each improvement
+
+	Solution:
+	- Straight forward Ford-Fulkerson (Edmonds-Karp) from 1 to 2
+	- Difference is that we initialise each edge in both directions and also each residual edge in both
+	- Then run the flow network and output the maxflow
+	- Each improvement just adds the extra capacity to both the two edges and two residual edges
+	- For every improvement, run the maxflow algorithm again (will only run for one bfs?)
+	- The new maxflow is the sum of the maxflow from before and the new one
+	"""
 def main():
 	num_stations, num_pipes, num_improvements = list(map(int, sys.stdin.readline().strip().split()))
 
@@ -37,6 +51,7 @@ def main():
 	for _ in range(num_improvements):
 		A, B, weight = list(map(int, sys.stdin.readline().strip().split()))
 
+		# if edge does not exist before, add it, if not just increase the capacities
 		if graph.edges[A][B] != None:
 			graph.edges[A][B] += weight
 			graph.edges[B][A] += weight
@@ -71,6 +86,7 @@ def bfs(graph, s, t):
 				return create_path(parent, s, t)
 
 def create_path(parent, s, t):
+	""" Creates a path from s to t (bfs helper method)"""
 	path = [t]
 	while t != s:
 		t = parent[t]
@@ -78,6 +94,10 @@ def create_path(parent, s, t):
 	return tuple(reversed(path))
 
 def maxflow(graph, s, t):
+	""" As long as there are paths from s to t existing, increase the flow by the bottleneck
+		Then return maximum flow
+		The capacities of each edges can be read via the residual graph
+	"""
 	flow = 0
 	P = bfs(graph, s, t)
 	while P:
