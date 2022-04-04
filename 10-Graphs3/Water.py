@@ -1,4 +1,4 @@
-# https://open.kattis.com/problems/pianolessons
+# https://open.kattis.com/problems/water
 
 from collections import defaultdict, deque
 import sys
@@ -15,41 +15,42 @@ class Graph:
 		self.V = V
 
 def main():
-	students, timeslots = list(map(int, sys.stdin.readline().strip().split()))
+	num_stations, num_pipes, num_improvements = list(map(int, sys.stdin.readline().strip().split()))
 
 	# Read original graph into original capacities, every node exists two times as "a" and "b" (bipartite)
 	orig_cap = list()
-	V = list()
+	for _ in range(num_pipes):
+		A, B, weight = list(map(int, sys.stdin.readline().strip().split()))
+		orig_cap.append((A, B, weight))
+		orig_cap.append((B, A, weight))
 
-	for idx_student in range(students):
-		student_inf = list(map(int, sys.stdin.readline().strip().split()))
-		num_of_lessons = student_inf[0]
-
-		if num_of_lessons > 0:
-			for i in range(1, len(student_inf)):
-				orig_cap.append((idx_student+1, -student_inf[i], 1))
-			
-			orig_cap.append(("s", idx_student+1, 1))
-			V.append(idx_student+1)
-
-	for idx_timeslots in range(timeslots):
-		orig_cap.append((-idx_timeslots-1, "t", 1))
-		V.append(-idx_timeslots-1)
-
-	V.append("s")
-	V.append("t")
-
-	#print(V)
-	#print(orig_cap)
+	V = list(range(1, num_stations+1))
 
 	graph = Graph(orig_cap, V)
-	s = "s"
-	t = "t"
+	s = 1
+	t = 2
 
 	# Run max-flow
 	mflow = maxflow(graph, s, t)
-
 	print(mflow)
+
+	for _ in range(num_improvements):
+		A, B, weight = list(map(int, sys.stdin.readline().strip().split()))
+
+		if graph.edges[A][B] != None:
+			graph.edges[A][B] += weight
+			graph.edges[B][A] += weight
+			graph.R[A][B] += weight
+			graph.R[B][A] += weight
+		else:
+			graph.edges[A][B] = weight
+			graph.edges[B][A] = weight
+			graph.R[A][B] = weight
+			graph.R[B][A] = weight
+
+		maxflow_new = maxflow(graph, s, t) + mflow
+		mflow = maxflow_new
+		print(mflow)
 
 edges = lambda p: zip(p, p[1:])
 
@@ -58,6 +59,7 @@ def bfs(graph, s, t):
 	parent = {}
 	while q:
 		v = q.popleft()
+		#for u in graph.V: # !
 		for u in graph.R[v]:
 			if u in parent:
 				continue # seen it before
