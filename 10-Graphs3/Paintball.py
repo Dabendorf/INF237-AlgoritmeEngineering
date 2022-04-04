@@ -39,27 +39,28 @@ def main():
 	s = "s"
 	t = "t"
 
+	"""for key, value in graph.R.items():
+		print(key, dict(value))"""
+
 	# Run max-flow
 	mflow = maxflow(graph, s, t)
-	"""print(f"V: {V}")
-	print(f"Cap: {orig_cap}")
-	print(f"Max flow: {mflow}")"""
 
-	count_edges = 0
-	output = [0] * players
+	"""for key, value in graph.R.items():
+		print(key, dict(value))"""
 
-	# Go through all original edges and look for opposite edge of residual graph
-	for fra, v in graph.edges.items():
-		for til, weight in v.items():
-			val_res = graph.R[til][fra]
-			if val_res != 0 and fra != "s" and til != "t":
-				count_edges += 1
-				output[int(fra[:-1])-1] = til[:-1]
 
-	if count_edges == players:
+	if mflow == players:
+		output = [0] * players
+
+		for fra, v in graph.edges.items():
+			for til, weight in v.items():
+				val_res = graph.R[til][fra]
+				if val_res != 0 and fra != "s" and til != "t":
+					output[int(fra[:-1])-1] = til[:-1]
+
 		print("\n".join(output))
 	else:
-		print("impossible")
+		print("Impossible")
 
 edges = lambda p: zip(p, p[1:])
 
@@ -68,7 +69,8 @@ def bfs(graph, s, t):
 	parent = {}
 	while q:
 		v = q.popleft()
-		for u in graph.V: # !
+		#for u in graph.V: # !
+		for u in graph.R[v]:
 			if u in parent:
 				continue # seen it before
 			if graph.R[v][u] <= 0:

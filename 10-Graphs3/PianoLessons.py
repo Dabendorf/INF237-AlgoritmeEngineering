@@ -29,14 +29,14 @@ def main():
 
 		if num_of_lessons > 0:
 			for i in range(1, len(student_inf)):
-				orig_cap.append((f"{idx_student+1}a", f"{student_inf[i]}b", 1))
+				orig_cap.append((idx_student, -student_inf, 1))
 			
-			orig_cap.append(("s", f"{idx_student+1}a", 1))
-			V.append(f"{idx_student+1}a")
+			orig_cap.append(("s", idx_student, 1))
+			V.append(idx_student)
 
 	for idx_timeslots in range(timeslots):
-		orig_cap.append((f"{idx_timeslots+1}b", "t", 1))
-		V.append(f"{idx_timeslots+1}b")
+		orig_cap.append((-idx_timeslots, "t", 1))
+		V.append(-idx_timeslots)
 
 	V.append("s")
 	V.append("t")
