@@ -67,16 +67,17 @@ Source code of my INF237 homework<br/>
 * [ ] Rubik's Revenge in ... 2D!? 3D?
 
 ## Dynamic Programming 2
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
+* [x] The Citrus Intern
+* [ ] Pokemon Go Go
+* [ ] Allergy Test
+* [ ] Mag
+* [x] Wildcard
 
 ## Graphs 3
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
+* [x] Paintball
+* [ ] Piano Lessons
+* [x] Water
+* [ ] The Darkness
 
 ## Geometry 2
 * [ ] 
@@ -331,7 +332,33 @@ Solution:
 - The final output is the minimum of bribing v or one of its children
 
 ### Graphs 3
+#### Paintball
+There are people playing Paintball and we are given pairs of people who can see (shoot) each other<br/>
+Every player has one bullet, find out of everyone can take a bullet
 
+Solution:
+- Bipartite matching via flow networks
+- Read in every person two times, one for each bipartite set (because everybody shoots and gets shot)
+- Connect one set with a new node called "s" and one with a new node called "t"
+- Run Ford-Fulkerson (Edmonds-Karp) from "s" to "t"
+- Then go through all original edges and look if the opposite edge exists in the residual graph
+- If so it means that this is an edge in the bipartite matching
+- Give out "Impossible" if maxflow is not number of players
+
+#### Water
+There is a flow network existing, using pumping stations.<br/>
+This means flow can go in both directions in each edge.<br/>
+Calculate the maximum flow from node 1 to node 2<br/>
+There will be k "improvements" which means that the edge capacities will increase (or start to exist)<br/>
+Give out k more numbers being the new network flows after each improvement<br/>
+
+Solution:
+- Straight forward Ford-Fulkerson (Edmonds-Karp) from 1 to 2
+- Difference is that we initialise each edge in both directions and also each residual edge in both
+- Then run the flow network and output the maxflow
+- Each improvement just adds the extra capacity to both the two edges and two residual edges
+- For every improvement, run the maxflow algorithm again (will only run for one bfs?)
+- The new maxflow is the sum of the maxflow from before and the new one
 
 ### Geometry 2
 
