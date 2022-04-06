@@ -75,7 +75,7 @@ Source code of my INF237 homework<br/>
 
 ## Graphs 3
 * [x] Paintball
-* [ ] Piano Lessons
+* [x] Piano Lessons
 * [x] Water
 * [ ] The Darkness
 
@@ -344,6 +344,20 @@ Solution:
 - Then go through all original edges and look if the opposite edge exists in the residual graph
 - If so it means that this is an edge in the bipartite matching
 - Give out "Impossible" if maxflow is not number of players
+
+#### Piano Lessons
+There are people wanting to take piano lessons and each has n time slots working for them.<br/>
+Each timeslot only accepts one student.<br/>
+Find the maximum number of students who can get piano lessons<br/>
+<br/>
+Solution:
+- Bipartite matching via flow networks
+- The people are set A and the piano lessons set B
+- Connect one set with a new node called "s" and one with a new node called "t"
+- Run Ford-Fulkerson (Edmonds-Karp) from "s" to "t"
+- Then go through all original edges and look if the opposite edge exists in the residual graph
+- If so it means that this is an edge in the bipartite matching
+- Output the maximum flow
 
 #### Water
 There is a flow network existing, using pumping stations.<br/>

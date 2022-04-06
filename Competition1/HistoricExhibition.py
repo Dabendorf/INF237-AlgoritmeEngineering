@@ -60,7 +60,7 @@ def bfs(graph, s, t):
 	parent = {}
 	while q:
 		v = q.popleft()
-		for u in graph.V: # !
+		for u in graph.R[v]: # !
 			if u in parent:
 				continue # seen it before
 			if graph.R[v][u] <= 0:
