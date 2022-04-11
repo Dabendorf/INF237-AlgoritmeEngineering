@@ -2,6 +2,7 @@
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.*;
 
 /**
  * Problem description
@@ -29,26 +30,14 @@ public class ClosestPair {
 				String[] splitted = sor.split(" ");
 				points[i] = new Point2D.Double(Double.parseDouble(splitted[0]), Double.parseDouble(splitted[1]));
 			}
+			Arrays.sort(points, new Comparator<Point2D>() {
+				public int compare(Point2D p1, Point2D p2) {
+					return (int)Math.signum(p1.getX() - p2.getX());
+				}
+			});
 			System.out.println(Arrays.toString(points));
+			System.out.println("Minimal Points Distance: " + getMinDistance(points, 0, points.length));
 		}
-		/*while(sc.hasNextLine()){
-			// each test case
-			String sor=sc.nextLine();
-			String[] splitted = sor.split(" ");
-			System.out.println(Arrays.toString(splitted));
-			
-			int lengthList =  splitted.length/2;
-			Point2D[] points = new Point2D[lengthList];
-			for(int i=0; i<(int) splitted.length/2; i++) {
-				points[i] = new Point2D.Double(Double.parseDouble(splitted[2*i]), Double.parseDouble(splitted[2*i+1]));
-			}
-
-			Arrays.sort(points, (o1, o2) -> (int)Math.signum(o1.getX()-o2.getX()));
-			System.out.println("Sorted Array by x:");
-			double min = getMinDistance(points, 0, points.length);
-			System.out.println("Der minimale Abstand beträgt: "+min);
-			
-		}*/
 	
     }
 	
@@ -56,7 +45,7 @@ public class ClosestPair {
 	public static double getMinDistance(Point2D[] points, int a, int b){
 		if(b-a<=3){
 			if(b-a == 1){
-				return 0.0;
+				return -1.0;
 			}
 			double min = points[a].distance(points[a+1]);
 			if(b-a>2){
@@ -65,7 +54,38 @@ public class ClosestPair {
 			}
 			return min;
 		}
+		int mid = (a+b)/2;
+		double minL = getMinDistance(points, a, a+mid);
+		double minR = getMinDistance(points, a+mid, b);
+		double delta = Math.min(minL, minR);
+		ArrayList<Point2D> slice = new ArrayList<Point2D>();
+		double line = points[a+mid].getX();
+		
+		Point2D[] pointsByY = Arrays.copyOfRange(points, a, b);
+		Arrays.sort(pointsByY, new Comparator<Point2D>() {
+			public int compare(Point2D p1, Point2D p2) {
+				return (int)Math.signum(p1.getY() - p2.getY());
+			}
+		});
 
-		return 0.0;
+		for (Point2D p : pointsByY) {
+			if(Math.abs(p.getX()-line)<delta){
+				slice.add(p);
+			}
+		}
+		if(slice.size()<2){
+			return delta;
+		}
+		double newMin = delta;
+		for(int i = 0; i<slice.size();i++){
+			for(int j = i+1; j<slice.size()&&j-i<16; j++){
+				double distance = slice.get(i).distance(slice.get(j));
+				if(distance<newMin){
+					newMin = distance;
+				}
+			}
+		}
+
+		return newMin;
 	}
 }
