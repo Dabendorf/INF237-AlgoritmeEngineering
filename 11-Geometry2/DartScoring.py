@@ -1,3 +1,5 @@
+# https://uib.kattis.com/problems/dartscoring
+
 import sys
 import math
 
