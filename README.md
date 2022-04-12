@@ -80,10 +80,10 @@ Source code of my INF237 homework<br/>
 * [ ] The Darkness
 
 ## Geometry 2
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
+* [x] Dart Scoring
+* [ ] Finding Lines
+* [ ] Closest Pair
+* [x] Robert Hood
 
 ## Strings
 * [ ] 
@@ -375,7 +375,34 @@ Solution:
 - The new maxflow is the sum of the maxflow from before and the new one
 
 ### Geometry 2
+#### Dart Scoring
+The task is to find the length of the hull of a big number of points and then calculate a fancy point sum by a given formula.<br/>
+<br/>
+Solution:<br/>
+- This makes use of the Graham Scan algorithm. 
+- One sorts all points by x-value (break tie by y-value)
+- Then we calculate both an upper hull and a lower hull both times through the same process
+- In the first one, we go through the sorted points and in the second one through the reversed order
+- We add all points to the hull with have certain properties.
+- We try to find out of three points are in a left angle which is the same as finding out if they are inner points or outside hull points
+- Finally, we calculate the length of the hull by going around the hull and add distances and put them into the formula
+- This is possible since Graham scan adds points to the hull in order
 
+#### Robert Hood
+The task is to find the maximum distance of two points in a big number of points.<br/>
+<br/>
+Solution:<br/>
+- This makes use of the Graham Scan algorithm. 
+- One sorts all points by x-value (break tie by y-value)
+- Then we calculate both an upper hull and a lower hull both times through the same process
+- In the first one, we go through the sorted points and in the second one through the reversed order
+- We add all points to the hull with have certain properties.
+- We try to find out of three points are in a left angle which is the same as finding out if they are inner points or outside hull points
+- Finding the two points with maximum distance is the same as finding two points with maximum distance in the hull of that set
+
+- Finding the maximum distance inside the hull works with two for-loops
+- Go through hull with two for-loops with points being on "opposite" position
+- If the inner distance for point 2 gets bigger than what we current have, we break that inner loop and continue with next outer point
 
 ### Strings
 
