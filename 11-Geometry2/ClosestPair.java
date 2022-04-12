@@ -35,57 +35,92 @@ public class ClosestPair {
 					return (int)Math.signum(p1.getX() - p2.getX());
 				}
 			});
-			System.out.println(Arrays.toString(points));
-			System.out.println("Minimal Points Distance: " + getMinDistance(points, 0, points.length));
+
+			ReturnType r = getMinDistance(points, 0, points.length);
+			System.out.println(r.a.getX()+" "+r.a.getY()+" "+r.b.getX()+" "+r.b.getY());
 		}
 	
     }
 	
 
-	public static double getMinDistance(Point2D[] points, int a, int b){
+	public static ReturnType getMinDistance(Point2D[] points, int a, int b){
 		if(b-a<=3){
-			if(b-a == 1){
+			/*if(b-a == 1){
 				return -1.0;
-			}
+			}*/
+			Point2D returnA = points[a];
+			Point2D returnB = points[a+1];
 			double min = points[a].distance(points[a+1]);
 			if(b-a>2){
-				min = Math.min(min, points[a+1].distance(points[a+2]));
-				min = Math.min(min, points[a+2].distance(points[a]));
+				//min = Math.min(min, points[a+1].distance(points[a+2]));
+				double newDist = points[a+1].distance(points[a+2]);
+				if(newDist < min) {
+					returnA = points[a+1];
+					returnB = points[a+2];
+					min = newDist;
+				}
+				newDist = points[a+2].distance(points[a]);
+				if(newDist < min) {
+					returnA = points[a+2];
+					returnB = points[a];
+					min = newDist;
+				}
+				//min = Math.min(min, points[a+2].distance(points[a]));
 			}
-			return min;
+			return new ReturnType(min, returnA, returnB);
 		}
-		int mid = (a+b)/2;
-		double minL = getMinDistance(points, a, a+mid);
-		double minR = getMinDistance(points, a+mid, b);
-		double delta = Math.min(minL, minR);
-		ArrayList<Point2D> slice = new ArrayList<Point2D>();
+		int mid = Math.abs(a-b)/2;
+		//double minL = getMinDistance(points, a, a+mid);
+		//double minR = getMinDistance(points, a+mid, b);
+		ReturnType minLType = getMinDistance(points, a, a+mid);
+		ReturnType minRType = getMinDistance(points, a+mid, b);
+		double minL = minLType.minDist;
+		double minR = minLType.minDist;
+		double delta;
+		Point2D returnA;
+		Point2D returnB;
+		if(minL<minR) {
+			returnA = minLType.a;
+			returnB = minLType.b;
+			delta = minL;
+		} else {
+			returnA = minRType.a;
+			returnB = minRType.b;
+			delta = minR;
+		}
+		ArrayList<Point2D> slice = new ArrayList<Point2D>(16);
 		double line = points[a+mid].getX();
 		
-		Point2D[] pointsByY = Arrays.copyOfRange(points, a, b);
-		Arrays.sort(pointsByY, new Comparator<Point2D>() {
+		//Point2D[] pointsByY = Arrays.copyOfRange(points, a, b);
+		Arrays.sort(points,a,b, new Comparator<Point2D>() {
 			public int compare(Point2D p1, Point2D p2) {
 				return (int)Math.signum(p1.getY() - p2.getY());
 			}
 		});
 
-		for (Point2D p : pointsByY) {
-			if(Math.abs(p.getX()-line)<delta){
-				slice.add(p);
+		for (int i = a; i<b; i++) {
+			if(Math.abs(points[i].getX()-line)<delta){
+				slice.add(points[i]);
 			}
 		}
 		if(slice.size()<2){
-			return delta;
+			//return delta;
+			return new ReturnType(delta, returnA, returnB);
 		}
 		double newMin = delta;
+		//Point2D returnA;
+		//Point2D returnB;
 		for(int i = 0; i<slice.size();i++){
-			for(int j = i+1; j<slice.size()&&j-i<16; j++){
+			for(int j = i+1; j<slice.size()&&j-i<8; j++){//Evil Pls Fix
 				double distance = slice.get(i).distance(slice.get(j));
 				if(distance<newMin){
 					newMin = distance;
+					returnA = slice.get(i);
+					returnB = slice.get(j);
 				}
 			}
 		}
 
-		return newMin;
+		return new ReturnType(newMin, returnA, returnB);
 	}
 }
