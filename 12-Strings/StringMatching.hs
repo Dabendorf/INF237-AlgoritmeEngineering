@@ -1,6 +1,6 @@
 import Data.List
 import Control.Monad
--- https://uib.kattis.com/sessions/msjyoa/problems/stringmatching
+-- https://uib.kattis.com/problems/stringmatching
 
 main = do
     s <- getContents 
