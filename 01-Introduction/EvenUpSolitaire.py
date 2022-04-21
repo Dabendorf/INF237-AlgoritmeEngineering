@@ -4,56 +4,29 @@ import sys
 from itertools import groupby
 
 def main():
-	debug = True
 	_ = sys.stdin.readline()
 
 	for line in sys.stdin:
-        # Reads one list of integers per line
+		# Reads one list of integers per line
 		case_str = line.strip().split(" ")
 		numbers = [int(i) for i in case_str]
 
-	bool_list = [True if x%2==0 else False for x in numbers]
+	bool_list = [2 if x%2==0 else 1 for x in numbers]
 
-	count_dups = [(sum(1 for _ in group)%2, m) for m, group in groupby(bool_list)]
-	
-	if debug:
-		print(numbers)
-		print(bool_list)
-		print(count_dups)
+	count_dups = [(0, m) if (sum(1 for _ in group))%2==0 else (1,m) for m, group in groupby(bool_list)]
+	count_dups = [parity for count, parity in count_dups if count > 0]
 
 	changed = True
+
 	while changed:
-		changed = False
-		new_list = list()
-		len_list = len(count_dups)
-		for idx in range(len_list):
-			quantity, el = count_dups[idx]
+		old_len = len(count_dups)
+		count_dups = [(0, m) if (sum(1 for _ in group))%2==0 else (1,m) for m, group in groupby(count_dups)]
+		count_dups = [parity for count, parity in count_dups if count > 0]
 
-			if quantity == 0:
-				changed=True
-			else:
-				if idx > 0:
-					quantityPre, elPre = count_dups[idx-1]
-					if el == elPre:
-						if quantityPre == 1 and quantity == 1:
-							changed = True
-							new_list.pop()
-					else:
-						new_list.append(count_dups[idx])
+		if old_len == len(count_dups):
+			changed = False
 
-				else:
-					new_list.append(count_dups[idx])
-		count_dups = new_list
-		if debug:
-			print(count_dups)
-	
-	if debug:
-		print(count_dups)
-	output = sum(quantity for quantity, _ in count_dups)
-	print(output)
-
-
-		
+	print(len(count_dups))
 
 if __name__ == "__main__":
 	main()
