@@ -14,8 +14,9 @@ splitListToOutput [] = return ()
 
 getPositions :: Int -> [Char] -> [Char] -> [Int] -> [Char]
 getPositions currIndex [] toSearch foundPos = unwords (map show foundPos)
-getPositions currIndex overallStr toSearch foundPos
-    | isPrefixOf toSearch overallStr = getPositions (currIndex+1) (tail overallStr) toSearch (foundPos ++ [currIndex])
-    | otherwise = getPositions (currIndex+1) (tail overallStr) (toSearch) foundPos
+getPositions currIndex (x:xs) toSearch foundPos
+    | isPrefixOf toSearch (x:xs) = getPositions (currIndex+1) xs toSearch (foundPos ++ [currIndex])
+    | otherwise = getPositions (currIndex+1) xs (toSearch) foundPos
 
 -- findIndex ('b' `elem`)
+-- all@(x:xs)
