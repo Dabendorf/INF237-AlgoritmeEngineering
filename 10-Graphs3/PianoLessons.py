@@ -55,19 +55,19 @@ def main():
 edges = lambda p: zip(p, p[1:])
 
 def bfs(graph, s, t):
-    q = deque([s])
-    parent = {}
-    while q:
-        v = q.popleft()
-        for u in graph.R[v]:
-            if u in parent:
-                continue
-            if graph.R[v][u] <= 0:
-                continue 
-            parent[u] = v
-            q.append(u)
-            if u == t:
-                return create_path(parent, s, t)
+	q = deque([s])
+	parent = {}
+	while q:
+		v = q.popleft()
+		for u in graph.R[v]:
+			if u in parent:
+				continue
+			if graph.R[v][u] <= 0:
+				continue 
+			parent[u] = v
+			q.append(u)
+			if u == t:
+				return create_path(parent, s, t)
 
 def create_path(parent, s, t):
 	path = [t]

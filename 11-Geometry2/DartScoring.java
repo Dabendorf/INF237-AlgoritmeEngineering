@@ -2,11 +2,7 @@
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.LinkedHashSet;
-import java.util.Comparator;
 
 /**
  * Problem description

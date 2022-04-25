@@ -86,10 +86,11 @@ Source code of my INF237 homework<br/>
 * [x] Robert Hood
 
 ## Strings
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
+* [x] Bing It On
+* [ ] Clock Pictures
+* [ ] Auto Completion
+* [ ] Repeated Substrings
+* [x] Wildcard
 
 ## Mathematics
 * [ ] 
@@ -405,7 +406,14 @@ Solution:<br/>
 - If the inner distance for point 2 gets bigger than what we current have, we break that inner loop and continue with next outer point
 
 ### Strings
-
+#### Bing It On
+There are n words and for every word we want to now of how many words coming before the new word is the prefix of<br/>
+<br/>
+Solution:
+- There is a counter dictionary which counts how often a prefix has been seen before
+- For every word, I increase the number of every prefix of this word by 1, counting that this prefix has been seen one more time
+- In the end, for every word, one just goes into the dictionary and looks how often it has already seen that prefix
+- That result must be substracted by one since the word itself counted as one already
 
 ### Mathematics
 
