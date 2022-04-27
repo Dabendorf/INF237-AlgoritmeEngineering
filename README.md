@@ -87,16 +87,16 @@ Source code of my INF237 homework<br/>
 
 ## Strings
 * [x] Bing It On
-* [ ] Clock Pictures
+* [x] Clock Pictures
 * [ ] Auto Completion
 * [ ] Repeated Substrings
-* [x] Wildcard
 
 ## Mathematics
 * [ ] 
 * [ ] 
 * [ ] 
 * [ ] 
+* [x] Wildcard
 
 ## Ideas
 ### Introduction
@@ -415,5 +415,15 @@ Solution:
 - In the end, for every word, one just goes into the dictionary and looks how often it has already seen that prefix
 - That result must be substracted by one since the word itself counted as one already
 
-### Mathematics
+#### Clock Pictures
+There are two clocks with n handles which are given as a thousandth of a degree (360_000)<br/>
+The task is to find out if the two clocks are the same, but just rotated<br/>
+<br/>
+Solution:
+- This is a version of a string matching problem
+- One sorts both lists of numbers and then calculates the distances between each pair of neighbouring handles
+- Now, if one doubles the length of one list, one can try to see if the other list is included in that list
+- To handle this, the lists get converted to strings (with $ as separator) and then the Knut-Morris-Pratt algorithm and the longest prefix suffix gets called
+- The KMP and the lps algorithms are their to deal with the running time of the substring problem
 
+### Mathematics

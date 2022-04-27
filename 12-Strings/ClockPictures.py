@@ -2,6 +2,19 @@
 
 from sys import stdin
 
+""" There are two clocks with n handles which are given as a thousandth of a degree (360_000)
+	The task is to find out if the two clocks are the same, but just rotated
+
+	Solution:
+	- This is a version of a string matching problem
+	- One sorts both lists of numbers and then calculates the distances between each pair of neighbouring handles
+	- Now, if one doubles the length of one list, one can try to see if the other list is included in that list
+	- To handle this, the lists get converted to strings (with $ as separator)
+		and then the Knut-Morris-Pratt algorithm and the longest prefix suffix gets called
+
+	- The KMP and the lps algorithms are their to deal with the running time of the substring problem
+	
+	"""
 def main():
 	num_handles = int(stdin.readline())
 
@@ -14,6 +27,7 @@ def main():
 	dist1 = [str((handles1[i+1]-handles1[i])%360000) for i in range(len(handles1)-1)]
 	dist2 = [str((handles2[i+1]-handles2[i])%360000) for i in range(len(handles2)-1)]
 
+	# Make string from list
 	dist_str1 = "$".join(dist1)
 	dist_str2 = "$".join(dist2)
 
