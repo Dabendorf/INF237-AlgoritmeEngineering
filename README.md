@@ -92,11 +92,10 @@ Source code of my INF237 homework<br/>
 * [ ] Repeated Substrings
 
 ## Mathematics
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
-* [x] Wildcard
+* [x] I Hate The Number Nine
+* [ ] Semi-prime H-numbers
+* [x] Inverse Factorial
+* [ ] Factor-Free Tree
 
 ## Ideas
 ### Introduction
@@ -427,3 +426,21 @@ Solution:
 - The KMP and the lps algorithms are their to deal with the running time of the substring problem
 
 ### Mathematics
+
+#### I Hate The Number Nine
+For every number d, find how many numbers with d digits there are which are not including a 9<br/>
+<br/>
+Solution:
+- 8*mod(9, d-1, modulo-value)
+- modulo operation can be applied after every multiplication (due to the fancy math rules of our trust)
+- Haskell standard library does not have modPow, so one needed to implement it
+
+#### Inverse Factorial
+For a number n!, find the original number n<br/>
+<br/>
+Solution:
+- Logarithm tricks
+- The length of a number n is floor(log10(n))
+- Also, log(a*b) = log(a)+log(b)
+- One only needs to sum up the length of every number until we get the same length as n
+- Extracases for 1-7 are needed, since factorials there have ambitious lengths
