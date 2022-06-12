@@ -1,5 +1,5 @@
 # INF237-AlgoritmeEngineering 
-Source code of my INF237 homework<br/>
+This projectincludes my solution for a lot of Kattis problems, mostly those from the UiB course INF237 Algorithm Engineering<br/>
 [Link to Kattis tasks](https://uib.kattis.com/courses/INF237/spring22)
 
 ## Temaer
